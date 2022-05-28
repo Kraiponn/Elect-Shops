@@ -28,9 +28,10 @@ export class AuthDto {
   @MaxLength(30)
   @Matches(
     /^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{5,}$/,
-    // {
-    //   message: 'Password to week.',
-    // },
+    {
+      message:
+        'Password to week and must be at least 1 uppercase, 1 lowercase, 1 number and 1 special character',
+    },
   )
   password: string;
 

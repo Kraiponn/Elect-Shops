@@ -6,10 +6,13 @@ import {
   HttpStatus,
   Post,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Response } from 'express';
-import { AuthDto } from '../dto';
+import { UserIdFromJwt } from '../decorators/user-id-jwt.decorator';
+import { AuthDto, UpdatedProfileDto, UserUpdatedPwdDto } from '../dto';
+import { AccessTokenGuard } from '../guards';
 import { UserService } from './user.service';
 
 @Controller('auth/user')
@@ -26,7 +29,7 @@ export class UserController {
    */
   @Post('/signup')
   @HttpCode(HttpStatus.CREATED)
-  async signup(@Body() body: AuthDto, @Res() res: Response) {
+  async signup(@Res() res: Response, @Body() body: AuthDto) {
     const result = await this.userService.signup(body);
 
     res.cookie('auth-jwt', result.refresh_token, {
@@ -35,15 +38,11 @@ export class UserController {
       sameSite: 'strict',
     });
 
-    return {
+    return res.status(HttpStatus.CREATED).json({
       message: 'Process is successful',
-      user: {
-        id: result.id,
-        email: result.email,
-        userType: result.userType,
-        access_token: result.access_token,
-      },
-    };
+      user: result.user,
+      access_token: result.access_token,
+    });
   }
 
   /********************************
@@ -52,10 +51,16 @@ export class UserController {
    * access    Public
    */
   @Post('/signin')
-  async signin(@Body() body: AuthDto) {
-    return {
-      body,
-    };
+  async signin(@Res() res: Response, @Body() body: AuthDto) {
+    const resp = await this.userService.signin(res, body);
+
+    // Set the secure cookie with httpOnly flag
+    res.cookie('refresh_token', resp.refresh_token, { httpOnly: true });
+    delete resp.refresh_token;
+
+    return res.status(HttpStatus.OK).json({
+      ...resp,
+    });
   }
 
   /********************************
@@ -63,12 +68,52 @@ export class UserController {
    * route     Post /api/auth/user/me
    * access    Private
    */
+  @UseGuards(AccessTokenGuard)
   @Get('/me')
-  getProfile() {
-    return {
-      user: {
-        name: 'kraiponn',
-      },
-    };
+  @HttpCode(HttpStatus.OK)
+  getProfile(@UserIdFromJwt() userId: number) {
+    return this.userService.getProfile(userId);
+  }
+
+  /********************************
+   * desc      User signout
+   * route     Get /api/auth/user/logout
+   * access    Private
+   */
+  @UseGuards(AccessTokenGuard)
+  @Get('/logout')
+  @HttpCode(HttpStatus.OK)
+  logout(@UserIdFromJwt() userId: number) {
+    return this.userService.Logout(userId);
+  }
+
+  /********************************
+   * desc      Update password
+   * route     Post /api/auth/user/update-password
+   * access    Private
+   */
+  @UseGuards(AccessTokenGuard)
+  @Post('update-password')
+  @HttpCode(HttpStatus.OK)
+  updatedPassword(
+    @UserIdFromJwt() userId: number,
+    @Body() body: UserUpdatedPwdDto,
+  ) {
+    return this.userService.updatedPassword(userId, body);
+  }
+
+  /********************************
+   * desc      Update profile
+   * route     Post /api/auth/user/update-profile
+   * access    Private
+   */
+  @UseGuards(AccessTokenGuard)
+  @Post('update-profile')
+  @HttpCode(HttpStatus.OK)
+  updatedProfile(
+    @UserIdFromJwt() userId: number,
+    @Body() body: UpdatedProfileDto,
+  ) {
+    return this.userService.updatedProfile(userId, body);
   }
 }

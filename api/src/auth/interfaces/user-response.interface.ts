@@ -1,6 +1,6 @@
 import { UserType } from '@prisma/client';
 
-export interface IUserResponse {
+export interface IUser {
   id: number;
   firstName?: string;
   lastName?: string;
@@ -11,6 +11,16 @@ export interface IUserResponse {
     public_id: string;
     secure_url: string;
   };
-  createdAt?: string;
-  updatedAt?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface IUserResponse {
+  user: IUser;
+}
+
+export interface IUserImage {
+  id?: number;
+  public_id: string;
+  secure_id: string;
 }

@@ -2,15 +2,18 @@ import {
   BadRequestException,
   ConflictException,
   Injectable,
+  NotFoundException,
+  Res,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/prisma/prisma.service';
 
-import { AuthDto } from '../dto';
+import { AuthDto, UpdatedProfileDto, UserUpdatedPwdDto } from '../dto';
 import * as bcrypt from 'bcrypt';
-import { IJwtPayload, ITokens, IUserResponse } from '../interfaces';
+import { IJwtPayload, ITokens, IUser, IUserResponse } from '../interfaces';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+import { Response } from 'express';
 
 @Injectable()
 export class UserService {
@@ -23,15 +26,15 @@ export class UserService {
   /********************************************************
    *              HELPER FUNCTIONS
    *******************************************************/
-  async hashData(data: string): Promise<string> {
+  private async hashData(data: string): Promise<string> {
     return await bcrypt.hash(data, 10);
   }
 
-  async compareData(data: string, hashData: string): Promise<boolean> {
+  private async compareData(data: string, hashData: string): Promise<boolean> {
     return await bcrypt.compare(data, hashData);
   }
 
-  async getTokens(userId: number, email: string): Promise<ITokens> {
+  private async getTokens(userId: number, email: string): Promise<ITokens> {
     const payload: IJwtPayload = {
       sub: userId,
       email,
@@ -54,7 +57,7 @@ export class UserService {
     };
   }
 
-  async updateRefreshToken(
+  private async updateRefreshToken(
     userId: number,
     refreshToken: string,
   ): Promise<void> {
@@ -70,6 +73,7 @@ export class UserService {
     if (!user) throw new BadRequestException('User not found');
   }
 
+  ///////////////////////// Request Mehod /////////////////////////////////
   /****************************
    * Sign Up
    */
@@ -89,14 +93,14 @@ export class UserService {
         email,
       );
 
-      const userPayload: IUserResponse = {
+      const userPayload: IUser = {
         id: user.id,
         email: user.email,
         userType: user.userType,
       };
 
       return {
-        ...userPayload,
+        user: userPayload,
         access_token,
         refresh_token,
       };
@@ -112,21 +116,151 @@ export class UserService {
   /****************************
    * Sign In
    */
-  async signin({ email, password }: AuthDto): Promise<any> {
-    return '';
-  }
+  async signin(
+    @Res() res: Response,
+    { email, password }: AuthDto,
+  ): Promise<IUserResponse & ITokens> {
+    const user = await this.prismaService.user.findUnique({
+      where: { email },
+    });
 
-  /****************************
-   * Sign Out
-   */
-  async Logout(userId: number): Promise<any> {
-    return '';
+    if (!user)
+      throw new BadRequestException('There is no user with that email');
+
+    const pwdMatches = await this.compareData(password, user.password);
+    if (!pwdMatches) throw new BadRequestException('Password is incorrect');
+
+    const { access_token, refresh_token } = await this.getTokens(
+      user.id,
+      email,
+    );
+
+    // Update or Add refresh_token field
+    await this.updateRefreshToken(user.id, refresh_token);
+
+    const userPayload: IUser = {
+      id: user.id,
+      email,
+      userType: user.userType,
+    };
+
+    return {
+      user: userPayload,
+      access_token,
+      refresh_token,
+    };
   }
 
   /****************************
    * Get Profile
    */
   async getProfile(userId: number): Promise<any> {
-    return '';
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!user)
+      throw new NotFoundException(`User not found with id of ${userId}`);
+
+    const image = await this.prismaService.image.findUnique({
+      where: { userId: user.id },
+    });
+
+    const payload: IUser = {
+      id: user.id,
+      firstName: user?.firstName,
+      lastName: user?.lastName,
+      email: user.email,
+      phone: user?.phone,
+      userType: user.userType,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+      image,
+    };
+
+    return {
+      user: payload,
+    };
+  }
+
+  /****************************
+   * Sign Out
+   */
+  async Logout(userId: number): Promise<{ message: string }> {
+    const user = await this.prismaService.user.updateMany({
+      where: {
+        id: userId,
+        refreshToken: {
+          not: null,
+        },
+      },
+      data: {
+        refreshToken: null,
+        refreshTokenExpire: null,
+      },
+    });
+
+    if (!user || user.count <= 0)
+      throw new BadRequestException('Your account already logout.');
+
+    return {
+      message: 'Logout is successful',
+    };
+  }
+
+  /****************************
+   * Update password
+   */
+  async updatedPassword(
+    userId: number,
+    { currentPassword, newPassword }: UserUpdatedPwdDto,
+  ): Promise<{ message: string }> {
+    const user = await this.prismaService.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) throw new BadRequestException('User not found');
+
+    const pwdMatches = await this.compareData(currentPassword, user.password);
+    if (!pwdMatches)
+      throw new BadRequestException(
+        'The current password does not matche. Please entered a valid password.',
+      );
+
+    const hashPwd = await this.hashData(newPassword);
+    const updateResult = await this.prismaService.user.update({
+      where: { id: user.id },
+      data: { password: hashPwd },
+    });
+
+    if (!updateResult)
+      throw new BadRequestException('Access denied or User not found');
+
+    return { message: 'Password updated is successfully' };
+  }
+
+  /****************************
+   * Update Profile
+   */
+  async updatedProfile(
+    userId: number,
+    body: UpdatedProfileDto,
+  ): Promise<{ message: string }> {
+    const { firstName, lastName, phone } = body;
+
+    const user = await this.prismaService.user.update({
+      where: { id: userId },
+      data: {
+        firstName: firstName ? firstName : '',
+        lastName: lastName ? lastName : '',
+        phone: phone ? phone : '',
+      },
+    });
+
+    if (!user) throw new BadRequestException('User not found');
+
+    return { message: 'Profile updated is successfully' };
   }
 }

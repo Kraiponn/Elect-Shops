@@ -20,8 +20,6 @@ export class AccessTokenStrategy extends PassportStrategy(
   }
 
   validate(payload: IJwtPayload) {
-    console.log('Validate of access token', payload);
-
     return payload;
   }
 }
