@@ -24,10 +24,13 @@ export class AuthDto {
       Max 30 characters.
    */
   @IsString()
-  @MinLength(6)
+  @MinLength(5)
   @MaxLength(30)
   @Matches(
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{6,30}$/,
+    /^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{5,}$/,
+    // {
+    //   message: 'Password to week.',
+    // },
   )
   password: string;
 

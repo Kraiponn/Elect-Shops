@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Post,
@@ -23,9 +24,9 @@ export class UserController {
    * route     Post /api/auth/user/signin
    * access    Public
    */
-  @Post('signup')
+  @Post('/signup')
   @HttpCode(HttpStatus.CREATED)
-  async signup(@Res() res: Response, @Body() body: AuthDto) {
+  async signup(@Body() body: AuthDto, @Res() res: Response) {
     const result = await this.userService.signup(body);
 
     res.cookie('auth-jwt', result.refresh_token, {
@@ -41,6 +42,32 @@ export class UserController {
         email: result.email,
         userType: result.userType,
         access_token: result.access_token,
+      },
+    };
+  }
+
+  /********************************
+   * desc      Signin
+   * route     Post /api/auth/user/signin
+   * access    Public
+   */
+  @Post('/signin')
+  async signin(@Body() body: AuthDto) {
+    return {
+      body,
+    };
+  }
+
+  /********************************
+   * desc      Get profile
+   * route     Post /api/auth/user/me
+   * access    Private
+   */
+  @Get('/me')
+  getProfile() {
+    return {
+      user: {
+        name: 'kraiponn',
       },
     };
   }

@@ -1,16 +1,20 @@
 import { NestFactory } from '@nestjs/core';
+import { ConfigService } from '@nestjs/config';
 import { AppModule } from './app.module';
 
 import helmet from 'helmet';
 import * as csurf from 'csurf';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const PORT = process.env.PORT || 8000;
-  const appMode = process.env.NODE_ENV;
+
+  const configService = app.get(ConfigService);
+  const PORT = configService.get('PORT') || 8080;
+  const appMode = configService.get<string>('NODE_ENV') || 'development';
 
   // Middlewares config
-  if (process.env.NODE_ENV === 'development') {
+  if (appMode === 'development') {
     app.enableCors();
   } else {
     app.enableCors({
@@ -18,11 +22,15 @@ async function bootstrap() {
     });
   }
 
+  app.setGlobalPrefix('api');
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+
   app.use(helmet());
-  app.use(csurf());
+  // app.use(csurf());
 
   await app.listen(PORT, () => {
     console.log(`Server is running on ${PORT} port, And ${appMode} mode`);
   });
 }
+
 bootstrap();

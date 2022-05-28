@@ -15,7 +15,7 @@ import { UserController } from './user/user.controller';
     UserService,
     AdminService,
     AccessTokenStrategy,
-    // RefreshTokenStrategy,
+    RefreshTokenStrategy,
   ],
   controllers: [AdminController, UserController],
 })
