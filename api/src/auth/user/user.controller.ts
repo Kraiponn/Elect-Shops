@@ -4,15 +4,18 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Param,
   Post,
   Res,
   UseGuards,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Response } from 'express';
-import { UserIdFromJwt } from '../decorators/user-id-jwt.decorator';
+import { RefreshTokenPayload } from '../decorators';
+import { UserIdFromJwt } from '../decorators/user-id-from-jwt.decorator';
 import { AuthDto, UpdatedProfileDto, UserUpdatedPwdDto } from '../dto';
-import { AccessTokenGuard } from '../guards';
+import { AccessTokenGuard, RefreshTokenGuard } from '../guards';
+import { IJwtPayloadWithRefreshToken } from '../interfaces';
 import { UserService } from './user.service';
 
 @Controller('auth/user')
@@ -29,20 +32,22 @@ export class UserController {
    */
   @Post('/signup')
   @HttpCode(HttpStatus.CREATED)
-  async signup(@Res() res: Response, @Body() body: AuthDto) {
+  async signup(
+    @Res({ passthrough: true }) res: Response,
+    @Body() body: AuthDto,
+  ) {
     const result = await this.userService.signup(body);
 
-    res.cookie('auth-jwt', result.refresh_token, {
+    res.cookie('refresh_token', result.refresh_token, {
       httpOnly: true,
       secure: this.configService.get<string>('NODE_ENV') !== 'development',
       sameSite: 'strict',
     });
 
-    return res.status(HttpStatus.CREATED).json({
-      message: 'Process is successful',
+    return {
       user: result.user,
       access_token: result.access_token,
-    });
+    };
   }
 
   /********************************
@@ -51,16 +56,19 @@ export class UserController {
    * access    Public
    */
   @Post('/signin')
-  async signin(@Res() res: Response, @Body() body: AuthDto) {
+  async signin(
+    @Res({ passthrough: true }) res: Response,
+    @Body() body: AuthDto,
+  ) {
     const resp = await this.userService.signin(res, body);
 
     // Set the secure cookie with httpOnly flag
     res.cookie('refresh_token', resp.refresh_token, { httpOnly: true });
     delete resp.refresh_token;
 
-    return res.status(HttpStatus.OK).json({
+    return {
       ...resp,
-    });
+    };
   }
 
   /********************************
@@ -115,5 +123,28 @@ export class UserController {
     @Body() body: UpdatedProfileDto,
   ) {
     return this.userService.updatedProfile(userId, body);
+  }
+
+  /*********************************************************
+   * desc      Request a new access_token by refresh_token
+   * route     Get /api/auth/user/refresh-token
+   * access    Private
+   */
+  @UseGuards(RefreshTokenGuard)
+  @Get('refresh-token/:userId')
+  async getNewAccessToken(
+    @Res({ passthrough: true }) res: Response,
+    @Param('userId') userId: number,
+    @RefreshTokenPayload() payload: IJwtPayloadWithRefreshToken,
+  ) {
+    const { access_token, refresh_token } =
+      await this.userService.getAccessToken(userId, payload.refresh_token);
+
+    // Secure cookie
+    res.cookie('refresh_token', refresh_token, { httpOnly: true });
+
+    return {
+      access_token,
+    };
   }
 }

@@ -4,6 +4,7 @@ import {
   Injectable,
   NotFoundException,
   Res,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
@@ -47,7 +48,7 @@ export class UserService {
       }),
       this.jwtService.sign(payload, {
         secret: this.configService.get<string>('REFRESH_TOKEN_KEY'),
-        expiresIn: '1m',
+        expiresIn: '5m',
       }),
     ]);
 
@@ -61,6 +62,8 @@ export class UserService {
     userId: number,
     refreshToken: string,
   ): Promise<void> {
+    const hashToken = await this.hashData(refreshToken);
+
     const user = await this.prismaService.user.update({
       where: {
         id: userId,
@@ -262,5 +265,42 @@ export class UserService {
     if (!user) throw new BadRequestException('User not found');
 
     return { message: 'Profile updated is successfully' };
+  }
+
+  /*********************************************
+   * Reuest new access token by refresh token
+   */
+  async getAccessToken(userId: number, refreshToken: string): Promise<ITokens> {
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        id: parseInt(userId),
+      },
+    });
+
+    if (!user || !user.refreshToken) {
+      throw new UnauthorizedException(
+        'Not authorization to get the new access token or token is expire',
+      );
+    }
+
+    const refreshTokenMatches = await this.compareData(
+      refreshToken,
+      user.refreshToken,
+    );
+
+    if (!refreshTokenMatches) {
+      throw new UnauthorizedException(`Not authorized or token is expired`);
+    }
+
+    await this.updateRefreshToken(userId, refreshToken);
+    const { access_token, refresh_token } = await this.getTokens(
+      userId,
+      user.email,
+    );
+
+    return {
+      access_token,
+      refresh_token,
+    };
   }
 }
