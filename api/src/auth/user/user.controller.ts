@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -7,15 +8,20 @@ import {
   Param,
   Post,
   Res,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { UserType } from '@prisma/client';
 import { Response } from 'express';
-import { RefreshTokenPayload } from '../decorators';
+import { RefreshTokenPayload, Roles } from '../decorators';
 import { UserIdFromJwt } from '../decorators/user-id-from-jwt.decorator';
 import { AuthDto, UpdatedProfileDto, UserUpdatedPwdDto } from '../dto';
 import { AccessTokenGuard, RefreshTokenGuard } from '../guards';
 import { IJwtPayloadWithRefreshToken } from '../interfaces';
+import { AccessTokenStrategy } from '../strategies';
 import { UserService } from './user.service';
 
 @Controller('auth/user')
@@ -127,18 +133,21 @@ export class UserController {
 
   /*********************************************************
    * desc      Request a new access_token by refresh_token
-   * route     Get /api/auth/user/refresh-token
+   * route     Get /api/auth/user/refresh-token/:userId
    * access    Private
    */
   @UseGuards(RefreshTokenGuard)
   @Get('refresh-token/:userId')
   async getNewAccessToken(
     @Res({ passthrough: true }) res: Response,
-    @Param('userId') userId: number,
+    @Param('userId') userId: string,
     @RefreshTokenPayload() payload: IJwtPayloadWithRefreshToken,
   ) {
     const { access_token, refresh_token } =
-      await this.userService.getAccessToken(userId, payload.refresh_token);
+      await this.userService.getAccessToken(
+        parseInt(userId),
+        payload.refresh_token,
+      );
 
     // Secure cookie
     res.cookie('refresh_token', refresh_token, { httpOnly: true });
@@ -146,5 +155,23 @@ export class UserController {
     return {
       access_token,
     };
+  }
+
+  /*********************************************************
+   * desc      Update image to user
+   * route     Post /api/auth/user/update-profile-image
+   * access    Private
+   */
+  @UseGuards(AccessTokenGuard)
+  @Post('update-profile-image')
+  @UseInterceptors(FileInterceptor('image'))
+  updatedProfileImage(
+    @UserIdFromJwt() userId: number,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    // console.log('Upload', file);
+    if (!file) throw new BadRequestException('Please specify image');
+
+    return this.userService.updateProfileImage(userId, file);
   }
 }

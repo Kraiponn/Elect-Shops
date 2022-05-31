@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ConflictException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
   Res,
   UnauthorizedException,
@@ -13,8 +14,13 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { AuthDto, UpdatedProfileDto, UserUpdatedPwdDto } from '../dto';
 import * as bcrypt from 'bcrypt';
 import { IJwtPayload, ITokens, IUser, IUserResponse } from '../interfaces';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+import {
+  PrismaClientKnownRequestError,
+  PrismaClientUnknownRequestError,
+} from '@prisma/client/runtime';
 import { Response } from 'express';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import * as fsExtra from 'fs-extra';
 
 @Injectable()
 export class UserService {
@@ -22,6 +28,7 @@ export class UserService {
     private readonly prismaService: PrismaService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
+    private readonly cloudinaryService: CloudinaryService,
   ) {}
 
   /********************************************************
@@ -44,11 +51,11 @@ export class UserService {
     const [access_token, refresh_token] = await Promise.all([
       this.jwtService.sign(payload, {
         secret: this.configService.get<string>('ACCESS_TOKEN_KEY'),
-        expiresIn: '1m',
+        expiresIn: '5m',
       }),
       this.jwtService.sign(payload, {
         secret: this.configService.get<string>('REFRESH_TOKEN_KEY'),
-        expiresIn: '5m',
+        expiresIn: '7d',
       }),
     ]);
 
@@ -69,11 +76,12 @@ export class UserService {
         id: userId,
       },
       data: {
-        refreshToken,
+        refreshToken: hashToken,
       },
     });
 
-    if (!user) throw new BadRequestException('User not found');
+    if (!user)
+      throw new BadRequestException('User not found(Update refresh_token)');
   }
 
   ///////////////////////// Request Mehod /////////////////////////////////
@@ -241,7 +249,7 @@ export class UserService {
     if (!updateResult)
       throw new BadRequestException('Access denied or User not found');
 
-    return { message: 'Password updated is successfully' };
+    return { message: 'Password update is successfully' };
   }
 
   /****************************
@@ -270,10 +278,10 @@ export class UserService {
   /*********************************************
    * Reuest new access token by refresh token
    */
-  async getAccessToken(userId: number, refreshToken: string): Promise<ITokens> {
+  async getAccessToken(userId: number, refreshToken: string): Promise<any> {
     const user = await this.prismaService.user.findUnique({
       where: {
-        id: parseInt(userId),
+        id: userId,
       },
     });
 
@@ -302,5 +310,52 @@ export class UserService {
       access_token,
       refresh_token,
     };
+  }
+
+  /*********************************************
+   * Update image to user
+   */
+  async updateProfileImage(
+    userId: number,
+    file: Express.Multer.File,
+  ): Promise<{ message: string } | any> {
+    // console.log(file);
+    // await fsExtra.remove(`${file.path}`);
+    await this.prismaService.user.findMany({
+      where: {
+        firstName: {
+          mode: 'insensitive',
+          contains: 'kraipon',
+        },
+      },
+    });
+
+    const user = await this.prismaService.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) throw new BadRequestException(`User not found`);
+
+    const uploadImg = await this.cloudinaryService.uploadImage(file);
+    if (!uploadImg)
+      throw new InternalServerErrorException(`Invalid upload image`);
+
+    try {
+      await this.prismaService.image.create({
+        data: {
+          public_id: uploadImg.public_id,
+          secure_url: uploadImg.secure_url,
+          userId: user.id,
+        },
+      });
+
+      return { message: 'Image updated is successfully' };
+    } catch (error) {
+      if (error instanceof PrismaClientUnknownRequestError) {
+        console.log('Upload error log', error);
+      }
+
+      throw new InternalServerErrorException('Create image error');
+    }
   }
 }

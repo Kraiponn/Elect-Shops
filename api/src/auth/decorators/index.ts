@@ -1,4 +1,5 @@
-import { from } from 'rxjs';
+export * from './roles.decorator';
+export * from './public.decorator';
 
 export * from './match.decorator';
 export * from './user-id-from-jwt.decorator';

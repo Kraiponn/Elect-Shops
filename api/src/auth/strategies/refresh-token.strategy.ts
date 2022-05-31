@@ -31,7 +31,6 @@ export class RefreshTokenStrategy extends PassportStrategy(
 
   validate(req: Request, payload: IJwtPayload): IJwtPayloadWithRefreshToken {
     // console.log('Validate of refresh token', payload);
-
     const refresh_token = req?.cookies['refresh_token'];
 
     return {
