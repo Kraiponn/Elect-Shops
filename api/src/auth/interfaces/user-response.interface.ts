@@ -6,8 +6,10 @@ export interface IUser {
   lastName?: string;
   email: string;
   phone?: string;
+  dateOfBirth?: Date;
+  address?: string;
   userType: UserType;
-  image?: {
+  profileImage?: {
     public_id: string;
     secure_url: string;
   };

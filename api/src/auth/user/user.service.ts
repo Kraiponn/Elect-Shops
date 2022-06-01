@@ -4,7 +4,6 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
-  Res,
   UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -13,14 +12,21 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 import { AuthDto, UpdatedProfileDto, UserUpdatedPwdDto } from '../dto';
 import * as bcrypt from 'bcrypt';
-import { IJwtPayload, ITokens, IUser, IUserResponse } from '../interfaces';
+import {
+  IJwtPayload,
+  IProfileImage,
+  ITokens,
+  IUser,
+  IUserResponse,
+} from '../interfaces';
 import {
   PrismaClientKnownRequestError,
   PrismaClientUnknownRequestError,
 } from '@prisma/client/runtime';
-import { Response } from 'express';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import * as fsExtra from 'fs-extra';
+import * as dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 
 @Injectable()
 export class UserService {
@@ -51,7 +57,7 @@ export class UserService {
     const [access_token, refresh_token] = await Promise.all([
       this.jwtService.sign(payload, {
         secret: this.configService.get<string>('ACCESS_TOKEN_KEY'),
-        expiresIn: '5m',
+        expiresIn: '10m',
       }),
       this.jwtService.sign(payload, {
         secret: this.configService.get<string>('REFRESH_TOKEN_KEY'),
@@ -96,6 +102,12 @@ export class UserService {
         data: {
           email,
           password: pwdHash,
+          profileImage: {
+            create: {
+              public_id: '',
+              secure_url: '',
+            },
+          },
         },
       });
 
@@ -103,6 +115,8 @@ export class UserService {
         user.id,
         email,
       );
+
+      await this.updateRefreshToken(user.id, refresh_token);
 
       const userPayload: IUser = {
         id: user.id,
@@ -127,16 +141,12 @@ export class UserService {
   /****************************
    * Sign In
    */
-  async signin(
-    @Res() res: Response,
-    { email, password }: AuthDto,
-  ): Promise<IUserResponse & ITokens> {
+  async signin({ email, password }: AuthDto): Promise<IUserResponse & ITokens> {
     const user = await this.prismaService.user.findUnique({
       where: { email },
     });
 
-    if (!user)
-      throw new BadRequestException('There is no user with that email');
+    if (!user) throw new BadRequestException('Invalid email or password');
 
     const pwdMatches = await this.compareData(password, user.password);
     if (!pwdMatches) throw new BadRequestException('Password is incorrect');
@@ -175,7 +185,7 @@ export class UserService {
     if (!user)
       throw new NotFoundException(`User not found with id of ${userId}`);
 
-    const image = await this.prismaService.image.findUnique({
+    const profileImage = await this.prismaService.profileImage.findUnique({
       where: { userId: user.id },
     });
 
@@ -185,10 +195,12 @@ export class UserService {
       lastName: user?.lastName,
       email: user.email,
       phone: user?.phone,
+      address: user?.address,
+      dateOfBirth: user?.dateOfBirth,
       userType: user.userType,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
-      image,
+      profileImage,
     };
 
     return {
@@ -258,8 +270,40 @@ export class UserService {
   async updatedProfile(
     userId: number,
     body: UpdatedProfileDto,
+    file: Express.Multer.File,
   ): Promise<{ message: string }> {
-    const { firstName, lastName, phone } = body;
+    const { firstName, lastName, phone, address, dateOfBirth } = body;
+    let uploadedResult: IProfileImage;
+    // dayjs.extend(utc);
+
+    if (file) {
+      const userImage = await this.prismaService.user.findUnique({
+        where: { id: userId },
+        select: {
+          profileImage: {
+            select: {
+              public_id: true,
+              secure_url: true,
+            },
+          },
+        },
+      });
+
+      if (
+        userImage?.profileImage?.public_id ||
+        userImage?.profileImage?.secure_url
+      ) {
+        await this.cloudinaryService.removeImage(
+          userImage.profileImage.public_id,
+        );
+      }
+
+      // console.log('Having a file upload', file);
+      uploadedResult = await this.cloudinaryService.uploadImage(file);
+
+      // Remove image from the temporary path
+      await fsExtra.remove(file.path);
+    }
 
     const user = await this.prismaService.user.update({
       where: { id: userId },
@@ -267,6 +311,28 @@ export class UserService {
         firstName: firstName ? firstName : '',
         lastName: lastName ? lastName : '',
         phone: phone ? phone : '',
+        address: address ? address : '',
+        dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
+        profileImage: {
+          upsert: {
+            update: {
+              public_id: uploadedResult?.public_id
+                ? uploadedResult.public_id
+                : '',
+              secure_url: uploadedResult?.secure_url
+                ? uploadedResult.secure_url
+                : '',
+            },
+            create: {
+              public_id: uploadedResult?.public_id
+                ? uploadedResult.public_id
+                : '',
+              secure_url: uploadedResult?.secure_url
+                ? uploadedResult.secure_url
+                : '',
+            },
+          },
+        },
       },
     });
 
@@ -341,7 +407,7 @@ export class UserService {
       throw new InternalServerErrorException(`Invalid upload image`);
 
     try {
-      await this.prismaService.image.create({
+      await this.prismaService.profileImage.create({
         data: {
           public_id: uploadImg.public_id,
           secure_url: uploadImg.secure_url,

@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Get,
@@ -14,14 +13,12 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { UserType } from '@prisma/client';
 import { Response } from 'express';
-import { RefreshTokenPayload, Roles } from '../decorators';
+import { RefreshTokenPayload } from '../decorators';
 import { UserIdFromJwt } from '../decorators/user-id-from-jwt.decorator';
 import { AuthDto, UpdatedProfileDto, UserUpdatedPwdDto } from '../dto';
 import { AccessTokenGuard, RefreshTokenGuard } from '../guards';
 import { IJwtPayloadWithRefreshToken } from '../interfaces';
-import { AccessTokenStrategy } from '../strategies';
 import { UserService } from './user.service';
 
 @Controller('auth/user')
@@ -42,17 +39,19 @@ export class UserController {
     @Res({ passthrough: true }) res: Response,
     @Body() body: AuthDto,
   ) {
-    const result = await this.userService.signup(body);
+    const { user, access_token, refresh_token } = await this.userService.signup(
+      body,
+    );
 
-    res.cookie('refresh_token', result.refresh_token, {
+    res.cookie('refresh_token', refresh_token, {
       httpOnly: true,
       secure: this.configService.get<string>('NODE_ENV') !== 'development',
       sameSite: 'strict',
     });
 
     return {
-      user: result.user,
-      access_token: result.access_token,
+      user,
+      access_token,
     };
   }
 
@@ -66,7 +65,7 @@ export class UserController {
     @Res({ passthrough: true }) res: Response,
     @Body() body: AuthDto,
   ) {
-    const resp = await this.userService.signin(res, body);
+    const resp = await this.userService.signin(body);
 
     // Set the secure cookie with httpOnly flag
     res.cookie('refresh_token', resp.refresh_token, { httpOnly: true });
@@ -124,11 +123,13 @@ export class UserController {
   @UseGuards(AccessTokenGuard)
   @Post('update-profile')
   @HttpCode(HttpStatus.OK)
+  @UseInterceptors(FileInterceptor('image'))
   updatedProfile(
     @UserIdFromJwt() userId: number,
     @Body() body: UpdatedProfileDto,
+    @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.userService.updatedProfile(userId, body);
+    return this.userService.updatedProfile(userId, body, file);
   }
 
   /*********************************************************
@@ -155,23 +156,5 @@ export class UserController {
     return {
       access_token,
     };
-  }
-
-  /*********************************************************
-   * desc      Update image to user
-   * route     Post /api/auth/user/update-profile-image
-   * access    Private
-   */
-  @UseGuards(AccessTokenGuard)
-  @Post('update-profile-image')
-  @UseInterceptors(FileInterceptor('image'))
-  updatedProfileImage(
-    @UserIdFromJwt() userId: number,
-    @UploadedFile() file: Express.Multer.File,
-  ) {
-    // console.log('Upload', file);
-    if (!file) throw new BadRequestException('Please specify image');
-
-    return this.userService.updateProfileImage(userId, file);
   }
 }

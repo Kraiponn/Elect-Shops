@@ -1,5 +1,6 @@
 import { UserType } from '@prisma/client';
 import {
+  IsDate,
   IsEmail,
   IsEnum,
   IsNotEmpty,
@@ -33,6 +34,17 @@ export class UpdatedProfileDto {
   //   message: 'Phone number is incorrect',
   // })
   phone?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  // @IsDate()
+  dateOfBirth?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  address?: string;
 
   @IsOptional()
   @IsEnum(UserType)

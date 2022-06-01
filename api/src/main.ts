@@ -23,7 +23,7 @@ async function bootstrap() {
     });
   }
 
-  app.setGlobalPrefix('api');
+  app.setGlobalPrefix('v2/api');
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.use(cookieParser());
 

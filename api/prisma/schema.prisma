@@ -11,55 +11,89 @@ datasource db {
 }
 
 model User {
-  id                 Int      @id @default(autoincrement())
-  firstName          String?  @db.VarChar(100)
-  lastName           String?  @db.VarChar(100)
-  email              String   @unique
-  password           String   @db.VarChar(1000)
-  phone              String?  @db.VarChar(50)
-  userType           UserType @default(USER)
+  id                 Int           @id @default(autoincrement())
+  firstName          String?       @db.VarChar(100)
+  lastName           String?       @db.VarChar(100)
+  email              String        @unique
+  password           String        @db.VarChar(1000)
+  dateOfBirth        DateTime?
+  phone              String?       @db.VarChar(50)
+  address            String?       @db.VarChar(1000)
+  userType           UserType      @default(USER)
   refreshToken       String?
-  refreshTokenExpire Int?
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-  image              Image?
+  refreshTokenExpire DateTime?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  profileImage       ProfileImage?
+  orders             Order[]
 
   @@map("users")
 }
 
-model Image {
+model ProfileImage {
   id         Int    @id @default(autoincrement())
   public_id  String
   secure_url String
   userId     Int    @unique
   user       User   @relation(fields: [userId], references: [id])
 
-  @@map("images")
+  @@map("profile_image")
 }
 
 model Category {
   id           Int       @id @default(autoincrement())
   categoryName String
   description  String?
-  Product      Product[]
+  products     Product[]
 
   @@map("categories")
 }
 
 model Product {
-  id          Int      @id @default(autoincrement())
-  productName String   @db.VarChar(100)
-  description String   @db.VarChar(255)
-  instack     Int
-  unitPrice   Float
-  categoryId  Int      @unique
-  category    Category @relation(fields: [categoryId], references: [id])
+  id            Int            @id @default(autoincrement())
+  productName   String         @db.VarChar(100)
+  description   String?        @db.VarChar(255)
+  instack       Int
+  unitPrice     Float
+  categoryId    Int            @unique
+  category      Category       @relation(fields: [categoryId], references: [id])
+  productImages ProductImage[]
+  orders        Order[]
 
   @@map("products")
+}
+
+model ProductImage {
+  id         Int     @id @default(autoincrement())
+  public_id  String
+  secure_url String
+  productId  Int     @unique
+  product    Product @relation(fields: [productId], references: [id])
+
+  @@map("product_images")
+}
+
+model Order {
+  id        Int       @id @default(autoincrement())
+  status    OrderType @default(PENDING)
+  address   String    @db.VarChar(1000)
+  orderDate DateTime  @default(now())
+  uesrId    Int       @unique
+  user      User      @relation(fields: [uesrId], references: [id])
+  productId Int       @unique
+  product   Product   @relation(fields: [productId], references: [id])
+
+  @@map("orders")
 }
 
 enum UserType {
   GUEST
   USER
   ADMIN
+}
+
+enum OrderType {
+  PENDING
+  ON_WAY
+  SHIPPING
 }
