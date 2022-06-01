@@ -2,7 +2,6 @@ import {
   BadRequestException,
   ConflictException,
   Injectable,
-  InternalServerErrorException,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -19,14 +18,9 @@ import {
   IUser,
   IUserResponse,
 } from '../interfaces';
-import {
-  PrismaClientKnownRequestError,
-  PrismaClientUnknownRequestError,
-} from '@prisma/client/runtime';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import * as fsExtra from 'fs-extra';
-import * as dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
 
 @Injectable()
 export class UserService {
@@ -274,7 +268,6 @@ export class UserService {
   ): Promise<{ message: string }> {
     const { firstName, lastName, phone, address, dateOfBirth } = body;
     let uploadedResult: IProfileImage;
-    // dayjs.extend(utc);
 
     if (file) {
       const userImage = await this.prismaService.user.findUnique({
@@ -376,52 +369,5 @@ export class UserService {
       access_token,
       refresh_token,
     };
-  }
-
-  /*********************************************
-   * Update image to user
-   */
-  async updateProfileImage(
-    userId: number,
-    file: Express.Multer.File,
-  ): Promise<{ message: string } | any> {
-    // console.log(file);
-    // await fsExtra.remove(`${file.path}`);
-    await this.prismaService.user.findMany({
-      where: {
-        firstName: {
-          mode: 'insensitive',
-          contains: 'kraipon',
-        },
-      },
-    });
-
-    const user = await this.prismaService.user.findUnique({
-      where: { id: userId },
-    });
-
-    if (!user) throw new BadRequestException(`User not found`);
-
-    const uploadImg = await this.cloudinaryService.uploadImage(file);
-    if (!uploadImg)
-      throw new InternalServerErrorException(`Invalid upload image`);
-
-    try {
-      await this.prismaService.profileImage.create({
-        data: {
-          public_id: uploadImg.public_id,
-          secure_url: uploadImg.secure_url,
-          userId: user.id,
-        },
-      });
-
-      return { message: 'Image updated is successfully' };
-    } catch (error) {
-      if (error instanceof PrismaClientUnknownRequestError) {
-        console.log('Upload error log', error);
-      }
-
-      throw new InternalServerErrorException('Create image error');
-    }
   }
 }

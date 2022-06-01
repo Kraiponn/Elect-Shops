@@ -1,6 +1,6 @@
 import { UserType } from '@prisma/client';
 import {
-  IsDate,
+  IsDateString,
   IsEmail,
   IsEnum,
   IsNotEmpty,
@@ -36,10 +36,9 @@ export class UpdatedProfileDto {
   phone?: string;
 
   @IsOptional()
-  @IsString()
   @IsNotEmpty()
-  // @IsDate()
-  dateOfBirth?: string;
+  @IsDateString()
+  dateOfBirth?: Date;
 
   @IsOptional()
   @IsString()
