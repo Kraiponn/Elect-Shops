@@ -5,91 +5,29 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 import { AuthDto, UpdatedProfileDto, UserUpdatedPwdDto } from '../dto';
-import * as bcrypt from 'bcrypt';
-import {
-  IJwtPayload,
-  IProfileImage,
-  ITokens,
-  IUser,
-  IUserResponse,
-} from '../interfaces';
+import { IProfileImage, ITokens, IUser, IUserResponse } from '../interfaces';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { SharesService } from '../shares/shares.service';
 import * as fsExtra from 'fs-extra';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly prismaService: PrismaService,
-    private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,
     private readonly cloudinaryService: CloudinaryService,
+    private readonly sharedService: SharesService,
   ) {}
-
-  /********************************************************
-   *              HELPER FUNCTIONS
-   *******************************************************/
-  private async hashData(data: string): Promise<string> {
-    return await bcrypt.hash(data, 10);
-  }
-
-  private async compareData(data: string, hashData: string): Promise<boolean> {
-    return await bcrypt.compare(data, hashData);
-  }
-
-  private async getTokens(userId: number, email: string): Promise<ITokens> {
-    const payload: IJwtPayload = {
-      sub: userId,
-      email,
-    };
-
-    const [access_token, refresh_token] = await Promise.all([
-      this.jwtService.sign(payload, {
-        secret: this.configService.get<string>('ACCESS_TOKEN_KEY'),
-        expiresIn: '10m',
-      }),
-      this.jwtService.sign(payload, {
-        secret: this.configService.get<string>('REFRESH_TOKEN_KEY'),
-        expiresIn: '7d',
-      }),
-    ]);
-
-    return {
-      access_token,
-      refresh_token,
-    };
-  }
-
-  private async updateRefreshToken(
-    userId: number,
-    refreshToken: string,
-  ): Promise<void> {
-    const hashToken = await this.hashData(refreshToken);
-
-    const user = await this.prismaService.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        refreshToken: hashToken,
-      },
-    });
-
-    if (!user)
-      throw new BadRequestException('User not found(Update refresh_token)');
-  }
 
   ///////////////////////// Request Mehod /////////////////////////////////
   /****************************
    * Sign Up
    */
   async signup({ email, password }: AuthDto): Promise<IUserResponse & ITokens> {
-    const pwdHash = await this.hashData(password);
+    const pwdHash = await this.sharedService.hashData(password);
 
     try {
       const user = await this.prismaService.user.create({
@@ -105,12 +43,10 @@ export class UserService {
         },
       });
 
-      const { access_token, refresh_token } = await this.getTokens(
-        user.id,
-        email,
-      );
+      const { access_token, refresh_token } =
+        await this.sharedService.getTokens(user.id, email);
 
-      await this.updateRefreshToken(user.id, refresh_token);
+      await this.sharedService.updateRefreshToken(user.id, refresh_token);
 
       const userPayload: IUser = {
         id: user.id,
@@ -142,16 +78,19 @@ export class UserService {
 
     if (!user) throw new BadRequestException('Invalid email or password');
 
-    const pwdMatches = await this.compareData(password, user.password);
+    const pwdMatches = await this.sharedService.compareData(
+      password,
+      user.password,
+    );
     if (!pwdMatches) throw new BadRequestException('Password is incorrect');
 
-    const { access_token, refresh_token } = await this.getTokens(
+    const { access_token, refresh_token } = await this.sharedService.getTokens(
       user.id,
       email,
     );
 
     // Update or Add refresh_token field
-    await this.updateRefreshToken(user.id, refresh_token);
+    await this.sharedService.updateRefreshToken(user.id, refresh_token);
 
     const userPayload: IUser = {
       id: user.id,
@@ -169,7 +108,7 @@ export class UserService {
   /****************************
    * Get Profile
    */
-  async getProfile(userId: number): Promise<any> {
+  async getProfile(userId: number): Promise<IUserResponse> {
     const user = await this.prismaService.user.findUnique({
       where: {
         id: userId,
@@ -240,13 +179,16 @@ export class UserService {
 
     if (!user) throw new BadRequestException('User not found');
 
-    const pwdMatches = await this.compareData(currentPassword, user.password);
+    const pwdMatches = await this.sharedService.compareData(
+      currentPassword,
+      user.password,
+    );
     if (!pwdMatches)
       throw new BadRequestException(
         'The current password does not matche. Please entered a valid password.',
       );
 
-    const hashPwd = await this.hashData(newPassword);
+    const hashPwd = await this.sharedService.hashData(newPassword);
     const updateResult = await this.prismaService.user.update({
       where: { id: user.id },
       data: { password: hashPwd },
@@ -337,7 +279,7 @@ export class UserService {
   /*********************************************
    * Reuest new access token by refresh token
    */
-  async getAccessToken(userId: number, refreshToken: string): Promise<any> {
+  async getAccessToken(userId: number, refreshToken: string): Promise<ITokens> {
     const user = await this.prismaService.user.findUnique({
       where: {
         id: userId,
@@ -350,7 +292,7 @@ export class UserService {
       );
     }
 
-    const refreshTokenMatches = await this.compareData(
+    const refreshTokenMatches = await this.sharedService.compareData(
       refreshToken,
       user.refreshToken,
     );
@@ -359,8 +301,8 @@ export class UserService {
       throw new UnauthorizedException(`Not authorized or token is expired`);
     }
 
-    await this.updateRefreshToken(userId, refreshToken);
-    const { access_token, refresh_token } = await this.getTokens(
+    await this.sharedService.updateRefreshToken(userId, refreshToken);
+    const { access_token, refresh_token } = await this.sharedService.getTokens(
       userId,
       user.email,
     );

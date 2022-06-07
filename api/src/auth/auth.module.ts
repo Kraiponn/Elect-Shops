@@ -11,6 +11,7 @@ import { AdminController } from './admin/admin.controller';
 import { UserController } from './user/user.controller';
 import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
 import { MulterConfig } from 'src/features/configs/multer.config';
+import { SharesService } from './shares/shares.service';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { MulterConfig } from 'src/features/configs/multer.config';
     AdminService,
     AccessTokenStrategy,
     RefreshTokenStrategy,
+    SharesService,
   ],
   controllers: [AdminController, UserController],
 })

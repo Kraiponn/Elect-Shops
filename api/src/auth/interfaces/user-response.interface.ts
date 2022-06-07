@@ -26,3 +26,14 @@ export interface IUserImage {
   public_id: string;
   secure_id: string;
 }
+
+export interface IPaginate {
+  page?: number;
+  limit?: number;
+}
+
+export interface IPaginateResponse {
+  count?: number;
+  next?: IPaginate;
+  prev?: IPaginate;
+}
