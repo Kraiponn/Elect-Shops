@@ -1,4 +1,3 @@
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import {
   BadRequestException,
   ConflictException,
@@ -6,37 +5,33 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { JwtService } from '@nestjs/jwt';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { AuthDto, UpdatedProfileDto, UserUpdatedPwdDto } from '../dto';
+import { AuthDto, UpdatedProfileDto } from '../dto';
 import {
   ITokens,
   IUserResponse,
   IUser,
   IProfileImage,
   IPaginateResponse,
-  IPaginate,
 } from '../interfaces';
 import { SharesService } from '../shares/shares.service';
 
 import * as fsExtra from 'fs-extra';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 
 @Injectable()
 export class AdminService {
   constructor(
     private readonly prismaService: PrismaService,
-    private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,
     private readonly cloudinaryService: CloudinaryService,
     private readonly sharedService: SharesService,
   ) {}
 
   /****************************
-   * Sign Up
+   * Create new member
    */
-  async signup({ email, password }: AuthDto): Promise<IUserResponse & ITokens> {
+  async addUser({ email, password }: AuthDto): Promise<IUser> {
     const pwdHash = await this.sharedService.hashData(password);
 
     try {
@@ -53,22 +48,7 @@ export class AdminService {
         },
       });
 
-      const { access_token, refresh_token } =
-        await this.sharedService.getTokens(user.id, email);
-
-      await this.sharedService.updateRefreshToken(user.id, refresh_token);
-
-      const userPayload: IUser = {
-        id: user.id,
-        email: user.email,
-        userType: user.userType,
-      };
-
-      return {
-        user: userPayload,
-        access_token,
-        refresh_token,
-      };
+      return user;
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
@@ -76,43 +56,6 @@ export class AdminService {
         }
       }
     }
-  }
-
-  /****************************
-   * Sign In
-   */
-  async signin({ email, password }: AuthDto): Promise<IUserResponse & ITokens> {
-    const user = await this.prismaService.user.findUnique({
-      where: { email },
-    });
-
-    if (!user) throw new BadRequestException('Invalid email or password');
-
-    const pwdMatches = await this.sharedService.compareData(
-      password,
-      user.password,
-    );
-    if (!pwdMatches) throw new BadRequestException('Password is incorrect');
-
-    const { access_token, refresh_token } = await this.sharedService.getTokens(
-      user.id,
-      email,
-    );
-
-    // Update or Add refresh_token field
-    await this.sharedService.updateRefreshToken(user.id, refresh_token);
-
-    const userPayload: IUser = {
-      id: user.id,
-      email,
-      userType: user.userType,
-    };
-
-    return {
-      user: userPayload,
-      access_token,
-      refresh_token,
-    };
   }
 
   /****************************
@@ -154,7 +97,10 @@ export class AdminService {
   /****************************
    * Get Profile with user id
    */
-  async getUsers(page: number, limit: number): Promise<any> {
+  async getUsers(
+    page: number,
+    limit: number,
+  ): Promise<{ paginate: IPaginateResponse; users: IUser[] }> {
     const startIndex = (page - 1) * limit;
     const lastIndex = page * limit;
 
@@ -170,6 +116,7 @@ export class AdminService {
     // Paginate
     const paginate: IPaginateResponse = {
       count: total,
+      current: page,
       next: {
         page: 0,
         limit,
@@ -192,6 +139,11 @@ export class AdminService {
         page: page - 1,
         limit,
       };
+    }
+
+    // console.log(users);
+    for (let index = 0; index < users.length; index++) {
+      delete users[index].password;
     }
 
     return { paginate, users };
@@ -227,7 +179,7 @@ export class AdminService {
    */
   async updatedPassword(
     userId: number,
-    { currentPassword, newPassword }: UserUpdatedPwdDto,
+    password: string,
   ): Promise<{ message: string }> {
     const user = await this.prismaService.user.findUnique({
       where: { id: userId },
@@ -235,16 +187,7 @@ export class AdminService {
 
     if (!user) throw new BadRequestException('User not found');
 
-    const pwdMatches = await this.sharedService.compareData(
-      currentPassword,
-      user.password,
-    );
-    if (!pwdMatches)
-      throw new BadRequestException(
-        'The current password does not matche. Please entered a valid password.',
-      );
-
-    const hashPwd = await this.sharedService.hashData(newPassword);
+    const hashPwd = await this.sharedService.hashData(password);
     const updateResult = await this.prismaService.user.update({
       where: { id: user.id },
       data: { password: hashPwd },
@@ -264,7 +207,7 @@ export class AdminService {
     body: UpdatedProfileDto,
     file: Express.Multer.File,
   ): Promise<{ message: string }> {
-    const { firstName, lastName, phone, address, dateOfBirth } = body;
+    const { email, firstName, lastName, phone, address, dateOfBirth } = body;
     let uploadedResult: IProfileImage;
 
     if (file) {
@@ -301,6 +244,7 @@ export class AdminService {
       data: {
         firstName: firstName ? firstName : '',
         lastName: lastName ? lastName : '',
+        email: email ? email : '',
         phone: phone ? phone : '',
         address: address ? address : '',
         dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,

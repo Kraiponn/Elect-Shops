@@ -34,6 +34,7 @@ export interface IPaginate {
 
 export interface IPaginateResponse {
   count?: number;
+  current?: number;
   next?: IPaginate;
   prev?: IPaginate;
 }
