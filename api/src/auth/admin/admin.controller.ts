@@ -34,6 +34,7 @@ export class AdminController {
    * route     Post /api/auth/admin/add-member
    * access    Private
    */
+  @UseGuards(AccessTokenGuard)
   @Post('/add-member')
   @HttpCode(HttpStatus.CREATED)
   async addMember(@Body() body: AuthDto) {
