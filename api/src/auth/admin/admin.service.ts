@@ -287,6 +287,39 @@ export class AdminService {
     return { message: 'Profile update is successfully' };
   }
 
+  /****************************
+   * Remove account
+   */
+  async removeAccount(userId: number): Promise<{ message: string }> {
+    const profileImg = await this.prismaService.profileImage.findUnique({
+      where: { userId },
+    });
+
+    if (!profileImg)
+      throw new NotFoundException(`User not found with id of ${userId}`);
+
+    await this.prismaService.profileImage.delete({
+      where: {
+        userId,
+      },
+    });
+
+    if (profileImg.public_id || profileImg.secure_url) {
+      await this.cloudinaryService.removeImage(profileImg.public_id);
+    }
+
+    await this.prismaService.user.delete({
+      where: { id: userId },
+    });
+
+    // const transaction = await this.prismaService.$transaction([
+    //   delProfileImg,
+    //   delUser,
+    // ]);
+
+    return { message: 'Account removed is successfully' };
+  }
+
   /*********************************************
    * Reuest new access token by refresh token
    */

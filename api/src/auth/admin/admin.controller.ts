@@ -2,6 +2,7 @@ import { AccessTokenGuard } from './../guards/access-token.guard';
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -83,5 +84,17 @@ export class AdminController {
     @UploadedFile() file: Express.Multer.File,
   ) {
     return this.adminService.updatedProfile(Number(userId), body, file);
+  }
+
+  /********************************
+   * desc      Remove account
+   * route     Delete /api/auth/admin/:userId
+   * access    Private
+   */
+  @UseGuards(AccessTokenGuard)
+  @Delete('/:userId')
+  @HttpCode(HttpStatus.OK)
+  deletAccount(@Param('userId') userId: number) {
+    return this.adminService.removeAccount(Number(userId));
   }
 }

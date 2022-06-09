@@ -34,8 +34,8 @@ model ProfileImage {
   id         Int    @id @default(autoincrement())
   public_id  String
   secure_url String
-  userId     Int    @unique
-  user       User   @relation(fields: [userId], references: [id])
+  userId     Int?   @unique
+  user       User?  @relation(fields: [userId], references: [id])
 
   @@map("profile_image")
 }
@@ -55,8 +55,8 @@ model Product {
   description   String?        @db.VarChar(255)
   instack       Int
   unitPrice     Float
-  categoryId    Int            @unique
-  category      Category       @relation(fields: [categoryId], references: [id])
+  categoryId    Int?           @unique
+  category      Category?      @relation(fields: [categoryId], references: [id])
   productImages ProductImage[]
   orders        Order[]
 
@@ -64,11 +64,11 @@ model Product {
 }
 
 model ProductImage {
-  id         Int     @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
   public_id  String
   secure_url String
-  productId  Int     @unique
-  product    Product @relation(fields: [productId], references: [id])
+  productId  Int?     @unique
+  product    Product? @relation(fields: [productId], references: [id])
 
   @@map("product_images")
 }

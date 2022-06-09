@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -130,6 +131,18 @@ export class UserController {
     @UploadedFile() file: Express.Multer.File,
   ) {
     return this.userService.updatedProfile(userId, body, file);
+  }
+
+  /********************************
+   * desc      Remove account
+   * route     Delete /api/auth/user/:userId
+   * access    Private
+   */
+  @UseGuards(AccessTokenGuard)
+  @Delete('/:userId')
+  @HttpCode(HttpStatus.OK)
+  deletAccount(@Param('userId') userId: number) {
+    return this.userService.removeAccount(Number(userId));
   }
 
   /*********************************************************
