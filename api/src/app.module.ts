@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { MulterConfig } from './features/configs/multer.config';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { MulterConfig } from './features/configs/multer.config';
     // MulterModule.register(MulterConfig),
     AuthModule,
     PrismaModule,
+    CategoryModule,
   ],
   providers: [],
 })

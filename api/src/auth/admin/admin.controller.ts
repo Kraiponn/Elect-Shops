@@ -21,8 +21,10 @@ import { FileInterceptor } from '@nestjs/platform-express';
 export class AdminController {
   constructor(private adminService: AdminService) {}
 
-  /**********************************
-   * Get users
+  /********************************
+   * desc      Query users with pagination pattern
+   * route     Post /api/auth/admin?page=xx&limit=xx
+   * access    Private
    */
   @UseGuards(AccessTokenGuard)
   @Get()
