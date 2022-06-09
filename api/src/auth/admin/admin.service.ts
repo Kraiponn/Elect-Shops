@@ -185,7 +185,8 @@ export class AdminService {
       where: { id: userId },
     });
 
-    if (!user) throw new BadRequestException('User not found');
+    if (!user)
+      throw new BadRequestException(`There is no user with id of ${userId}`);
 
     const hashPwd = await this.sharedService.hashData(password);
     const updateResult = await this.prismaService.user.update({
@@ -209,6 +210,16 @@ export class AdminService {
   ): Promise<{ message: string }> {
     const { email, firstName, lastName, phone, address, dateOfBirth } = body;
     let uploadedResult: IProfileImage;
+
+    const curUser = await this.prismaService.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!curUser) {
+      // Remove image from the temporary path
+      await fsExtra.remove(file.path);
+      throw new BadRequestException(`User not found`);
+    }
 
     if (file) {
       const userImage = await this.prismaService.user.findUnique({
@@ -242,12 +253,12 @@ export class AdminService {
     const user = await this.prismaService.user.update({
       where: { id: userId },
       data: {
-        firstName: firstName ? firstName : '',
-        lastName: lastName ? lastName : '',
-        email: email ? email : '',
-        phone: phone ? phone : '',
-        address: address ? address : '',
-        dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
+        firstName: firstName ? firstName : curUser.firstName,
+        lastName: lastName ? lastName : curUser.lastName,
+        email: email ? email : curUser.email,
+        phone: phone ? phone : curUser.phone,
+        address: address ? address : curUser.address,
+        dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : curUser.dateOfBirth,
         profileImage: {
           upsert: {
             update: {
@@ -273,7 +284,7 @@ export class AdminService {
 
     if (!user) throw new BadRequestException('User not found');
 
-    return { message: 'Profile updated is successfully' };
+    return { message: 'Profile update is successfully' };
   }
 
   /*********************************************

@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Param,
   Post,
   Query,
   UploadedFile,
@@ -13,10 +14,9 @@ import {
 } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { AuthDto, UpdatedProfileDto } from '../dto';
-import { UserIdFromJwt } from '../decorators';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-@Controller('auth/admin/user')
+@Controller('auth/admin')
 export class AdminController {
   constructor(private adminService: AdminService) {}
 
@@ -30,12 +30,24 @@ export class AdminController {
   }
 
   /********************************
-   * desc      Create new member
-   * route     Post /api/auth/admin/add-member
+   * desc      Get profile
+   * route     Post /api/auth/admin/:userId
    * access    Private
    */
   @UseGuards(AccessTokenGuard)
-  @Post('/add-member')
+  @Get('/:userId')
+  @HttpCode(HttpStatus.OK)
+  getProfile(@Param('userId') userId: number) {
+    return this.adminService.getUserById(Number(userId));
+  }
+
+  /********************************
+   * desc      Create new member
+   * route     Post /api/auth/admin/add-user
+   * access    Private
+   */
+  @UseGuards(AccessTokenGuard)
+  @Post('/add-user')
   @HttpCode(HttpStatus.CREATED)
   async addMember(@Body() body: AuthDto) {
     return this.adminService.addUser(body);
@@ -43,33 +55,33 @@ export class AdminController {
 
   /********************************
    * desc      Change password
-   * route     Post /api/auth/admin/update-password
+   * route     Post /api/auth/admin/update-password/:userId
    * access    Private
    */
   @UseGuards(AccessTokenGuard)
-  @Post('/add-member')
+  @Post('/update-password/:userId')
   @HttpCode(HttpStatus.OK)
   async updatedPassword(
-    @UserIdFromJwt() userId: number,
+    @Param('userId') userId: number,
     @Body('password') password: string,
   ) {
-    return this.adminService.updatedPassword(userId, password);
+    return this.adminService.updatedPassword(Number(userId), password);
   }
 
   /********************************
    * desc      Update profile
-   * route     Post /api/auth/admin/update-profile
+   * route     Post /api/auth/admin/update-profile/:userId
    * access    Private
    */
   @UseGuards(AccessTokenGuard)
-  @Post('update-profile')
+  @Post('update-profile/:userId')
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(FileInterceptor('image'))
   updatedProfile(
-    @UserIdFromJwt() userId: number,
+    @Param('userId') userId: number,
     @Body() body: UpdatedProfileDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.adminService.updatedProfile(userId, body, file);
+    return this.adminService.updatedProfile(Number(userId), body, file);
   }
 }

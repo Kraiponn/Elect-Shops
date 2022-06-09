@@ -208,8 +208,18 @@ export class UserService {
     body: UpdatedProfileDto,
     file: Express.Multer.File,
   ): Promise<{ message: string }> {
-    const { firstName, lastName, phone, address, dateOfBirth } = body;
+    const { firstName, lastName, phone, address, dateOfBirth, email } = body;
     let uploadedResult: IProfileImage;
+
+    const curUser = await this.prismaService.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!curUser) {
+      // Remove image from the temporary path
+      await fsExtra.remove(file.path);
+      throw new BadRequestException(`User not found`);
+    }
 
     if (file) {
       const userImage = await this.prismaService.user.findUnique({
@@ -243,11 +253,12 @@ export class UserService {
     const user = await this.prismaService.user.update({
       where: { id: userId },
       data: {
-        firstName: firstName ? firstName : '',
-        lastName: lastName ? lastName : '',
-        phone: phone ? phone : '',
-        address: address ? address : '',
-        dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
+        firstName: firstName ? firstName : curUser.firstName,
+        lastName: lastName ? lastName : curUser.lastName,
+        email: email ? email : curUser.email,
+        phone: phone ? phone : curUser.phone,
+        address: address ? address : curUser.address,
+        dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : curUser.dateOfBirth,
         profileImage: {
           upsert: {
             update: {
