@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { CategoryDto } from './dto';
+import { ICreateCategoryResponse } from './interfaces';
 
 @Injectable()
 export class CategoryService {
@@ -12,18 +14,25 @@ export class CategoryService {
   /***********************************
    * Create category
    */
-  async createdCategory(body: any, file: Express.Multer.File): Promise<any> {
-    return null;
+  async createdCategory({
+    categoryName,
+    description,
+  }: CategoryDto): Promise<any> {
+    // const category = (await this.prismaService.category.create({
+    //   data: {
+    //     categoryName,
+    //     description: description ? description : '',
+    //   },
+    // })) as ICreateCategoryResponse;
+
+    // return category;
+    return 'hello';
   }
 
   /***********************************
    * Update category
    */
-  async updatedCategory(
-    categoryId: number,
-    body: any,
-    file: Express.Multer.File,
-  ): Promise<any> {
+  async updatedCategory(categoryId: number, body: any): Promise<any> {
     return null;
   }
 

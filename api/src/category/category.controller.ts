@@ -1,4 +1,3 @@
-import { AccessTokenGuard } from './../auth/guards/access-token.guard';
 import {
   Body,
   Controller,
@@ -12,10 +11,15 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { AccessTokenGuard } from './../auth/guards/access-token.guard';
 import { CategoryService } from './category.service';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { CategoryDto } from './dto';
+import { Roles } from 'src/auth/decorators';
+import { UserType } from '@prisma/client';
+import { RolesGuard } from 'src/auth/guards';
 
-@Controller('category')
+@Controller('categories')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
@@ -26,9 +30,10 @@ export class CategoryController {
    */
   @UseGuards(AccessTokenGuard)
   @Post()
-  @UseInterceptors(FileInterceptor('image'))
-  createCategory(@UploadedFile() file: Express.Multer.File, @Body() body: any) {
-    return this.categoryService.createdCategory(body, file);
+  @Roles(UserType.ADMIN)
+  @UseGuards(RolesGuard)
+  createCategory(@Body() body: CategoryDto) {
+    return this.categoryService.createdCategory(body);
   }
 
   /********************************
@@ -38,13 +43,11 @@ export class CategoryController {
    */
   @UseGuards(AccessTokenGuard)
   @Put('/:categoryId')
-  @UseInterceptors(FileInterceptor('image'))
   updateCategory(
     @Param('categoryId') categoryId: number,
-    @Body() body: any,
-    @UploadedFile() file: Express.Multer.File,
+    @Body() body: CategoryDto,
   ) {
-    return this.categoryService.updatedCategory(Number(categoryId), body, file);
+    return this.categoryService.updatedCategory(Number(categoryId), body);
   }
 
   /********************************
