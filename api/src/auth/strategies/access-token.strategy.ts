@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
-import { UserType } from '@prisma/client';
 import { Request } from 'express';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -26,12 +25,14 @@ export class AccessTokenStrategy extends PassportStrategy(
     });
   }
 
-  validate(req: Request, payload: IJwtPayload) {
-    // const { userType } = await this.prismaService.user.findUnique({
-    //   where: { id: payload.sub },
-    // });
+  async validate(req: Request, payload: IJwtPayload) {
+    const { userType } = await this.prismaService.user.findUnique({
+      where: { id: payload.sub },
+    });
 
-    // return { userType, payload };
-    return payload;
+    // req.user['userType'] = userType;
+    // console.log('validate');
+
+    return { userType, payload };
   }
 }

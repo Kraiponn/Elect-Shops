@@ -18,28 +18,45 @@ export class CategoryService {
     categoryName,
     description,
   }: CategoryDto): Promise<any> {
-    // const category = (await this.prismaService.category.create({
-    //   data: {
-    //     categoryName,
-    //     description: description ? description : '',
-    //   },
-    // })) as ICreateCategoryResponse;
+    const category = (await this.prismaService.category.create({
+      data: {
+        categoryName,
+        description: description ? description : '',
+      },
+    })) as ICreateCategoryResponse;
 
-    // return category;
-    return 'hello';
+    return category;
   }
 
   /***********************************
    * Update category
    */
-  async updatedCategory(categoryId: number, body: any): Promise<any> {
-    return null;
+  async updatedCategory(
+    categoryId: number,
+    { categoryName, description }: CategoryDto,
+  ): Promise<any> {
+    return await this.prismaService.category.update({
+      where: {
+        id: categoryId,
+      },
+      data: {
+        categoryName,
+        description,
+      },
+    });
   }
 
   /***********************************
    * Remove category
    */
   async deletedCategory(categoryId: number): Promise<any> {
+    // const delProducts = await this.prismaService.product.deleteMany({
+    //   where: {
+    //     AND: [
+    //       { categoryId }
+    //     ]
+    //   }
+    // })
     return null;
   }
 
