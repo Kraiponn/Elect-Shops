@@ -73,7 +73,7 @@ export class CategoryController {
 
   /********************************
    * desc      Get many categories with pagination
-   * route     Get /v2/api/categories/:categoryId
+   * route     Get /v2/api/categories?page=xx&limit=xx
    * access    Private(Role) - ADMIN
    */
   @UseGuards(AccessTokenGuard)
