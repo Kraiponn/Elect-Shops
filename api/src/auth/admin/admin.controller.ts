@@ -16,7 +16,12 @@ import {
 import { AdminService } from './admin.service';
 import { AuthDto, UpdatedProfileDto } from '../dto';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { AdminRoleInterceptor } from '../interceptors';
 
+/***************************************************************
+ *  All routes must be an Admin role(UserType)
+ */
+@UseInterceptors(AdminRoleInterceptor)
 @Controller('auth/admin')
 export class AdminController {
   constructor(private adminService: AdminService) {}
