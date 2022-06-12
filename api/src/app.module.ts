@@ -6,6 +6,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { MulterConfig } from './features/configs/multer.config';
 import { CategoryModule } from './category/category.module';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { CategoryModule } from './category/category.module';
     AuthModule,
     PrismaModule,
     CategoryModule,
+    ProductModule,
   ],
   providers: [],
 })
