@@ -34,8 +34,8 @@ model ProfileImage {
   id         Int    @id @default(autoincrement())
   public_id  String
   secure_url String
-  userId     Int?   @unique
-  user       User?  @relation(fields: [userId], references: [id])
+  userId     Int    @unique
+  user       User   @relation(fields: [userId], references: [id])
 
   @@map("profile_image")
 }
@@ -44,31 +44,35 @@ model Category {
   id           Int       @id @default(autoincrement())
   categoryName String
   description  String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
   products     Product[]
 
   @@map("categories")
 }
 
 model Product {
-  id            Int            @id @default(autoincrement())
-  productName   String         @db.VarChar(100)
-  description   String?        @db.VarChar(255)
-  instack       Int
-  unitPrice     Float
-  categoryId    Int?           @unique
-  category      Category?      @relation(fields: [categoryId], references: [id])
-  productImages ProductImage[]
-  orders        Order[]
+  id           Int           @id @default(autoincrement())
+  productName  String        @db.VarChar(100)
+  description  String?       @db.VarChar(255)
+  inStock      Int
+  unitPrice    Float
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  categoryId   Int
+  category     Category      @relation(fields: [categoryId], references: [id])
+  productImage ProductImage?
+  orders       Order[]
 
   @@map("products")
 }
 
 model ProductImage {
-  id         Int      @id @default(autoincrement())
+  id         Int     @id @default(autoincrement())
   public_id  String
   secure_url String
-  productId  Int?     @unique
-  product    Product? @relation(fields: [productId], references: [id])
+  productId  Int     @unique
+  product    Product @relation(fields: [productId], references: [id])
 
   @@map("product_images")
 }
@@ -78,9 +82,11 @@ model Order {
   status    OrderType @default(PENDING)
   address   String    @db.VarChar(1000)
   orderDate DateTime  @default(now())
-  uesrId    Int       @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  uesrId    Int
   user      User      @relation(fields: [uesrId], references: [id])
-  productId Int       @unique
+  productId Int
   product   Product   @relation(fields: [productId], references: [id])
 
   @@map("orders")

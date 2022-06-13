@@ -8,6 +8,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Put,
   Query,
   UploadedFile,
   UseGuards,
@@ -67,7 +68,7 @@ export class AdminController {
    * access    Private
    */
   @UseGuards(AccessTokenGuard)
-  @Post('/update-password/:userId')
+  @Put('/update-password/:userId')
   @HttpCode(HttpStatus.OK)
   async updatedPassword(
     @Param('userId') userId: number,
@@ -82,7 +83,7 @@ export class AdminController {
    * access    Private
    */
   @UseGuards(AccessTokenGuard)
-  @Post('update-profile/:userId')
+  @Put('update-profile/:userId')
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(FileInterceptor('image'))
   updatedProfile(

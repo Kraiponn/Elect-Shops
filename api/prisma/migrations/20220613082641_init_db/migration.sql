@@ -28,7 +28,7 @@ CREATE TABLE "profile_image" (
     "id" SERIAL NOT NULL,
     "public_id" TEXT NOT NULL,
     "secure_url" TEXT NOT NULL,
-    "userId" INTEGER NOT NULL,
+    "userId" INTEGER,
 
     CONSTRAINT "profile_image_pkey" PRIMARY KEY ("id")
 );
@@ -38,6 +38,8 @@ CREATE TABLE "categories" (
     "id" SERIAL NOT NULL,
     "categoryName" TEXT NOT NULL,
     "description" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "categories_pkey" PRIMARY KEY ("id")
 );
@@ -47,9 +49,11 @@ CREATE TABLE "products" (
     "id" SERIAL NOT NULL,
     "productName" VARCHAR(100) NOT NULL,
     "description" VARCHAR(255),
-    "instack" INTEGER NOT NULL,
+    "inStock" INTEGER NOT NULL,
     "unitPrice" DOUBLE PRECISION NOT NULL,
-    "categoryId" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "categoryId" INTEGER,
 
     CONSTRAINT "products_pkey" PRIMARY KEY ("id")
 );
@@ -59,7 +63,7 @@ CREATE TABLE "product_images" (
     "id" SERIAL NOT NULL,
     "public_id" TEXT NOT NULL,
     "secure_url" TEXT NOT NULL,
-    "productId" INTEGER NOT NULL,
+    "productId" INTEGER,
 
     CONSTRAINT "product_images_pkey" PRIMARY KEY ("id")
 );
@@ -70,6 +74,8 @@ CREATE TABLE "orders" (
     "status" "OrderType" NOT NULL DEFAULT E'PENDING',
     "address" VARCHAR(1000) NOT NULL,
     "orderDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
     "uesrId" INTEGER NOT NULL,
     "productId" INTEGER NOT NULL,
 
@@ -95,13 +101,13 @@ CREATE UNIQUE INDEX "orders_uesrId_key" ON "orders"("uesrId");
 CREATE UNIQUE INDEX "orders_productId_key" ON "orders"("productId");
 
 -- AddForeignKey
-ALTER TABLE "profile_image" ADD CONSTRAINT "profile_image_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "profile_image" ADD CONSTRAINT "profile_image_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "products" ADD CONSTRAINT "products_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "categories"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "products" ADD CONSTRAINT "products_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "categories"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "product_images" ADD CONSTRAINT "product_images_productId_fkey" FOREIGN KEY ("productId") REFERENCES "products"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "product_images" ADD CONSTRAINT "product_images_productId_fkey" FOREIGN KEY ("productId") REFERENCES "products"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "orders" ADD CONSTRAINT "orders_uesrId_fkey" FOREIGN KEY ("uesrId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

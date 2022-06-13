@@ -18,24 +18,25 @@ import { AdminRoleInterceptor } from 'src/auth/interceptors';
 import { ProductDto } from './dto';
 import { ProductService } from './product.service';
 
-@Controller('producs')
+@Controller('products')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   /********************************
    * desc      Create product
-   * route     Post /v2/api/products
+   * route     Post /v2/api/products/:categoryId
    * access    Private(Role) - ADMIN
    */
   @UseGuards(AccessTokenGuard)
   @UseInterceptors(AdminRoleInterceptor)
   @UseInterceptors(FileInterceptor('image'))
-  @Post()
+  @Post('/:categoryId')
   createCategory(
+    @Param('categoryId') categoryId: number,
     @Body() body: ProductDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.productService.createdProduct(body, file);
+    return this.productService.createdProduct(Number(categoryId), body, file);
   }
 
   /********************************

@@ -54,11 +54,11 @@ export class CategoryService {
   async deletedCategory(categoryId: number): Promise<any> {
     const product = await this.prismaService.product.findUnique({
       where: {
-        categoryId,
+        id: categoryId,
       },
       select: {
         id: true,
-        productImages: {
+        productImage: {
           select: { public_id: true },
         },
       },
@@ -69,9 +69,7 @@ export class CategoryService {
         where: { productId: product.id },
       });
 
-      await this.cloudinaryService.removeImage(
-        product.productImages[0].public_id,
-      );
+      await this.cloudinaryService.removeImage(product.productImage.public_id);
 
       await this.prismaService.product.deleteMany({
         where: { categoryId },
