@@ -17,7 +17,7 @@ import { CategoryDto } from './dto';
 import { AdminRoleInterceptor } from 'src/auth/interceptors';
 
 /***************************************************************
- *  All routes must be an Admin role(UserType)
+ *  All routes must be an Admin role(UserType)1
  */
 @UseInterceptors(AdminRoleInterceptor)
 @Controller('categories')

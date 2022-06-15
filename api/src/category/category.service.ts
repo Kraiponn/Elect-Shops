@@ -1,10 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+
 import { Category } from '@prisma/client';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { IPaginate } from 'src/features/interfaces';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CategoryDto } from './dto';
-import { ICreateCategoryResponse } from './interfaces';
+import { ICategory } from './interfaces';
 
 @Injectable()
 export class CategoryService {
@@ -17,15 +18,15 @@ export class CategoryService {
    * Create category
    */
   async createdCategory({
-    categoryName,
+    category_name,
     description,
-  }: CategoryDto): Promise<any> {
+  }: CategoryDto): Promise<ICategory> {
     const category = (await this.prismaService.category.create({
       data: {
-        categoryName,
+        category_name,
         description: description ? description : '',
       },
-    })) as ICreateCategoryResponse;
+    })) as ICategory;
 
     return category;
   }
@@ -35,14 +36,14 @@ export class CategoryService {
    */
   async updatedCategory(
     categoryId: number,
-    { categoryName, description }: CategoryDto,
-  ): Promise<any> {
+    { category_name, description }: CategoryDto,
+  ): Promise<ICategory> {
     return await this.prismaService.category.update({
       where: {
         id: categoryId,
       },
       data: {
-        categoryName,
+        category_name,
         description,
       },
     });
@@ -51,28 +52,18 @@ export class CategoryService {
   /***********************************
    * Remove category
    */
-  async deletedCategory(categoryId: number): Promise<any> {
-    const product = await this.prismaService.product.findUnique({
+  async deletedCategory(categoryId: number): Promise<ICategory> {
+    const products = await this.prismaService.product.findMany({
       where: {
-        id: categoryId,
-      },
-      select: {
-        id: true,
-        productImage: {
-          select: { public_id: true },
-        },
+        category_id: categoryId,
       },
     });
 
-    if (product) {
-      await this.prismaService.productImage.delete({
-        where: { productId: product.id },
-      });
-
-      await this.cloudinaryService.removeImage(product.productImage.public_id);
+    if (products || products.length > 0) {
+      await this.cloudinaryService.removeImage(products[0].image_id);
 
       await this.prismaService.product.deleteMany({
-        where: { categoryId },
+        where: { category_id: categoryId },
       });
     }
 
@@ -84,7 +75,7 @@ export class CategoryService {
   /***********************************
    * Get category by Id
    */
-  async getCategoryById(categoryId: number): Promise<any> {
+  async getCategoryById(categoryId: number): Promise<ICategory> {
     const category = await this.prismaService.category.findUnique({
       where: { id: categoryId },
     });

@@ -1,9 +1,9 @@
-export interface IPaginateNextPage {
+export interface INextPage {
   page: number;
   limit: number;
 }
 
-export interface IPaginatePreviousPage {
+export interface IPreviousPage {
   page: number;
   limit: number;
 }
@@ -11,6 +11,6 @@ export interface IPaginatePreviousPage {
 export interface IPaginate {
   total: number;
   current: number;
-  next: IPaginateNextPage;
-  prev: IPaginatePreviousPage;
+  next: INextPage;
+  prev: IPreviousPage;
 }

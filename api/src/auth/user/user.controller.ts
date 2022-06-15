@@ -15,11 +15,12 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Response } from 'express';
-import { RefreshTokenPayload } from '../decorators';
-import { UserIdFromJwt } from '../decorators/user-id-from-jwt.decorator';
+
+import { GetRefreshToken } from '../decorators';
+import { GetUserId } from '../decorators/user-id.decorator';
 import { AuthDto, UpdatedProfileDto, UserUpdatedPwdDto } from '../dto';
 import { AccessTokenGuard, RefreshTokenGuard } from '../guards';
-import { IJwtPayloadWithRefreshToken } from '../interfaces';
+import { ITokenPayloadWithRefreshToken } from '../interfaces';
 import { UserService } from './user.service';
 
 @Controller('auth/user')
@@ -40,9 +41,8 @@ export class UserController {
     @Res({ passthrough: true }) res: Response,
     @Body() body: AuthDto,
   ) {
-    const { user, access_token, refresh_token } = await this.userService.signup(
-      body,
-    );
+    const { id, email, role, access_token, refresh_token } =
+      await this.userService.signup(body);
 
     res.cookie('refresh_token', refresh_token, {
       httpOnly: true,
@@ -51,7 +51,11 @@ export class UserController {
     });
 
     return {
-      user,
+      user: {
+        id,
+        email,
+        role,
+      },
       access_token,
     };
   }
@@ -85,8 +89,8 @@ export class UserController {
   @UseGuards(AccessTokenGuard)
   @Get('/me')
   @HttpCode(HttpStatus.OK)
-  getProfile(@UserIdFromJwt() userId: number) {
-    return this.userService.getProfile(userId);
+  async getProfileById(@GetUserId() userId: number): Promise<any> {
+    return await this.userService.getProfileById(userId);
   }
 
   /********************************
@@ -97,8 +101,14 @@ export class UserController {
   @UseGuards(AccessTokenGuard)
   @Get('/logout')
   @HttpCode(HttpStatus.OK)
-  logout(@UserIdFromJwt() userId: number) {
-    return this.userService.Logout(userId);
+  async logout(
+    @GetUserId() userId: number,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<any> {
+    const resp = await this.userService.Logout(userId);
+    res.clearCookie('refresh_token');
+
+    return resp;
   }
 
   /********************************
@@ -110,9 +120,9 @@ export class UserController {
   @Post('update-password')
   @HttpCode(HttpStatus.OK)
   updatedPassword(
-    @UserIdFromJwt() userId: number,
+    @GetUserId() userId: number,
     @Body() body: UserUpdatedPwdDto,
-  ) {
+  ): Promise<any> {
     return this.userService.updatedPassword(userId, body);
   }
 
@@ -125,12 +135,12 @@ export class UserController {
   @Post('update-profile')
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(FileInterceptor('image'))
-  updatedProfile(
-    @UserIdFromJwt() userId: number,
+  async updatedProfile(
+    @GetUserId() userId: number,
     @Body() body: UpdatedProfileDto,
     @UploadedFile() file: Express.Multer.File,
-  ) {
-    return this.userService.updatedProfile(userId, body, file);
+  ): Promise<any> {
+    return await this.userService.updatedProfile(userId, body, file);
   }
 
   /********************************
@@ -141,8 +151,8 @@ export class UserController {
   @UseGuards(AccessTokenGuard)
   @Delete('/:userId')
   @HttpCode(HttpStatus.OK)
-  deletAccount(@Param('userId') userId: number) {
-    return this.userService.removeAccount(Number(userId));
+  async deletAccount(@Param('userId') userId: number): Promise<any> {
+    return await this.userService.removeAccount(Number(userId));
   }
 
   /*********************************************************
@@ -155,8 +165,8 @@ export class UserController {
   async getNewAccessToken(
     @Res({ passthrough: true }) res: Response,
     @Param('userId') userId: string,
-    @RefreshTokenPayload() payload: IJwtPayloadWithRefreshToken,
-  ) {
+    @GetRefreshToken() payload: ITokenPayloadWithRefreshToken,
+  ): Promise<any> {
     const { access_token, refresh_token } =
       await this.userService.getAccessToken(
         parseInt(userId),

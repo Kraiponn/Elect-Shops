@@ -9,7 +9,7 @@ export class ProductDto {
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  productName?: string;
+  product_name?: string;
 
   @IsOptional()
   @IsString()
@@ -18,13 +18,23 @@ export class ProductDto {
 
   @IsOptional()
   @IsNumberString()
-  inStock?: number;
+  in_stock?: number;
 
   @IsOptional()
   @IsNumberString()
-  unitPrice?: number;
+  unit_price?: number;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  image_id?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  image_url?: string;
 
   @IsOptional()
   @IsNumberString()
-  categoryId?: number;
+  category_id?: number;
 }

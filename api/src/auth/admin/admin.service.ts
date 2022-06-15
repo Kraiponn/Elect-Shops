@@ -8,17 +8,16 @@ import {
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AuthDto, UpdatedProfileDto } from '../dto';
-import {
-  ITokens,
-  IUserResponse,
-  IUser,
-  IProfileImage,
-  IPaginateResponse,
-} from '../interfaces';
+import { ITokens, IUser } from '../interfaces';
 import { SharesService } from '../shares/shares.service';
 
 import * as fsExtra from 'fs-extra';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+import {
+  IImageUploadResponse,
+  IMessageResponse,
+  IPaginate,
+} from 'src/features/interfaces';
 
 @Injectable()
 export class AdminService {
@@ -39,12 +38,6 @@ export class AdminService {
         data: {
           email,
           password: pwdHash,
-          profileImage: {
-            create: {
-              public_id: '',
-              secure_url: '',
-            },
-          },
         },
       });
 
@@ -61,7 +54,7 @@ export class AdminService {
   /****************************
    * Get Profile with user id
    */
-  async getUserById(userId: number): Promise<IUserResponse> {
+  async getUserById(userId: number): Promise<IUser> {
     const user = await this.prismaService.user.findUnique({
       where: {
         id: userId,
@@ -71,27 +64,7 @@ export class AdminService {
     if (!user)
       throw new NotFoundException(`User not found with id of ${userId}`);
 
-    const profileImage = await this.prismaService.profileImage.findUnique({
-      where: { userId: user.id },
-    });
-
-    const payload: IUser = {
-      id: user.id,
-      firstName: user?.firstName,
-      lastName: user?.lastName,
-      email: user.email,
-      phone: user?.phone,
-      address: user?.address,
-      dateOfBirth: user?.dateOfBirth,
-      userType: user.userType,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
-      profileImage,
-    };
-
-    return {
-      user: payload,
-    };
+    return user;
   }
 
   /****************************
@@ -100,7 +73,7 @@ export class AdminService {
   async getUsers(
     page: number,
     limit: number,
-  ): Promise<{ paginate: IPaginateResponse; users: IUser[] }> {
+  ): Promise<{ paginate: IPaginate; users: IUser[] }> {
     const startIndex = (page - 1) * limit;
     const lastIndex = page * limit;
 
@@ -114,8 +87,8 @@ export class AdminService {
     });
 
     // Paginate
-    const paginate: IPaginateResponse = {
-      count: total,
+    const paginate: IPaginate = {
+      total,
       current: page,
       next: {
         page: 0,
@@ -141,7 +114,6 @@ export class AdminService {
       };
     }
 
-    // console.log(users);
     for (let index = 0; index < users.length; index++) {
       delete users[index].password;
     }
@@ -152,17 +124,17 @@ export class AdminService {
   /****************************
    * Sign Out
    */
-  async Logout(userId: number): Promise<{ message: string }> {
+  async Logout(userId: number): Promise<IMessageResponse> {
     const user = await this.prismaService.user.updateMany({
       where: {
         id: userId,
-        refreshToken: {
+        refresh_token: {
           not: null,
         },
       },
       data: {
-        refreshToken: null,
-        refreshTokenExpire: null,
+        refresh_token: null,
+        refresh_tooken_expire: null,
       },
     });
 
@@ -177,10 +149,7 @@ export class AdminService {
   /****************************
    * Update password
    */
-  async updatedPassword(
-    userId: number,
-    password: string,
-  ): Promise<{ message: string }> {
+  async updatedPassword(userId: number, password: string): Promise<IUser> {
     const user = await this.prismaService.user.findUnique({
       where: { id: userId },
     });
@@ -197,7 +166,7 @@ export class AdminService {
     if (!updateResult)
       throw new BadRequestException('Access denied or User not found');
 
-    return { message: 'Password update is successfully' };
+    return user;
   }
 
   /****************************
@@ -207,9 +176,18 @@ export class AdminService {
     userId: number,
     body: UpdatedProfileDto,
     file: Express.Multer.File,
-  ): Promise<{ message: string }> {
-    const { email, firstName, lastName, phone, address, dateOfBirth } = body;
-    let uploadedResult: IProfileImage;
+  ): Promise<IUser> {
+    const {
+      email,
+      first_name,
+      last_name,
+      phone,
+      address,
+      date_of_birth,
+      image_id,
+      image_url,
+    } = body;
+    let uploadedResult: IImageUploadResponse;
 
     const curUser = await this.prismaService.user.findUnique({
       where: { id: userId },
@@ -222,28 +200,10 @@ export class AdminService {
     }
 
     if (file) {
-      const userImage = await this.prismaService.user.findUnique({
-        where: { id: userId },
-        select: {
-          profileImage: {
-            select: {
-              public_id: true,
-              secure_url: true,
-            },
-          },
-        },
-      });
-
-      if (
-        userImage?.profileImage?.public_id ||
-        userImage?.profileImage?.secure_url
-      ) {
-        await this.cloudinaryService.removeImage(
-          userImage.profileImage.public_id,
-        );
+      if (curUser?.image_id || curUser?.image_url) {
+        await this.cloudinaryService.removeImage(curUser.image_id);
       }
 
-      // console.log('Having a file upload', file);
       uploadedResult = await this.cloudinaryService.uploadImage(file);
 
       // Remove image from the temporary path
@@ -253,71 +213,41 @@ export class AdminService {
     const user = await this.prismaService.user.update({
       where: { id: userId },
       data: {
-        firstName: firstName ? firstName : curUser.firstName,
-        lastName: lastName ? lastName : curUser.lastName,
+        first_name: first_name ? first_name : curUser.first_name,
+        last_name: last_name ? last_name : curUser.last_name,
         email: email ? email : curUser.email,
         phone: phone ? phone : curUser.phone,
         address: address ? address : curUser.address,
-        dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : curUser.dateOfBirth,
-        profileImage: {
-          upsert: {
-            update: {
-              public_id: uploadedResult?.public_id
-                ? uploadedResult.public_id
-                : '',
-              secure_url: uploadedResult?.secure_url
-                ? uploadedResult.secure_url
-                : '',
-            },
-            create: {
-              public_id: uploadedResult?.public_id
-                ? uploadedResult.public_id
-                : '',
-              secure_url: uploadedResult?.secure_url
-                ? uploadedResult.secure_url
-                : '',
-            },
-          },
-        },
+        date_of_birth: date_of_birth
+          ? new Date(date_of_birth)
+          : curUser.date_of_birth,
+        image_id: image_id ? image_id : uploadedResult.public_id,
+        image_url: image_url ? image_url : uploadedResult.secure_url,
       },
     });
 
     if (!user) throw new BadRequestException('User not found');
 
-    return { message: 'Profile update is successfully' };
+    return user;
   }
 
   /****************************
    * Remove account
    */
-  async removeAccount(userId: number): Promise<{ message: string }> {
-    const profileImg = await this.prismaService.profileImage.findUnique({
-      where: { userId },
-    });
-
-    if (!profileImg)
-      throw new NotFoundException(`User not found with id of ${userId}`);
-
-    await this.prismaService.profileImage.delete({
-      where: {
-        userId,
-      },
-    });
-
-    if (profileImg.public_id || profileImg.secure_url) {
-      await this.cloudinaryService.removeImage(profileImg.public_id);
-    }
-
-    await this.prismaService.user.delete({
+  async removeAccount(
+    userId: number,
+  ): Promise<IMessageResponse & { user: IUser }> {
+    const user = await this.prismaService.user.findUnique({
       where: { id: userId },
     });
 
-    // const transaction = await this.prismaService.$transaction([
-    //   delProfileImg,
-    //   delUser,
-    // ]);
+    const delResult = await this.prismaService.user.delete({
+      where: { id: userId },
+    });
 
-    return { message: 'Account removed is successfully' };
+    await this.cloudinaryService.removeImage(user.image_id);
+
+    return { message: 'Account removed is successfully', user: delResult };
   }
 
   /*********************************************
@@ -330,7 +260,7 @@ export class AdminService {
       },
     });
 
-    if (!user || !user.refreshToken) {
+    if (!user || !user.refresh_token) {
       throw new UnauthorizedException(
         'Not authorization to get the new access token or token is expire',
       );
@@ -338,7 +268,7 @@ export class AdminService {
 
     const refreshTokenMatches = await this.sharedService.compareData(
       refreshToken,
-      user.refreshToken,
+      user.refresh_token,
     );
 
     if (!refreshTokenMatches) {

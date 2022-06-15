@@ -15,12 +15,12 @@ export class UpdatedProfileDto {
   @IsOptional()
   @IsNotEmpty()
   @IsString()
-  firstName?: string;
+  first_name?: string;
 
   @IsOptional()
   @IsNotEmpty()
   @IsString()
-  lastName?: string;
+  last_name?: string;
 
   @IsOptional()
   @IsNotEmpty()
@@ -38,7 +38,7 @@ export class UpdatedProfileDto {
   @IsOptional()
   @IsNotEmpty()
   @IsDateString()
-  dateOfBirth?: Date;
+  date_of_birth?: Date;
 
   @IsOptional()
   @IsString()
@@ -47,7 +47,19 @@ export class UpdatedProfileDto {
 
   @IsOptional()
   @IsEnum(UserType)
-  userType?: UserType;
+  role?: UserType;
+
+  // Reference with cloudinary: public_id
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  image_id?: string;
+
+  // Reference with cloudinary: secure_url
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  image_url?: string;
 }
 
 export class UserUpdatedPwdDto {

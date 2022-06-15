@@ -1,12 +1,12 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { IJwtPayload } from '../interfaces';
+import { ITokenPayload } from '../interfaces';
 
-export const UserIdFromJwt = createParamDecorator(
+export const GetUserId = createParamDecorator(
   (_: undefined, ctx: ExecutionContext): number => {
     const req = ctx.switchToHttp().getRequest();
-    const user = req.user as IJwtPayload;
+    const user = req.user as ITokenPayload;
 
-    if (!user) user;
+    if (!user) return null;
 
     return user.sub;
   },

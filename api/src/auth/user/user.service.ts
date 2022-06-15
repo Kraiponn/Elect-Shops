@@ -8,11 +8,46 @@ import {
 import { PrismaService } from 'src/prisma/prisma.service';
 
 import { AuthDto, UpdatedProfileDto, UserUpdatedPwdDto } from '../dto';
-import { IProfileImage, ITokens, IUser, IUserResponse } from '../interfaces';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { SharesService } from '../shares/shares.service';
+
 import * as fsExtra from 'fs-extra';
+
+interface ITokenPayload {
+  id: number;
+  email: string;
+  role: string;
+}
+
+interface ITokens {
+  access_token: string;
+  refresh_token: string;
+}
+
+interface IUser {
+  id?: number;
+  first_name?: string;
+  last_name?: string;
+  email: string;
+  phone?: string;
+  address?: string;
+  date_of_birth?: Date;
+  role: string;
+  image_id?: string;
+  image_url?: string;
+  created_at?: Date;
+  updated_at?: Date;
+}
+
+interface IImageUploadResponse {
+  public_id: string;
+  secure_url: string;
+}
+
+interface IMessageResponse {
+  message: string;
+}
 
 @Injectable()
 export class UserService {
@@ -22,11 +57,10 @@ export class UserService {
     private readonly sharedService: SharesService,
   ) {}
 
-  ///////////////////////// Request Mehod /////////////////////////////////
   /****************************
    * Sign Up
    */
-  async signup({ email, password }: AuthDto): Promise<IUserResponse & ITokens> {
+  async signup({ email, password }: AuthDto): Promise<ITokenPayload & ITokens> {
     const pwdHash = await this.sharedService.hashData(password);
 
     try {
@@ -34,12 +68,6 @@ export class UserService {
         data: {
           email,
           password: pwdHash,
-          profileImage: {
-            create: {
-              public_id: '',
-              secure_url: '',
-            },
-          },
         },
       });
 
@@ -48,14 +76,14 @@ export class UserService {
 
       await this.sharedService.updateRefreshToken(user.id, refresh_token);
 
-      const userPayload: IUser = {
+      const payload: ITokenPayload = {
         id: user.id,
         email: user.email,
-        userType: user.userType,
+        role: user.role,
       };
 
       return {
-        user: userPayload,
+        ...payload,
         access_token,
         refresh_token,
       };
@@ -71,7 +99,7 @@ export class UserService {
   /****************************
    * Sign In
    */
-  async signin({ email, password }: AuthDto): Promise<IUserResponse & ITokens> {
+  async signin({ email, password }: AuthDto): Promise<ITokenPayload & ITokens> {
     const user = await this.prismaService.user.findUnique({
       where: { email },
     });
@@ -92,14 +120,14 @@ export class UserService {
     // Update or Add refresh_token field
     await this.sharedService.updateRefreshToken(user.id, refresh_token);
 
-    const userPayload: IUser = {
+    const userPayload: ITokenPayload = {
       id: user.id,
       email,
-      userType: user.userType,
+      role: user.role,
     };
 
     return {
-      user: userPayload,
+      ...userPayload,
       access_token,
       refresh_token,
     };
@@ -108,7 +136,7 @@ export class UserService {
   /****************************
    * Get Profile
    */
-  async getProfile(userId: number): Promise<IUserResponse> {
+  async getProfileById(userId: number): Promise<IUser> {
     const user = await this.prismaService.user.findUnique({
       where: {
         id: userId,
@@ -118,43 +146,23 @@ export class UserService {
     if (!user)
       throw new NotFoundException(`User not found with id of ${userId}`);
 
-    const profileImage = await this.prismaService.profileImage.findUnique({
-      where: { userId: user.id },
-    });
-
-    const payload: IUser = {
-      id: user.id,
-      firstName: user?.firstName,
-      lastName: user?.lastName,
-      email: user.email,
-      phone: user?.phone,
-      address: user?.address,
-      dateOfBirth: user?.dateOfBirth,
-      userType: user.userType,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
-      profileImage,
-    };
-
-    return {
-      user: payload,
-    };
+    return user;
   }
 
   /****************************
    * Sign Out
    */
-  async Logout(userId: number): Promise<{ message: string }> {
+  async Logout(userId: number): Promise<IMessageResponse> {
     const user = await this.prismaService.user.updateMany({
       where: {
         id: userId,
-        refreshToken: {
+        refresh_token: {
           not: null,
         },
       },
       data: {
-        refreshToken: null,
-        refreshTokenExpire: null,
+        refresh_token: null,
+        refresh_tooken_expire: null,
       },
     });
 
@@ -172,7 +180,7 @@ export class UserService {
   async updatedPassword(
     userId: number,
     { currentPassword, newPassword }: UserUpdatedPwdDto,
-  ): Promise<{ message: string }> {
+  ): Promise<IMessageResponse> {
     const user = await this.prismaService.user.findUnique({
       where: { id: userId },
     });
@@ -207,9 +215,10 @@ export class UserService {
     userId: number,
     body: UpdatedProfileDto,
     file: Express.Multer.File,
-  ): Promise<{ message: string }> {
-    const { firstName, lastName, phone, address, dateOfBirth, email } = body;
-    let uploadedResult: IProfileImage;
+  ): Promise<IUser> {
+    const { first_name, last_name, phone, address, date_of_birth, email } =
+      body;
+    let uploadedResult: IImageUploadResponse;
 
     const curUser = await this.prismaService.user.findUnique({
       where: { id: userId },
@@ -221,96 +230,58 @@ export class UserService {
       throw new BadRequestException(`User not found`);
     }
 
+    // Make sure user is attach a file
     if (file) {
-      const userImage = await this.prismaService.user.findUnique({
-        where: { id: userId },
-        select: {
-          profileImage: {
-            select: {
-              public_id: true,
-              secure_url: true,
-            },
-          },
-        },
-      });
-
-      if (
-        userImage?.profileImage?.public_id ||
-        userImage?.profileImage?.secure_url
-      ) {
-        await this.cloudinaryService.removeImage(
-          userImage.profileImage.public_id,
-        );
+      if (curUser?.image_id || curUser?.image_url) {
+        await this.cloudinaryService.removeImage(curUser.image_id);
       }
 
-      // console.log('Having a file upload', file);
       uploadedResult = await this.cloudinaryService.uploadImage(file);
 
       // Remove image from the temporary path
       await fsExtra.remove(file.path);
     }
 
-    const user = await this.prismaService.user.update({
+    // Update user
+    const newUser: IUser = await this.prismaService.user.update({
       where: { id: userId },
       data: {
-        firstName: firstName ? firstName : curUser.firstName,
-        lastName: lastName ? lastName : curUser.lastName,
+        first_name: first_name ? first_name : curUser.first_name,
+        last_name: last_name ? last_name : curUser.last_name,
         email: email ? email : curUser.email,
         phone: phone ? phone : curUser.phone,
         address: address ? address : curUser.address,
-        dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : curUser.dateOfBirth,
-        profileImage: {
-          upsert: {
-            update: {
-              public_id: uploadedResult?.public_id
-                ? uploadedResult.public_id
-                : '',
-              secure_url: uploadedResult?.secure_url
-                ? uploadedResult.secure_url
-                : '',
-            },
-            create: {
-              public_id: uploadedResult?.public_id
-                ? uploadedResult.public_id
-                : '',
-              secure_url: uploadedResult?.secure_url
-                ? uploadedResult.secure_url
-                : '',
-            },
-          },
-        },
+        date_of_birth: date_of_birth
+          ? new Date(date_of_birth)
+          : curUser.date_of_birth,
+        image_id: uploadedResult?.public_id
+          ? uploadedResult.public_id
+          : curUser.image_id,
+        image_url: uploadedResult?.secure_url
+          ? uploadedResult.secure_url
+          : curUser.image_url,
       },
     });
 
-    if (!user) throw new BadRequestException('User not found');
+    if (!newUser) throw new BadRequestException('User not found');
 
-    return { message: 'Profile updated is successfully' };
+    return newUser;
   }
 
   /****************************
    * Remove account
    */
-  async removeAccount(userId: number): Promise<{ message: string }> {
-    const profileImg = await this.prismaService.profileImage.findUnique({
-      where: { userId },
-    });
-
-    if (!profileImg)
-      throw new NotFoundException(`User not found with id of ${userId}`);
-
-    if (profileImg.public_id || profileImg.secure_url) {
-      await this.cloudinaryService.removeImage(profileImg.public_id);
-    }
-
-    await this.prismaService.profileImage.delete({
-      where: {
-        userId,
-      },
-    });
-
-    await this.prismaService.user.delete({
+  async removeAccount(userId: number): Promise<IMessageResponse> {
+    const delResponse = await this.prismaService.user.delete({
       where: { id: userId },
     });
+
+    if (!delResponse)
+      throw new NotFoundException(`User not found with id of ${userId}`);
+
+    if (delResponse.image_id || delResponse.image_url) {
+      await this.cloudinaryService.removeImage(delResponse.image_id);
+    }
 
     // const transaction = await this.prismaService.$transaction([
     //   delProfileImg,
@@ -321,7 +292,7 @@ export class UserService {
   }
 
   /*********************************************
-   * Reuest new access token by refresh token
+   * Reuest the new access token by refresh token
    */
   async getAccessToken(userId: number, refreshToken: string): Promise<ITokens> {
     const user = await this.prismaService.user.findUnique({
@@ -330,15 +301,15 @@ export class UserService {
       },
     });
 
-    if (!user || !user.refreshToken) {
+    if (!user || !user.refresh_token) {
       throw new UnauthorizedException(
-        'Not authorization to get the new access token or token is expire',
+        'Not authorized to get the new access token or token is expire',
       );
     }
 
     const refreshTokenMatches = await this.sharedService.compareData(
       refreshToken,
-      user.refreshToken,
+      user.refresh_token,
     );
 
     if (!refreshTokenMatches) {

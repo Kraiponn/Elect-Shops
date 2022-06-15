@@ -1,11 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { PrismaService } from 'src/prisma/prisma.service';
 
-// import * as fsExtra from 'fs-extra';
 import * as bcrypt from 'bcrypt';
-import { IJwtPayload, ITokens } from '../interfaces';
+
+import { PrismaService } from 'src/prisma/prisma.service';
+import { ITokenPayload, ITokens } from '../interfaces';
 
 @Injectable()
 export class SharesService {
@@ -15,16 +15,25 @@ export class SharesService {
     private readonly configService: ConfigService,
   ) {}
 
+  /*************************************************
+   *  Encoding data
+   */
   async hashData(data: string): Promise<string> {
     return await bcrypt.hash(data, 10);
   }
 
+  /*************************************************
+   *  Compared data
+   */
   async compareData(data: string, hashData: string): Promise<boolean> {
     return await bcrypt.compare(data, hashData);
   }
 
+  /*************************************************
+   *  Generated a access_token and refresh_token
+   */
   async getTokens(userId: number, email: string): Promise<ITokens> {
-    const payload: IJwtPayload = {
+    const payload: ITokenPayload = {
       sub: userId,
       email,
     };
@@ -46,6 +55,9 @@ export class SharesService {
     };
   }
 
+  /*************************************************
+   *  Update new refresh token to user
+   */
   async updateRefreshToken(
     userId: number,
     refreshToken: string,
@@ -57,7 +69,7 @@ export class SharesService {
         id: userId,
       },
       data: {
-        refreshToken: hashToken,
+        refresh_token: hashToken,
       },
     });
 

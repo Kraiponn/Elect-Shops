@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+
 import { PassportStrategy } from '@nestjs/passport';
-import { Request } from 'express';
 import { ExtractJwt, Strategy } from 'passport-jwt';
+// import { Request } from 'express';
+
 import { PrismaService } from 'src/prisma/prisma.service';
-import { IJwtPayload } from '../interfaces';
+import { ITokenPayload } from '../interfaces';
 
 import { ACCESS_TOKEN } from '../utils/keys.const';
 
@@ -21,18 +23,15 @@ export class AccessTokenStrategy extends PassportStrategy(
       ignoreExpiration: false,
       secretOrKey: configService.get<string>('ACCESS_TOKEN_KEY'),
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      passReqToCallback: true,
+      // passReqToCallback: true,
     });
   }
 
-  async validate(req: Request, payload: IJwtPayload) {
-    const { userType } = await this.prismaService.user.findUnique({
+  async validate(payload: ITokenPayload) {
+    const { role } = await this.prismaService.user.findUnique({
       where: { id: payload.sub },
     });
 
-    // req.user['userType'] = userType;
-    // console.log('validate');
-
-    return { userType, payload };
+    return { role, payload };
   }
 }

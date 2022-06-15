@@ -1,8 +1,8 @@
 import { Product } from '@prisma/client';
 
-export interface ICreateCategoryResponse {
+export interface ICategory {
   id: number;
-  categoryName: string;
+  category_name: string;
   description?: string;
   products?: Product[];
 }

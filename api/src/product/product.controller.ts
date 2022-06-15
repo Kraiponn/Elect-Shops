@@ -31,7 +31,7 @@ export class ProductController {
   @UseInterceptors(AdminRoleInterceptor)
   @UseInterceptors(FileInterceptor('image'))
   @Post('/:categoryId')
-  createCategory(
+  createProduct(
     @Param('categoryId') categoryId: number,
     @Body() body: ProductDto,
     @UploadedFile() file: Express.Multer.File,
@@ -48,7 +48,7 @@ export class ProductController {
   @UseInterceptors(AdminRoleInterceptor)
   @UseInterceptors(FileInterceptor('image'))
   @Put('/:productId')
-  updateCategory(
+  updatedProduct(
     @Param('productId') productId: number,
     @Body() body: ProductDto,
     @UploadedFile() file: Express.Multer.File,
@@ -64,7 +64,7 @@ export class ProductController {
   @UseGuards(AccessTokenGuard)
   @UseInterceptors(AdminRoleInterceptor)
   @Delete('/:productId')
-  deleteCategory(@Param('productId') productId: number) {
+  deletedProduct(@Param('productId') productId: number) {
     return this.productService.deletedProduct(Number(productId));
   }
 
@@ -75,7 +75,7 @@ export class ProductController {
    */
   @UseGuards(AccessTokenGuard)
   @Get('/:productId')
-  getCategoryById(@Param('productId') productId: number) {
+  getProductById(@Param('productId') productId: number) {
     return this.productService.getProductById(Number(productId));
   }
 
@@ -86,7 +86,7 @@ export class ProductController {
    */
   @UseGuards(AccessTokenGuard)
   @Get()
-  getCategories(@Query('page') page: number, @Query('limit') limit: number) {
+  getProducts(@Query('page') page: number, @Query('limit') limit: number) {
     return this.productService.getProducts(Number(page), Number(limit));
   }
 }

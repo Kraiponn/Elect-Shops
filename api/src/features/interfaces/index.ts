@@ -1,2 +1,2 @@
 export * from './paginage.interface';
-export * from './imageObjectRes.interface';
+export * from './my-global-types.interface';

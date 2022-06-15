@@ -1,9 +1,10 @@
 import { MulterModule } from '@nestjs/platform-express';
 import { Module } from '@nestjs/common';
-import { PrismaModule } from './../prisma/prisma.module';
-import { AccessTokenStrategy, RefreshTokenStrategy } from './strategies';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+
+import { PrismaModule } from './../prisma/prisma.module';
+import { AccessTokenStrategy, RefreshTokenStrategy } from './strategies';
 
 import { UserService } from './user/user.service';
 import { AdminService } from './admin/admin.service';
