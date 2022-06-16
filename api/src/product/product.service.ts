@@ -2,6 +2,7 @@ import {
   Injectable,
   InternalServerErrorException,
   BadRequestException,
+  NotFoundException,
 } from '@nestjs/common';
 
 import * as fxExtra from 'fs-extra';
@@ -9,7 +10,7 @@ import * as fxExtra from 'fs-extra';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { IImageUploadResponse, IPaginate } from 'src/features/interfaces';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { ProductDto } from './dto';
+import { ProductCreateDto, ProductUpdateDto } from './dto';
 import { IProductResponse, IProduct } from './interfaces';
 
 @Injectable()
@@ -24,10 +25,13 @@ export class ProductService {
    */
   async createdProduct(
     categoryId: number,
-    { product_name, description, in_stock, unit_price }: ProductDto,
+    { product_name, description, in_stock, unit_price }: ProductCreateDto,
     file: Express.Multer.File,
   ): Promise<IProductResponse> {
-    let imgUploadResult: IImageUploadResponse;
+    let imgUploadResult: IImageUploadResponse = {
+      public_id: '',
+      secure_url: '',
+    };
     let product: IProduct;
 
     try {
@@ -38,17 +42,17 @@ export class ProductService {
         await fxExtra.remove(file.path);
       }
 
+      const { public_id, secure_url } = imgUploadResult;
+
       product = await this.prismaService.product.create({
         data: {
           product_name: product_name ? product_name : '',
           description: description ? description : '',
-          in_stock: Number(in_stock),
-          unit_price: Number(unit_price),
+          in_stock: in_stock ? Number(in_stock) : 0,
+          unit_price: unit_price ? Number(unit_price) : 0,
           category_id: categoryId,
-          image_id: imgUploadResult?.public_id ? imgUploadResult.public_id : '',
-          image_url: imgUploadResult?.secure_url
-            ? imgUploadResult.secure_url
-            : '',
+          image_id: public_id ? public_id : '',
+          image_url: secure_url ? secure_url : '',
         },
       });
 
@@ -70,22 +74,34 @@ export class ProductService {
    */
   async updatedProduct(
     productId: number,
-    body: ProductDto,
+    body: ProductUpdateDto,
     file: Express.Multer.File,
   ): Promise<IProductResponse> {
     const { product_name, description, unit_price, in_stock, category_id } =
       body;
-    let uploadResult: IImageUploadResponse;
+    let uploadResult: IImageUploadResponse = {
+      public_id: '',
+      secure_url: '',
+    };
 
     const curProduct = await this.prismaService.product.findUnique({
       where: { id: productId },
     });
 
     if (file) {
-      await this.cloudinaryService.removeImage(curProduct.image_id);
+      try {
+        // Removing old image from cloud
+        await this.cloudinaryService.removeImage(curProduct.image_id);
 
-      // Update new image to cloud
-      uploadResult = await this.cloudinaryService.uploadImage(file);
+        // Update new image to cloud
+        uploadResult = await this.cloudinaryService.uploadImage(file);
+
+        // Remove tempt file from uploads path
+        await fxExtra.remove(file.path);
+      } catch (error) {
+        // Update new image to cloud
+        // uploadResult = await this.cloudinaryService.uploadImage(file);
+      }
     }
 
     const { public_id, secure_url } = uploadResult;
@@ -99,7 +115,7 @@ export class ProductService {
         unit_price: unit_price ? unit_price : curProduct.unit_price,
         image_id: public_id ? public_id : curProduct.image_id,
         image_url: secure_url ? secure_url : curProduct.image_url,
-        category_id,
+        category_id: category_id ? category_id : curProduct.category_id,
       },
     });
 
@@ -113,16 +129,21 @@ export class ProductService {
    * Remove category
    */
   async deletedProduct(productId: number): Promise<IProductResponse> {
-    const product = await this.prismaService.product.findUnique({
+    const productExists = await this.prismaService.product.findUnique({
       where: { id: productId },
     });
 
-    if (!product)
-      throw new BadRequestException(
-        `Product not found with id of ${productId}`,
+    if (!productExists)
+      throw new NotFoundException(
+        `There is no product with id of ${productId}`,
       );
 
-    await this.cloudinaryService.removeImage(product.image_id);
+    // Removing image form cloud
+    await this.cloudinaryService.removeImage(productExists.image_id);
+
+    const product = await this.prismaService.product.delete({
+      where: { id: productId },
+    });
 
     return {
       message: 'Product deleted is successfully',
@@ -139,9 +160,7 @@ export class ProductService {
     });
 
     if (!product)
-      throw new BadRequestException(
-        `Product not found with id of ${productId}`,
-      );
+      throw new NotFoundException(`Product not found with id of ${productId}`);
 
     return product;
   }

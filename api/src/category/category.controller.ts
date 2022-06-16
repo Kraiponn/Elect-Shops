@@ -31,8 +31,8 @@ export class CategoryController {
    */
   @UseGuards(AccessTokenGuard)
   @Post()
-  createCategory(@Body() body: CategoryDto) {
-    return this.categoryService.createdCategory(body);
+  async createCategory(@Body() body: CategoryDto) {
+    return await this.categoryService.createdCategory(body);
   }
 
   /********************************

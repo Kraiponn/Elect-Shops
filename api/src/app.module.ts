@@ -7,6 +7,7 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { MulterConfig } from './features/configs/multer.config';
 import { CategoryModule } from './category/category.module';
 import { ProductModule } from './product/product.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ProductModule } from './product/product.module';
     PrismaModule,
     CategoryModule,
     ProductModule,
+    OrderModule,
   ],
   providers: [],
 })

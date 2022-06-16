@@ -16,7 +16,7 @@ export class AdminRoleInterceptor implements NestInterceptor {
   ): Observable<any> | Promise<Observable<any>> {
     const req = context.switchToHttp().getRequest();
 
-    const role = req?.user?.userType;
+    const role = req?.user?.role;
 
     if (role !== UserType.ADMIN) {
       throw new UnauthorizedException('Unauthorized to access this route');

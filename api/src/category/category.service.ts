@@ -60,11 +60,22 @@ export class CategoryService {
     });
 
     if (products || products.length > 0) {
-      await this.cloudinaryService.removeImage(products[0].image_id);
+      if (products[0]?.image_id)
+        await this.cloudinaryService.removeImage(products[0].image_id);
 
       await this.prismaService.product.deleteMany({
         where: { category_id: categoryId },
       });
+    }
+
+    if (
+      !(await this.prismaService.category.findUnique({
+        where: { id: categoryId },
+      }))
+    ) {
+      throw new NotFoundException(
+        `Category not found with id of ${categoryId}`,
+      );
     }
 
     return await this.prismaService.category.delete({

@@ -1,10 +1,10 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { ITokenPayload } from '../interfaces';
+import { ITokenPayloadWithRole } from '../interfaces';
 
 export const GetUserId = createParamDecorator(
   (_: undefined, ctx: ExecutionContext): number => {
     const req = ctx.switchToHttp().getRequest();
-    const user = req.user as ITokenPayload;
+    const user = req.user as ITokenPayloadWithRole;
 
     if (!user) return null;
 

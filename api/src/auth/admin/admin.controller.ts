@@ -15,7 +15,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { AdminService } from './admin.service';
-import { AuthDto, UpdatedProfileDto } from '../dto';
+import { AuthDto, UpdatedProfileDto, UpdatedUserByAdminDto } from '../dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AdminRoleInterceptor } from '../interceptors';
 
@@ -59,7 +59,7 @@ export class AdminController {
   @Post('/add-user')
   @HttpCode(HttpStatus.CREATED)
   async addMember(@Body() body: AuthDto) {
-    return this.adminService.addUser(body);
+    return await this.adminService.addUser(body);
   }
 
   /********************************
@@ -86,12 +86,12 @@ export class AdminController {
   @Put('update-profile/:userId')
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(FileInterceptor('image'))
-  updatedProfile(
+  async updatedProfile(
     @Param('userId') userId: number,
-    @Body() body: UpdatedProfileDto,
+    @Body() body: UpdatedUserByAdminDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.adminService.updatedProfile(Number(userId), body, file);
+    return await this.adminService.updatedProfile(Number(userId), body, file);
   }
 
   /********************************
@@ -102,7 +102,7 @@ export class AdminController {
   @UseGuards(AccessTokenGuard)
   @Delete('/:userId')
   @HttpCode(HttpStatus.OK)
-  deletAccount(@Param('userId') userId: number) {
-    return this.adminService.removeAccount(Number(userId));
+  async deletAccount(@Param('userId') userId: number) {
+    return await this.adminService.removeAccount(Number(userId));
   }
 }

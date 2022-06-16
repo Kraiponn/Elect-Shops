@@ -13,41 +13,11 @@ import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { SharesService } from '../shares/shares.service';
 
 import * as fsExtra from 'fs-extra';
-
-interface ITokenPayload {
-  id: number;
-  email: string;
-  role: string;
-}
-
-interface ITokens {
-  access_token: string;
-  refresh_token: string;
-}
-
-interface IUser {
-  id?: number;
-  first_name?: string;
-  last_name?: string;
-  email: string;
-  phone?: string;
-  address?: string;
-  date_of_birth?: Date;
-  role: string;
-  image_id?: string;
-  image_url?: string;
-  created_at?: Date;
-  updated_at?: Date;
-}
-
-interface IImageUploadResponse {
-  public_id: string;
-  secure_url: string;
-}
-
-interface IMessageResponse {
-  message: string;
-}
+import { ITokenPayload, ITokens, IUser } from '../interfaces';
+import {
+  IImageUploadResponse,
+  IMessageResponse,
+} from 'src/features/interfaces';
 
 @Injectable()
 export class UserService {
@@ -77,7 +47,7 @@ export class UserService {
       await this.sharedService.updateRefreshToken(user.id, refresh_token);
 
       const payload: ITokenPayload = {
-        id: user.id,
+        sub: user.id,
         email: user.email,
         role: user.role,
       };
@@ -90,7 +60,7 @@ export class UserService {
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
-          throw new ConflictException('This email alread exists');
+          throw new ConflictException('This email already exists');
         }
       }
     }
@@ -121,7 +91,7 @@ export class UserService {
     await this.sharedService.updateRefreshToken(user.id, refresh_token);
 
     const userPayload: ITokenPayload = {
-      id: user.id,
+      sub: user.id,
       email,
       role: user.role,
     };
@@ -221,7 +191,7 @@ export class UserService {
     let uploadedResult: IImageUploadResponse;
 
     const curUser = await this.prismaService.user.findUnique({
-      where: { id: userId },
+      where: { id: Number(userId) },
     });
 
     if (!curUser) {

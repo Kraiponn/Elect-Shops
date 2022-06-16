@@ -7,7 +7,9 @@ import {
   HttpStatus,
   Param,
   Post,
+  Put,
   Res,
+  UnauthorizedException,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -41,7 +43,7 @@ export class UserController {
     @Res({ passthrough: true }) res: Response,
     @Body() body: AuthDto,
   ) {
-    const { id, email, role, access_token, refresh_token } =
+    const { sub, email, role, access_token, refresh_token } =
       await this.userService.signup(body);
 
     res.cookie('refresh_token', refresh_token, {
@@ -52,7 +54,7 @@ export class UserController {
 
     return {
       user: {
-        id,
+        sub,
         email,
         role,
       },
@@ -113,17 +115,23 @@ export class UserController {
 
   /********************************
    * desc      Update password
-   * route     Post /api/auth/user/update-password
+   * route     Post /api/auth/user/update-password/:userId
    * access    Private
    */
   @UseGuards(AccessTokenGuard)
-  @Post('update-password')
+  @Put('update-password/:userId')
   @HttpCode(HttpStatus.OK)
   updatedPassword(
-    @GetUserId() userId: number,
+    @Param('userId') userId: number,
+    @GetUserId() userIdFromToken: number,
     @Body() body: UserUpdatedPwdDto,
   ): Promise<any> {
-    return this.userService.updatedPassword(userId, body);
+    if (Number(userId) !== userIdFromToken)
+      throw new UnauthorizedException(
+        'Access denied. Or your specific id is not matches with id in the token',
+      );
+
+    return this.userService.updatedPassword(Number(userId), body);
   }
 
   /********************************
@@ -132,7 +140,7 @@ export class UserController {
    * access    Private
    */
   @UseGuards(AccessTokenGuard)
-  @Post('update-profile')
+  @Put('update-profile')
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(FileInterceptor('image'))
   async updatedProfile(
@@ -151,7 +159,15 @@ export class UserController {
   @UseGuards(AccessTokenGuard)
   @Delete('/:userId')
   @HttpCode(HttpStatus.OK)
-  async deletAccount(@Param('userId') userId: number): Promise<any> {
+  async deletAccount(
+    @Param('userId') userId: number,
+    @GetUserId() idFromToken: number,
+  ): Promise<any> {
+    if (Number(userId) !== idFromToken)
+      throw new UnauthorizedException(
+        'Access denied. Or your specific id is not matches with id in the token',
+      );
+
     return await this.userService.removeAccount(Number(userId));
   }
 
@@ -161,17 +177,14 @@ export class UserController {
    * access    Private
    */
   @UseGuards(RefreshTokenGuard)
-  @Get('refresh-token/:userId')
+  @Get('refresh-token')
   async getNewAccessToken(
     @Res({ passthrough: true }) res: Response,
-    @Param('userId') userId: string,
+    // @Param('userId') userId: string,
     @GetRefreshToken() payload: ITokenPayloadWithRefreshToken,
   ): Promise<any> {
     const { access_token, refresh_token } =
-      await this.userService.getAccessToken(
-        parseInt(userId),
-        payload.refresh_token,
-      );
+      await this.userService.getAccessToken(payload.sub, payload.refresh_token);
 
     // Secure cookie
     res.cookie('refresh_token', refresh_token, { httpOnly: true });

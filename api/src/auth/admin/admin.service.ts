@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { AuthDto, UpdatedProfileDto } from '../dto';
+import { AuthDto, UpdatedProfileDto, UpdatedUserByAdminDto } from '../dto';
 import { ITokens, IUser } from '../interfaces';
 import { SharesService } from '../shares/shares.service';
 
@@ -45,7 +45,7 @@ export class AdminService {
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
-          throw new ConflictException('This email alread exists');
+          throw new ConflictException('This email already exists');
         }
       }
     }
@@ -150,21 +150,13 @@ export class AdminService {
    * Update password
    */
   async updatedPassword(userId: number, password: string): Promise<IUser> {
-    const user = await this.prismaService.user.findUnique({
-      where: { id: userId },
-    });
-
-    if (!user)
-      throw new BadRequestException(`There is no user with id of ${userId}`);
-
     const hashPwd = await this.sharedService.hashData(password);
-    const updateResult = await this.prismaService.user.update({
-      where: { id: user.id },
+    const user = await this.prismaService.user.update({
+      where: { id: userId },
       data: { password: hashPwd },
     });
 
-    if (!updateResult)
-      throw new BadRequestException('Access denied or User not found');
+    if (!user) throw new BadRequestException('Access denied or User not found');
 
     return user;
   }
@@ -174,20 +166,15 @@ export class AdminService {
    */
   async updatedProfile(
     userId: number,
-    body: UpdatedProfileDto,
+    body: UpdatedUserByAdminDto,
     file: Express.Multer.File,
   ): Promise<IUser> {
-    const {
-      email,
-      first_name,
-      last_name,
-      phone,
-      address,
-      date_of_birth,
-      image_id,
-      image_url,
-    } = body;
-    let uploadedResult: IImageUploadResponse;
+    const { first_name, last_name, email, phone, address, date_of_birth } =
+      body;
+    let uploadedResult: IImageUploadResponse = {
+      public_id: '',
+      secure_url: '',
+    };
 
     const curUser = await this.prismaService.user.findUnique({
       where: { id: userId },
@@ -210,6 +197,8 @@ export class AdminService {
       await fsExtra.remove(file.path);
     }
 
+    const { public_id, secure_url } = uploadedResult;
+
     const user = await this.prismaService.user.update({
       where: { id: userId },
       data: {
@@ -221,8 +210,8 @@ export class AdminService {
         date_of_birth: date_of_birth
           ? new Date(date_of_birth)
           : curUser.date_of_birth,
-        image_id: image_id ? image_id : uploadedResult.public_id,
-        image_url: image_url ? image_url : uploadedResult.secure_url,
+        image_id: public_id ? public_id : curUser.image_id,
+        image_url: secure_url ? secure_url : curUser.image_url,
       },
     });
 
@@ -241,11 +230,16 @@ export class AdminService {
       where: { id: userId },
     });
 
+    if (!user)
+      throw new NotFoundException(`Account not found with id of ${userId}`);
+
     const delResult = await this.prismaService.user.delete({
       where: { id: userId },
     });
 
-    await this.cloudinaryService.removeImage(user.image_id);
+    if (user?.image_id || user?.image_url) {
+      await this.cloudinaryService.removeImage(user.image_id);
+    }
 
     return { message: 'Account removed is successfully', user: delResult };
   }

@@ -15,7 +15,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 
 import { AccessTokenGuard } from 'src/auth/guards';
 import { AdminRoleInterceptor } from 'src/auth/interceptors';
-import { ProductDto } from './dto';
+import { ProductUpdateDto, ProductCreateDto } from './dto';
 import { ProductService } from './product.service';
 
 @Controller('products')
@@ -33,7 +33,7 @@ export class ProductController {
   @Post('/:categoryId')
   createProduct(
     @Param('categoryId') categoryId: number,
-    @Body() body: ProductDto,
+    @Body() body: ProductCreateDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
     return this.productService.createdProduct(Number(categoryId), body, file);
@@ -50,7 +50,7 @@ export class ProductController {
   @Put('/:productId')
   updatedProduct(
     @Param('productId') productId: number,
-    @Body() body: ProductDto,
+    @Body() body: ProductUpdateDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
     return this.productService.updatedProduct(Number(productId), body, file);
