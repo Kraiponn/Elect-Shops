@@ -1,9 +1,10 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { OrderType } from '@prisma/client';
+import { OrderType, UserType } from '@prisma/client';
 import { IPaginate } from 'src/features/interfaces';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { OrderCreatedDto, OrderUpdatedDto } from './dto';
@@ -13,19 +14,29 @@ import { IOrder } from './interfaces';
 export class OrderService {
   constructor(private readonly prismaService: PrismaService) {}
 
+  getGenerateId(): string {
+    const date = new Date();
+    const id = 'oid-' + date.getDate();
+
+    return id;
+  }
+
   /***********************************
    * Create order
    */
   async createdOrder(
     userId: number,
-    { order_date, address, product_id }: OrderCreatedDto,
+    { order_date, address, products }: OrderCreatedDto,
   ): Promise<IOrder> {
     const order = (await this.prismaService.order.create({
       data: {
+        id: this.getGenerateId(),
         order_date,
         address: address ? address : '',
-        product_id,
         user_id: userId,
+        order_details: {
+          create: [{ product_id: products[0] }, { product_id: products[1] }],
+        },
       },
     })) as IOrder;
 
@@ -37,7 +48,16 @@ export class OrderService {
    */
   async updatedOrder(
     orderId: number,
-    { order_date, address, product_id, user_id }: OrderUpdatedDto,
+    {
+      order_date,
+      address,
+      products,
+      user_id,
+      amount,
+      total_price,
+    }: OrderUpdatedDto,
+    userId: number,
+    role: UserType,
   ): Promise<IOrder> {
     const order = await this.prismaService.order.findUnique({
       where: { id: orderId },
@@ -46,6 +66,20 @@ export class OrderService {
     if (!order)
       throw new BadRequestException(`There is no order with id of ${orderId}`);
 
+    // Make account is owner order or Admin account
+    if (userId !== order.user_id || role !== UserType.ADMIN)
+      throw new ForbiddenException(`Access denie`);
+
+    // Order can not editing the order on ON_WAY and SHIPPING state
+    if (
+      order.status === OrderType.ON_WAY ||
+      order.status === OrderType.SHIPPING
+    ) {
+      throw new BadRequestException(
+        `Can\'t editing the order on ${OrderType.ON_WAY} or ${OrderType.SHIPPING} status`,
+      );
+    }
+
     return await this.prismaService.order.update({
       where: {
         id: orderId,
@@ -53,8 +87,10 @@ export class OrderService {
       data: {
         order_date: order_date ? order_date : order.order_date,
         address: address ? address : order.address,
-        product_id: product_id ? product_id : order.product_id,
+        products: products ? products : order.products,
         user_id: user_id ? user_id : order.user_id,
+        amount: amount ? amount : order.amount,
+        total_price: total_price ? total_price : order.total_price,
       },
     });
   }
@@ -83,7 +119,11 @@ export class OrderService {
   /***********************************
    * Remove order
    */
-  async deletedOrder(orderId: number): Promise<IOrder> {
+  async deletedOrder(
+    userId: number,
+    role: UserType,
+    orderId: number,
+  ): Promise<IOrder> {
     const order = await this.prismaService.order.findUnique({
       where: {
         id: orderId,
@@ -92,6 +132,20 @@ export class OrderService {
 
     if (!order)
       throw new BadRequestException(`Order not found with id of ${orderId}`);
+
+    // Order can not cancelled the order on the ON_WAY and SHIPPING state
+    if (
+      order.status === OrderType.ON_WAY ||
+      order.status === OrderType.SHIPPING
+    ) {
+      throw new BadRequestException(
+        `Can\'t cancel the order on ${OrderType.ON_WAY} or ${OrderType.SHIPPING} status`,
+      );
+    }
+
+    // Make account is owner order or Admin account
+    if (userId !== order.user_id || role !== UserType.ADMIN)
+      throw new ForbiddenException(`Access denie`);
 
     const delOrder = await this.prismaService.order.delete({
       where: { id: orderId },

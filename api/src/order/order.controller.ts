@@ -11,9 +11,9 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 
-import { OrderType } from '@prisma/client';
+import { OrderType, UserType } from '@prisma/client';
 
-import { GetUserId } from 'src/auth/decorators';
+import { GetRoleType, GetUserId } from 'src/auth/decorators';
 import { AccessTokenGuard } from 'src/auth/guards';
 import { AdminRoleInterceptor } from 'src/auth/interceptors';
 import { OrderCreatedDto, OrderUpdatedDto } from './dto';
@@ -26,7 +26,7 @@ export class OrderController {
   /********************************
    * desc      Create order
    * route     Post /v2/api/orders
-   * access    Private
+   * access    Private - USER
    */
   @UseGuards(AccessTokenGuard)
   @Post()
@@ -40,21 +40,23 @@ export class OrderController {
   /********************************
    * desc      Update order
    * route     Put /v2/api/orders/:orderId
-   * access    Private
+   * access    Private - Owner order or ADMIN
    */
   @UseGuards(AccessTokenGuard)
   @Put('/:orderId')
   updatedOrder(
     @Param('orderId') orderId: number,
     @Body() body: OrderUpdatedDto,
+    @GetRoleType('role') role: UserType,
+    @GetUserId() userId: number,
   ) {
-    return this.orderService.updatedOrder(Number(orderId), body);
+    return this.orderService.updatedOrder(Number(orderId), body, userId, role);
   }
 
   /********************************
    * desc      Update order status
    * route     Put /v2/api/orders/:orderId/status
-   * access    Private(ADMIN)
+   * access    Private - ADMIN
    */
   @UseGuards(AccessTokenGuard)
   @UseInterceptors(AdminRoleInterceptor)
@@ -66,12 +68,16 @@ export class OrderController {
   /********************************
    * desc      Delete order by id
    * route     Delete /v2/api/orders/:orderId
-   * access    Private
+   * access    Private - Owner order or ADMIN
    */
   @UseGuards(AccessTokenGuard)
   @Delete('/:orderId')
-  deletedOrder(@Param('orderId') orderId: number) {
-    return this.orderService.deletedOrder(Number(orderId));
+  deletedOrder(
+    @GetUserId() userId: number,
+    @GetRoleType('role') role: UserType,
+    @Param('orderId') orderId: number,
+  ) {
+    return this.orderService.deletedOrder(userId, role, Number(orderId));
   }
 
   /********************************

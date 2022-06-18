@@ -28,6 +28,7 @@ model User {
   updated_at            DateTime  @updatedAt
   orders                Order[]
 
+  @@index([id, email, first_name])
   @@map("users")
 }
 
@@ -39,39 +40,59 @@ model Category {
   updated_at    DateTime  @updatedAt
   products      Product[]
 
+  @@index([id, category_name])
   @@map("categories")
 }
 
 model Product {
-  id           Int      @id @default(autoincrement())
-  product_name String   @db.VarChar(100)
-  description  String?  @db.VarChar(255)
+  id           Int     @id @default(autoincrement())
+  product_name String  @db.VarChar(100)
+  description  String? @db.VarChar(255)
   in_stock     Int
   unit_price   Float
   image_id     String?
   image_url    String?
-  created_at   DateTime @default(now())
-  updated_at   DateTime @updatedAt
-  category_id  Int
-  category     Category @relation(fields: [category_id], references: [id])
-  orders       Order[]
 
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  category_id Int
+  category    Category      @relation(fields: [category_id], references: [id])
+  OrderDetail OrderDetail[]
+
+  @@index([id, product_name])
   @@map("products")
 }
 
 model Order {
-  id         Int       @id @default(autoincrement())
-  status     OrderType @default(PENDING)
+  id         String    @id
+  status     OrderType @default(WAITING)
   address    String    @db.VarChar(1000)
   order_date DateTime  @default(now())
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
-  user_id    Int
-  user       User      @relation(fields: [user_id], references: [id])
-  product_id Int
-  product    Product   @relation(fields: [product_id], references: [id])
 
+  user_id       Int
+  user          User          @relation(fields: [user_id], references: [id])
+  order_details OrderDetail[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@index([id, status])
   @@map("orders")
+}
+
+model OrderDetail {
+  id         Int     @id @default(autoincrement())
+  product_id Int
+  product    Product @relation(fields: [product_id], references: [id])
+  order_id   String?
+  Order      Order?  @relation(fields: [order_id], references: [id])
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+
+  @@map("order_details")
 }
 
 enum UserType {
@@ -81,6 +102,7 @@ enum UserType {
 }
 
 enum OrderType {
+  WAITING
   PENDING
   ON_WAY
   SHIPPING
