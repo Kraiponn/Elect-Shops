@@ -1,11 +1,13 @@
-import { OrderType } from '@prisma/client';
+import { Order, OrderType, Product } from '@prisma/client';
 
 export interface IOrderDetail {
-  id: number;
-  product_id: number;
-  order_id: string;
-  created_at: Date;
-  updated_at: Date;
+  id?: number;
+  product_id?: number;
+  products?: Product;
+  order_id?: string;
+  order?: Order;
+  created_at?: Date;
+  updated_at?: Date;
 }
 
 export interface IOrder {

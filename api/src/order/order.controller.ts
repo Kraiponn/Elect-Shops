@@ -7,9 +7,11 @@ import {
   Post,
   Put,
   Query,
+  UploadedFile,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 import { OrderType, UserType } from '@prisma/client';
 
@@ -30,10 +32,14 @@ export class OrderController {
    */
   @UseGuards(AccessTokenGuard)
   @Post()
+  @UseInterceptors(FileInterceptor('image'))
   async createOrder(
     @GetUserId() userId: number,
     @Body() body: OrderCreatedDto,
+    @UploadedFile() file: Express.Multer.File,
   ) {
+    // console.log(body.products);
+    // return { message: 'successfully' };
     return await this.orderService.createdOrder(userId, body);
   }
 
@@ -43,14 +49,16 @@ export class OrderController {
    * access    Private - Owner order or ADMIN
    */
   @UseGuards(AccessTokenGuard)
+  @UseInterceptors(FileInterceptor('image'))
   @Put('/:orderId')
   updatedOrder(
-    @Param('orderId') orderId: number,
+    @Param('orderId') orderId: string,
     @Body() body: OrderUpdatedDto,
     @GetRoleType('role') role: UserType,
     @GetUserId() userId: number,
+    @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.orderService.updatedOrder(Number(orderId), body, userId, role);
+    return this.orderService.updatedOrder(orderId, body, userId, role);
   }
 
   /********************************
@@ -61,8 +69,8 @@ export class OrderController {
   @UseGuards(AccessTokenGuard)
   @UseInterceptors(AdminRoleInterceptor)
   @Put('/:orderId/status')
-  updatedOrderStatus(@Param('orderId') orderId: number, status: OrderType) {
-    return this.orderService.updateOrderStatus(Number(orderId), status);
+  updatedOrderStatus(@Param('orderId') orderId: string, status: OrderType) {
+    return this.orderService.updateOrderStatus(orderId, status);
   }
 
   /********************************
@@ -75,9 +83,9 @@ export class OrderController {
   deletedOrder(
     @GetUserId() userId: number,
     @GetRoleType('role') role: UserType,
-    @Param('orderId') orderId: number,
+    @Param('orderId') orderId: string,
   ) {
-    return this.orderService.deletedOrder(userId, role, Number(orderId));
+    return this.orderService.deletedOrder(userId, role, orderId);
   }
 
   /********************************
@@ -87,8 +95,8 @@ export class OrderController {
    */
   @UseGuards(AccessTokenGuard)
   @Get('/:orderId')
-  getOrderById(@Param('orderId') orderId: number) {
-    return this.orderService.getOrderById(Number(orderId));
+  getOrderById(@Param('orderId') orderId: string) {
+    return this.orderService.getOrderById(orderId);
   }
 
   /********************************
