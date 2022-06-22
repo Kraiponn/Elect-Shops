@@ -18,7 +18,7 @@ import { OrderType, UserType } from '@prisma/client';
 import { GetRoleType, GetUserId } from 'src/auth/decorators';
 import { AccessTokenGuard } from 'src/auth/guards';
 import { AdminRoleInterceptor } from 'src/auth/interceptors';
-import { OrderCreatedDto, OrderUpdatedDto } from './dto';
+import { OrderCreatedDto, OrderUpdatedDto, OrderUpdateStatusDto } from './dto';
 import { OrderService } from './order.service';
 
 @Controller('orders')
@@ -55,10 +55,9 @@ export class OrderController {
     @Param('orderId') orderId: string,
     @Body() body: OrderUpdatedDto,
     @GetRoleType('role') role: UserType,
-    @GetUserId() userId: number,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.orderService.updatedOrder(orderId, body, userId, role);
+    return this.orderService.updatedOrder(orderId, body, role);
   }
 
   /********************************
@@ -69,8 +68,11 @@ export class OrderController {
   @UseGuards(AccessTokenGuard)
   @UseInterceptors(AdminRoleInterceptor)
   @Put('/:orderId/status')
-  updatedOrderStatus(@Param('orderId') orderId: string, status: OrderType) {
-    return this.orderService.updateOrderStatus(orderId, status);
+  updatedOrderStatus(
+    @Param('orderId') orderId: string,
+    @Body() body: OrderUpdateStatusDto,
+  ) {
+    return this.orderService.updateOrderStatus(orderId, body);
   }
 
   /********************************
@@ -89,14 +91,39 @@ export class OrderController {
   }
 
   /********************************
+   * desc      Get many orders by userId with pagination
+   * route     Get /v2/api/orders/me-all?page=xx&limit=xx
+   * access    Private(USER)
+   */
+  @UseGuards(AccessTokenGuard)
+  @Get('/me-all')
+  getOrdersByUserId(
+    @GetUserId() userId: number,
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+  ) {
+    // console.log('hello', userId);
+    // return 'ok';
+    return this.orderService.getOrdersByUserId(
+      userId,
+      Number(page),
+      Number(limit),
+    );
+  }
+
+  /********************************
    * desc      Get order by id
    * route     Get /v2/api/orders/:orderId
    * access    Private
    */
   @UseGuards(AccessTokenGuard)
   @Get('/:orderId')
-  getOrderById(@Param('orderId') orderId: string) {
-    return this.orderService.getOrderById(orderId);
+  getOrderById(
+    @Param('orderId') orderId: string,
+    @GetRoleType('role') role: UserType,
+    @GetUserId() userId: number,
+  ) {
+    return this.orderService.getOrderById(orderId, role, userId);
   }
 
   /********************************

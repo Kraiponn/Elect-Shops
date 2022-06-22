@@ -25,3 +25,9 @@ export interface IOrderResponse {
   message: string;
   order: IOrder;
 }
+
+export interface ISingleOrderResponse {
+  totalPrice: number;
+  amount: number;
+  order: IOrder;
+}

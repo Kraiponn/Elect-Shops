@@ -1,6 +1,5 @@
 import { OrderType } from '@prisma/client';
 import {
-  IsArray,
   IsDateString,
   IsEnum,
   IsNotEmpty,
@@ -21,11 +20,6 @@ export class OrderCreatedDto {
   @IsNotEmpty()
   order_date: Date;
 
-  // @IsArray()
-  // @ArrayNotEmpty()
-  // @IsNumber({}, { each: true })
-  // @IsOptional()
-  // @Type(() => Number)
   @IsNumberString({}, { each: true })
   products: number[];
 }
@@ -48,12 +42,18 @@ export class OrderUpdatedDto {
   @IsNotEmpty()
   order_date?: Date;
 
-  @IsOptional()
   @IsNumberString()
   @IsNotEmpty()
-  user_id?: number;
+  user_id: number;
 
-  @IsOptional()
   @IsNumberString({}, { each: true })
-  products?: number[];
+  products: number[];
+}
+
+/*******************************
+ *  Update status by
+ */
+export class OrderUpdateStatusDto {
+  @IsEnum(OrderType)
+  status: OrderType;
 }
