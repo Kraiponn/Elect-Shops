@@ -1,6 +1,5 @@
 import React from "react";
 import Head from "next/head";
-import TopNavigation from "@/components/shares/navigates/top-navigation";
 
 interface IProps {
   children: React.ReactNode;
@@ -8,7 +7,7 @@ interface IProps {
   description?: string;
 }
 
-const DefautLayout = ({ children, title, description }: IProps) => {
+const BlankLayout = ({ children, title, description }: IProps) => {
   return (
     <>
       <Head>
@@ -17,10 +16,9 @@ const DefautLayout = ({ children, title, description }: IProps) => {
         <meta name={title} content={description ? description : ""} />
       </Head>
 
-      <TopNavigation />
       <main>{children}</main>
     </>
   );
 };
 
-export default DefautLayout;
+export default BlankLayout;

@@ -1,7 +1,13 @@
-import type { NextPage } from "next";
-import DefautLayout from "@/components/shares/layouts/defaut-layout";
+import type { GetStaticProps, NextPage } from "next";
 import { Button, Container } from "@mui/material";
 
+// Components
+import DefautLayout from "@/components/shares/layouts/defaut-layout";
+
+// Service
+import { http } from "@/features/services/http";
+
+// Global state
 import {
   useAppSelector,
   useAppDispatch,
@@ -17,28 +23,15 @@ const Home: NextPage = () => {
       <Container>
         <h1>Home Page: {value ? value : 0}</h1>
         <br />
-
-        <div>
-          <Button
-            variant="contained"
-            onClick={() => {
-              dispatch(increment());
-            }}
-          >
-            Increment
-          </Button>
-          <Button
-            variant="contained"
-            onClick={() => {
-              dispatch(decrement());
-            }}
-          >
-            Decrement
-          </Button>
-        </div>
       </Container>
     </DefautLayout>
   );
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+  return {
+    props: {},
+  };
 };
 
 export default Home;
