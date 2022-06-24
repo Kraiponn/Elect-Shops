@@ -18,16 +18,16 @@ const theme = createTheme({
   typography: {
     fontFamily: "Itim",
     h1: {
-      fontSize: "3.2rem",
+      fontSize: "3.5rem",
     },
     h2: {
-      fontSize: "2rem",
+      fontSize: "2.5rem",
     },
     h3: {
-      fontSize: "1.5rem",
+      fontSize: "2rem",
     },
     h4: {
-      fontSize: "1.2rem",
+      fontSize: "1.5rem",
     },
     h5: {
       fontSize: "1rem",

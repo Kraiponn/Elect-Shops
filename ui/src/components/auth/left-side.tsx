@@ -3,7 +3,7 @@ import Image from "next/image";
 
 // Materials
 import { Box, Typography } from "@mui/material";
-import CottageIcon from "@mui/icons-material/Cottage";
+import { motion } from "framer-motion";
 
 // Color system
 import { clWhite } from "@/features/const/colors";
@@ -25,14 +25,23 @@ const LeftSide = (props: Props) => {
         alignItems: "center",
       }}
     >
-      <Image src={Logo} width={100} height={100} alt="Logo" />
-      <Box sx={{}}>
-        <Typography variant="h1">Welcome to CMK Shopping</Typography>
-        <Typography variant="h2">Welcome to CMK Shopping</Typography>
-        <Typography variant="h3">Welcome to CMK Shopping</Typography>
-        <Typography variant="h4">Welcome to CMK Shopping</Typography>
-        <Typography variant="h5">Welcome to CMK Shopping</Typography>
-        <Typography variant="h6">Welcome to CMK Shopping</Typography>
+      <Box sx={{
+        // display: "flex",
+        // justifyContent: "center",
+        // alignItems: "center",
+        textAlign: 'center'
+      }}>
+        <Image src={Logo} width={100} height={100} alt="Logo" />
+        <Typography sx={{ mt: 2 }} variant="h3"
+          component={motion.div}
+          whileHover={{
+            scale: 1.2,
+            transition: { duration: 0.3 }
+          }}
+          whileTap={{ scale: 0.9 }}
+          initial={{x: '100%'}}
+          animate={{x: '0'}}
+        >Welcome to CMK Shopping</Typography>
       </Box>
     </Box>
   );
