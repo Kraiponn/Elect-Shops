@@ -6,7 +6,7 @@ import { Box, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 
 // Color system
-import { clWhite } from "@/features/const/colors";
+import { clWhite, clYellowMain } from "@/features/const/colors";
 
 import Logo from "@/assets/images/little-pug-dog.webp";
 
@@ -25,23 +25,81 @@ const LeftSide = (props: Props) => {
         alignItems: "center",
       }}
     >
-      <Box sx={{
-        // display: "flex",
-        // justifyContent: "center",
-        // alignItems: "center",
-        textAlign: 'center'
-      }}>
-        <Image src={Logo} width={100} height={100} alt="Logo" />
-        <Typography sx={{ mt: 2 }} variant="h3"
+      <Box
+        sx={{
+          // display: "flex",
+          // justifyContent: "center",
+          // alignItems: "center",
+          textAlign: "center",
+          p: 2,
+        }}
+      >
+        <Box
+          component={motion.div}
+          initial={{ opacity: 0 }}
+          animate={{
+            opacity: 1,
+            scale: [0.5, 1.2, 0.5, 1.2, 1],
+            transition: {
+              duration: 1,
+            },
+          }}
+        >
+          <Image src={Logo} width={100} height={100} alt="Logo" />
+        </Box>
+
+        <Typography
+          sx={{
+            mt: 2,
+            ":hover": {
+              cursor: "pointer",
+            },
+            color: clYellowMain,
+          }}
+          variant="h4"
           component={motion.div}
           whileHover={{
-            scale: 1.2,
-            transition: { duration: 0.3 }
+            scale: 1.1,
+            transition: {
+              duration: 0.3,
+              yoyo: Infinity,
+              // repeat: Infinity,
+            },
           }}
-          whileTap={{ scale: 0.9 }}
-          initial={{x: '100%'}}
-          animate={{x: '0'}}
-        >Welcome to CMK Shopping</Typography>
+          // whileTap={{ scale: 0.9 }}
+          initial={{ x: 0, opacity: 0 }}
+          animate={{ x: [50, -50, 0], opacity: 1 }}
+          exit={{ x: 0 }}
+          transition={{
+            dealy: 1,
+            ease: "linear",
+            duration: 2,
+            // yoyo: 3,
+          }}
+        >
+          Shopping Online
+        </Typography>
+
+        <Typography
+          sx={{
+            mt: 2,
+            ":hover": {
+              cursor: "pointer",
+            },
+          }}
+          variant="h5"
+          component={motion.div}
+          initial={{ x: 0, opacity: 0 }}
+          animate={{ x: [-50, 50, 0], opacity: 1 }}
+          exit={{ x: 0 }}
+          transition={{
+            dealy: 1,
+            ease: "linear",
+            duration: 2,
+          }}
+        >
+          Welcome to cmkl online store. Please signin to join with us.
+        </Typography>
       </Box>
     </Box>
   );
