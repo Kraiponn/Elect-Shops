@@ -29,7 +29,7 @@ const RightSide = (props: Props) => {
           left: "50%",
           top: "50%",
           transform: "translate(-50%, -50%)",
-          width: "70%",
+          width: "65%",
         }}
       >
         <Typography
@@ -54,7 +54,7 @@ const RightSide = (props: Props) => {
             duration: 1,
           }}
         >
-          Shopping Online
+          {`SignIn`}
         </Typography>
 
         <SigninForm />

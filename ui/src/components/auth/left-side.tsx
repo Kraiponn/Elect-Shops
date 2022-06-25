@@ -27,9 +27,6 @@ const LeftSide = (props: Props) => {
     >
       <Box
         sx={{
-          // display: "flex",
-          // justifyContent: "center",
-          // alignItems: "center",
           textAlign: "center",
           p: 2,
         }}

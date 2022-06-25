@@ -1,7 +1,7 @@
 import React from "react";
 
 // Materials
-import { Box, Container, Grid, useMediaQuery } from "@mui/material";
+import { Box, Grid, useMediaQuery } from "@mui/material";
 
 // Components
 import BlankLayout from "@/components/shares/layouts/blank-layout";
@@ -19,10 +19,6 @@ const SignIn = (props: Props) => {
         sx={{
           width: "100%",
           height: "100vh",
-          // display: "flex",
-          // justifyContent: "center",
-          // alignItems: "center",
-          // padding: "20px",
         }}
       >
         <Grid container>
