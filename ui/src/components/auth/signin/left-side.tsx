@@ -10,9 +10,10 @@ import { clWhite, clYellowMain } from "@/features/const/colors";
 
 import Logo from "@/assets/images/little-pug-dog.webp";
 
-type Props = {};
-
-const LeftSide = (props: Props) => {
+/****************************************************
+ *  MAIN FUNCTION
+ */
+const LeftSide = () => {
   return (
     <Box
       sx={{
@@ -74,7 +75,7 @@ const LeftSide = (props: Props) => {
             // yoyo: 3,
           }}
         >
-          Shopping Online
+          {`Shopping Online`}
         </Typography>
 
         <Typography
@@ -95,7 +96,7 @@ const LeftSide = (props: Props) => {
             duration: 2,
           }}
         >
-          Welcome to cmkl online store. Please signin to join with us.
+          {`Welcome to cmkl online store. Please signin to join with us.`}
         </Typography>
       </Box>
     </Box>

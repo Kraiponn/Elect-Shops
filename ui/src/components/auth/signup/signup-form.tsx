@@ -1,29 +1,16 @@
 import React from "react";
+import { useRouter } from "next/router";
 
-import {
-  Box,
-  Button,
-  FormControl,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  OutlinedInput,
-  TextField,
-  Typography,
-} from "@mui/material";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import LockIcon from "@mui/icons-material/Lock";
-import EmailIcon from '@mui/icons-material/Email';
+import { Box, Button, Divider, IconButton, Typography } from "@mui/material";
 
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 import { motion } from "framer-motion";
 import EmailInput from "@/components/shares/ui/email-input";
+import PasswordInput from "@/components/shares/ui/password-input";
 
-type Props = {};
 export interface IAuthForm {
   email: string;
   password: string;
@@ -51,14 +38,17 @@ const schema = yup
   })
   .required();
 
-const SigninForm = (props: Props) => {
+/****************************************************
+ *  MAIN FUNCTION
+ */
+const AuthForm = () => {
   const {
     handleSubmit,
     control,
     formState: { errors },
   } = useForm<IAuthForm>({
     resolver: yupResolver(schema),
-    reValidateMode: "onChange"
+    reValidateMode: "onChange",
   });
 
   const [values, setValues] = React.useState<State>({
@@ -69,10 +59,7 @@ const SigninForm = (props: Props) => {
     showPassword: false,
   });
 
-  const handleChange =
-    (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      setValues({ ...values, [prop]: event.target.value });
-    };
+  const router = useRouter();
 
   const handleClickShowPassword = () => {
     setValues({
@@ -98,18 +85,14 @@ const SigninForm = (props: Props) => {
           initial={{ opacity: 0 }}
           animate={{
             opacity: 1,
-            x: [-50, 50, 0]
+            x: [-50, 50, 0],
           }}
           transition={{
             ease: "easeInOut",
             duration: 1,
           }}
         >
-          <EmailInput
-            control={control}
-            errors={errors}
-            showPassword={values.showPassword}
-          />
+          <EmailInput control={control} errors={errors} />
         </motion.div>
         <br />
 
@@ -117,7 +100,7 @@ const SigninForm = (props: Props) => {
           initial={{ opacity: 0 }}
           animate={{
             opacity: 1,
-            x: [50, -50, 0]
+            x: [50, -50, 0],
           }}
           transition={{
             ease: "easeInOut",
@@ -125,84 +108,82 @@ const SigninForm = (props: Props) => {
             delay: 0.7,
           }}
         >
-          <Controller
-            name="password"
+          <PasswordInput
+            pwdType="password"
             control={control}
-            defaultValue={``}
-            render={({ field }) => (
-              <OutlinedInput
-                {...field}
-                size="small"
-                type={values.showPassword ? "text" : "password"}
-                placeholder={`Password`}
-                fullWidth
-                startAdornment={
-                  <InputAdornment position="start">
-                    <LockIcon />
-                  </InputAdornment>
-                }
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                    >
-                      {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            )}
+            errors={errors}
+            showPassword={values.showPassword}
+            handleClickShowPassword={handleClickShowPassword}
+            handleMouseDownPassword={handleMouseDownPassword}
           />
-          {errors && <Typography sx={{ color: 'red' }}>{errors.password?.message}</Typography>}
         </motion.div>
 
-
-        <Box sx={{ mt: 5, paddingX: '5rem' }}
+        <Box
+          sx={{ mt: 5, paddingX: "5rem" }}
           component={motion.div}
           initial={{ opacity: 0 }}
           animate={{
             opacity: 1,
-            y: [30, -20, 0]
+            y: [30, -20, 0],
           }}
           transition={{
             delay: 1.5,
             duration: 1,
-            ease: 'linear'
+            ease: "linear",
           }}
         >
-          <Button sx={{ py: 1 }} type="submit" variant="contained" fullWidth>{`Submit`}</Button>
+          <Button
+            sx={{ py: 1 }}
+            type="submit"
+            variant="contained"
+            fullWidth
+          >{`Submit`}</Button>
         </Box>
 
-        <Box sx={{
-          mt: 3,
-          textAlign: 'right',
-        }}
+        <Box
+          sx={{
+            mt: 3,
+            textAlign: "right",
+          }}
           component={motion.div}
           initial={{ opacity: 0 }}
           animate={{ y: [20, -20, 0], opacity: 1 }}
           transition={{
             duration: 1,
             delay: 2,
-            ease: 'easeInOut'
+            ease: "easeInOut",
           }}
         >
-          <Typography variant="h5"
+          <IconButton
             sx={{
+              width: "100%",
+              color: "black",
+              fontSize: "0.9rem",
+              fontFamily: "Itim",
             }}
-          >Are you no have an account?</Typography>
-          <Typography variant="h5"
+            onClick={() => router.push("/auth/reset-password")}
+          >{`Or Forgot Password?`}</IconButton>
+
+          <Divider />
+
+          <Typography variant="h5" sx={{ mt: 2 }}>
+            {`Don\'t have an account?`}
+          </Typography>
+
+          <Typography
+            variant="h5"
             sx={{
-              cursor: 'pointer',
-              color: 'red'
+              cursor: "pointer",
+              color: "red",
             }}
-          >Signup Here</Typography>
+            onClick={() => router.push("/auth/signup")}
+          >
+            Signup Here
+          </Typography>
         </Box>
       </form>
     </>
   );
 };
 
-export default SigninForm;
+export default AuthForm;

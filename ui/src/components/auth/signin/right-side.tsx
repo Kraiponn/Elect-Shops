@@ -3,12 +3,9 @@ import React from "react";
 // Materials components
 import { Box, Typography } from "@mui/material";
 
-// Colors system
-import { clYellowMain } from "@/features/const/colors";
-
 // Animate effects
 import { motion } from "framer-motion";
-import SigninForm from "@/components/auth/signin/form";
+import AuthForm from "@/components/auth/auth-form";
 
 type Props = {};
 
@@ -57,7 +54,7 @@ const RightSide = (props: Props) => {
           {`SignIn`}
         </Typography>
 
-        <SigninForm />
+        <AuthForm authType="SIGNIN" />
       </Box>
     </Box>
   );

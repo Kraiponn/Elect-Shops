@@ -5,11 +5,14 @@ import { Box, Grid, useMediaQuery } from "@mui/material";
 
 // Components
 import BlankLayout from "@/components/shares/layouts/blank-layout";
-import LeftSide from "@/components/auth/left-side";
-import RightSide from "@/components/auth/right-side";
+import LeftSide from "@/components/auth/signin/left-side";
+import RightSide from "@/components/auth/signin/right-side";
 
 type Props = {};
 
+/****************************************************
+ *  MAIN FUNCTION
+ */
 const SignIn = (props: Props) => {
   const isDesktop = useMediaQuery("(min-width: 900px)");
 

@@ -8,7 +8,7 @@ import {
 import EmailIcon from '@mui/icons-material/Email';
 
 import { Controller, FieldError, Control } from "react-hook-form";
-import { IAuthForm } from '@/components/auth/signin/form';
+import { IAuthForm } from '@/components/auth/auth-form';
 
 type ErrorsInputType = {
   email?: FieldError | undefined;
@@ -17,11 +17,10 @@ type ErrorsInputType = {
 
 interface IEmailProps {
   errors: ErrorsInputType;
-  control: Control<IAuthForm, any>,
-  showPassword: boolean,
+  control: Control<IAuthForm, any>
 }
 
-const EmailInput = ({ errors, control, showPassword }: IEmailProps) => {
+const EmailInput = ({ errors, control }: IEmailProps) => {
 
 
   return <>
