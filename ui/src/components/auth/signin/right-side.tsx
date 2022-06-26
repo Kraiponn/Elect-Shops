@@ -27,16 +27,12 @@ const RightSide = (props: Props) => {
           left: "50%",
           top: "50%",
           transform: "translate(-50%, -50%)",
-          width: "65%",
+          width: {xs: '70%', md: '55%'},
         }}
       >
         <Typography
           sx={{
             mt: 2,
-            // ":hover": {
-            //   cursor: "pointer",
-            // },
-            // color: clPrimary,
             fontWeight: "900",
             textAlign: "center",
             marginBottom: "5rem",

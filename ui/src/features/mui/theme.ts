@@ -29,13 +29,13 @@ const theme = createTheme({
       fontSize: "2rem",
     },
     h4: {
-      fontSize: "1.5rem",
+      fontSize: "1.75rem",
     },
     h5: {
-      fontSize: "1rem",
+      fontSize: "1.25rem",
     },
     h6: {
-      fontSize: "0.5rem",
+      fontSize: "0.85rem",
     },
   },
   components: {

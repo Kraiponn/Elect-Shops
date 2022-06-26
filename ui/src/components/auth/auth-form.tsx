@@ -160,7 +160,6 @@ const AuthForm = ({ authType }: IPageProps) => {
             <IconButton
               sx={{
                 width: "100%",
-                // color: "black",
                 fontSize: "0.9rem",
                 fontFamily: "Itim",
               }}
@@ -170,14 +169,14 @@ const AuthForm = ({ authType }: IPageProps) => {
 
           <Divider />
 
-          <Typography variant="h5" sx={{ mt: 2 }}>
+          <Typography variant="h6" sx={{ mt: 2 }}>
             {authType === "SIGNIN"
               ? `Don\'t have an account?`
               : `Already have an account?`}
           </Typography>
 
           <Typography
-            variant="h5"
+            variant="h6"
             sx={{
               cursor: "pointer",
               color: "red",

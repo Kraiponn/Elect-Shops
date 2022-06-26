@@ -1,7 +1,7 @@
 import React from "react";
 
 // Materials
-import { Box, Typography, useMediaQuery } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 import { motion } from "framer-motion";
 
@@ -13,8 +13,6 @@ import AuthForm from "@/components/auth/auth-form";
  *  MAIN FUNCTION
  */
 const SignUp = () => {
-  const isDesktop = useMediaQuery("(min-width: 900px)");
-
   return (
     <DefaultLayout title="signup page">
       <Box
@@ -30,14 +28,14 @@ const SignUp = () => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: "60%",
+            width: {xs: '70%', md: '35%'},
           }}
         >
           <Typography
             sx={{
               mt: 2,
-              // color: "black",
               fontWeight: "900",
+              fontSize: { xs: '1.5rem', md: '2rem', lg: '2.5rem' },
               textAlign: "center",
               marginBottom: "5rem",
             }}
