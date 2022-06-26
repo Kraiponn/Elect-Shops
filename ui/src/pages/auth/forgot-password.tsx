@@ -1,13 +1,12 @@
 import React from "react";
 
 // Materials
-import { Box, Typography, useMediaQuery } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 import { motion } from "framer-motion";
 
 // Components
 import DefaultLayout from "@/components/shares/layouts/defaut-layout";
-import AuthForm from "@/components/auth/auth-form";
 import ForgotPasswordForm from "@/components/auth/forgot-password-form";
 
 /****************************************************
@@ -35,7 +34,7 @@ const ForgotPassword = () => {
           <Typography
             sx={{
               mt: 2,
-              color: "black",
+              // color: "black",
               fontWeight: "900",
               textAlign: "center",
               marginBottom: "2rem",

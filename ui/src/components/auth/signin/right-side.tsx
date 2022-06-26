@@ -6,6 +6,7 @@ import { Box, Typography } from "@mui/material";
 // Animate effects
 import { motion } from "framer-motion";
 import AuthForm from "@/components/auth/auth-form";
+import { clPrimary } from "@/features/const/colors";
 
 type Props = {};
 
@@ -16,7 +17,7 @@ const RightSide = (props: Props) => {
         position: "relative",
         height: "100vh",
         width: "100%",
-        bgcolor: "#fdfeff",
+        // bgcolor: "#fdfeff",
         p: 2,
       }}
     >
@@ -35,7 +36,7 @@ const RightSide = (props: Props) => {
             // ":hover": {
             //   cursor: "pointer",
             // },
-            color: "black",
+            // color: clPrimary,
             fontWeight: "900",
             textAlign: "center",
             marginBottom: "5rem",

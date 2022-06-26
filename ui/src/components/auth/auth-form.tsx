@@ -160,7 +160,7 @@ const AuthForm = ({ authType }: IPageProps) => {
             <IconButton
               sx={{
                 width: "100%",
-                color: "black",
+                // color: "black",
                 fontSize: "0.9rem",
                 fontFamily: "Itim",
               }}

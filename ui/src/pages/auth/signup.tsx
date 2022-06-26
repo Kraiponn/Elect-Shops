@@ -36,7 +36,7 @@ const SignUp = () => {
           <Typography
             sx={{
               mt: 2,
-              color: "black",
+              // color: "black",
               fontWeight: "900",
               textAlign: "center",
               marginBottom: "5rem",

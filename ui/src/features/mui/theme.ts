@@ -5,6 +5,7 @@ import { clPrimary, clSecondary } from "../const/colors";
 // Create a theme instance.
 const theme = createTheme({
   palette: {
+    mode: "light",
     primary: {
       main: clPrimary,
     },
@@ -17,6 +18,7 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: "Itim",
+    // fontSize: 16,
     h1: {
       fontSize: "3.5rem",
     },
@@ -34,6 +36,13 @@ const theme = createTheme({
     },
     h6: {
       fontSize: "0.5rem",
+    },
+  },
+  components: {
+    MuiAppBar: {
+      defaultProps: {
+        elevation: 0,
+      },
     },
   },
 });

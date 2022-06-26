@@ -1,39 +1,93 @@
 import * as React from "react";
+import { useRouter } from "next/router";
 
 // Material
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
+import {
+  Box,
+  Grid,
+  AppBar,
+  Toolbar,
+  Typography,
+  IconButton,
+  Badge,
+  useMediaQuery,
+} from "@mui/material";
 
 // Icons
-import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import AccountIcon from "@mui/icons-material/AccountCircle";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { motion } from "framer-motion";
+import { clYellowMain } from "@/features/const/colors";
 
-type Props = {};
+// Components
+import SearchBox from "@/components/shares/ui/search-box";
+import AccountListMenu from "@/components/shares/navigates/account-list";
 
-const TopNavigation = (props: Props) => {
+/****************************************************
+ *  MAIN FUNCTION
+ */
+const TopNavigation = () => {
+  const router = useRouter();
+  const isDesktop = useMediaQuery("(min-width: 900px)");
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
+          {!isDesktop && (
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
+
+          <Typography
+            variant="h4"
+            component={motion.div}
+            sx={{ flexGrow: 1, cursor: "pointer" }}
+            onClick={() => router.push("/")}
+            whileHover={{
+              scale: 1.009,
+              color: clYellowMain,
+              transition: {
+                ease: "linear",
+                duration: 0.3,
+                yoyo: Infinity,
+              },
+            }}
           >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             CMK Shoping
           </Typography>
 
+          <SearchBox />
+
+          <IconButton color="inherit">
+            <Badge badgeContent={9} color="secondary">
+              <ShoppingCartIcon color="inherit" />
+            </Badge>
+          </IconButton>
+
+          <IconButton color="inherit">
+            <Badge badgeContent={1} color="secondary">
+              <NotificationsIcon color="inherit" />
+            </Badge>
+          </IconButton>
+
           <IconButton size="large" color="inherit">
-            <AccountIcon />
+            <AccountCircleRoundedIcon
+              sx={{
+                fontSize: "2rem",
+              }}
+            />
+
+            <AccountListMenu />
           </IconButton>
         </Toolbar>
       </AppBar>
