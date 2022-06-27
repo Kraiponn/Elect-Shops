@@ -76,7 +76,7 @@ const DesktopNav = (props: IProps) => {
         </IconButton>
         <TextButton
           label={`Log In`}
-          OnClick={() => router.push('/auth/signin')}
+          OnClick={() => router.push('/auth/login')}
         />
 
         <Typography variant="h5" sx={{ p: 1 }}>

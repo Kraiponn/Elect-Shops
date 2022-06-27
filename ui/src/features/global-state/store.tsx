@@ -1,10 +1,11 @@
 import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
-import counterReducer from "@/features/global-state/reducers/counter";
+
+import authReducer from "@/features/global-state/reducers/auth";
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
+    auth: authReducer,
   },
   devTools: true,
 });

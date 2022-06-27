@@ -34,7 +34,7 @@ export class UserController {
 
   /********************************
    * desc      Register new member
-   * route     Post /api/auth/user/signin
+   * route     Post /v2/api/auth/user/signup
    * access    Public
    */
   @Post('/signup')

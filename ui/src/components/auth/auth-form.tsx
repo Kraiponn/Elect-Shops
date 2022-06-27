@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 
-import { Box, Button, Divider, IconButton, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Divider,
+  IconButton,
+  Typography,
+} from "@mui/material";
 
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -11,13 +18,21 @@ import { motion } from "framer-motion";
 import EmailInput from "@/components/shares/ui/email-input";
 import PasswordInput from "@/components/shares/ui/password-input";
 
-export interface IAuthForm {
-  email?: string;
-  password: string;
-}
+// Global state
+import {
+  useAppSelector,
+  useAppDispatch,
+} from "@/features/hooks/use-global-state";
+import { asyncSignup } from "@/features/global-state/reducers/auth";
+import { IAuthForm } from "@/features/types";
+
+// export interface IAuthForm {
+//   email?: string;
+//   password: string;
+// }
 
 interface IPageProps {
-  authType: "SIGNIN" | "SIGNUP";
+  authType: "LOGIN" | "SIGNUP";
 }
 
 interface IPwdInputBox {
@@ -42,6 +57,16 @@ const schema = yup
  *  MAIN FUNCTION
  */
 const AuthForm = ({ authType }: IPageProps) => {
+  const router = useRouter();
+
+  const [values, setValues] = useState<IPwdInputBox>({
+    showPassword: false,
+  });
+  const dispatch = useAppDispatch();
+  const { isLoading, isSuccess, user, error } = useAppSelector(
+    (state) => state.auth
+  );
+
   const {
     handleSubmit,
     control,
@@ -50,12 +75,6 @@ const AuthForm = ({ authType }: IPageProps) => {
     resolver: yupResolver(schema),
     reValidateMode: "onChange",
   });
-
-  const [values, setValues] = React.useState<IPwdInputBox>({
-    showPassword: false,
-  });
-
-  const router = useRouter();
 
   const handleClickShowPassword = () => {
     setValues({
@@ -71,13 +90,14 @@ const AuthForm = ({ authType }: IPageProps) => {
   };
 
   // Form submit
-  const onSubmit: SubmitHandler<IAuthForm> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<IAuthForm> = (body) => {
+    // console.log(body);
+    dispatch(asyncSignup(body));
   };
 
   const goToAuthPage = () => {
-    if (authType === "SIGNIN") router.push("/auth/signup");
-    else router.push("/auth/signin");
+    if (authType === "LOGIN") router.push("/auth/signup");
+    else router.push("/auth/login");
   };
 
   return (
@@ -134,12 +154,13 @@ const AuthForm = ({ authType }: IPageProps) => {
             ease: "linear",
           }}
         >
-          <Button
-            sx={{ py: 1 }}
-            type="submit"
-            variant="contained"
-            fullWidth
-          >{`Submit`}</Button>
+          <Button sx={{ py: 1 }} type="submit" variant="contained" fullWidth>
+            {isLoading ? (
+              <CircularProgress size={'1.5rem'} color="inherit" />
+            ) : (
+              `Submit`
+            )}
+          </Button>
         </Box>
 
         <Box
@@ -156,7 +177,7 @@ const AuthForm = ({ authType }: IPageProps) => {
             ease: "easeInOut",
           }}
         >
-          {authType === "SIGNIN" ? (
+          {authType === "LOGIN" ? (
             <IconButton
               sx={{
                 width: "100%",
@@ -164,13 +185,15 @@ const AuthForm = ({ authType }: IPageProps) => {
                 fontFamily: "Itim",
               }}
               onClick={() => router.push("/auth/forgot-password")}
-            >{`Or Forgot Password?`}</IconButton>
+            >
+              {`Or Forgot Password?`}
+            </IconButton>
           ) : null}
 
           <Divider />
 
           <Typography variant="h6" sx={{ mt: 2 }}>
-            {authType === "SIGNIN"
+            {authType === "LOGIN"
               ? `Don\'t have an account?`
               : `Already have an account?`}
           </Typography>
@@ -184,7 +207,7 @@ const AuthForm = ({ authType }: IPageProps) => {
             }}
             onClick={goToAuthPage}
           >
-            {authType === "SIGNIN" ? `Signup Here` : `Signin Here`}
+            {authType === "LOGIN" ? `Signup Here` : `Signin Here`}
           </Typography>
         </Box>
       </form>

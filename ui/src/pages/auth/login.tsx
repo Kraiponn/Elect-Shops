@@ -5,8 +5,8 @@ import { Box, Grid, useMediaQuery } from "@mui/material";
 
 // Components
 import BlankLayout from "@/components/shares/layouts/blank-layout";
-import LeftSide from "@/components/auth/signin/left-side";
-import RightSide from "@/components/auth/signin/right-side";
+import LeftSide from "@/components/auth/login/left-side";
+import RightSide from "@/components/auth/login/right-side";
 
 type Props = {};
 
