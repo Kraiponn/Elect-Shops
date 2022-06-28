@@ -31,6 +31,17 @@ export class UserService {
    * Sign Up
    */
   async signup({ email, password }: AuthDto): Promise<ITokenPayload & ITokens> {
+    const alreadyAccount = await this.prismaService.user.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (alreadyAccount)
+      throw new BadRequestException(
+        `An account with this email address already exists`,
+      );
+
     const pwdHash = await this.sharedService.hashData(password);
 
     try {

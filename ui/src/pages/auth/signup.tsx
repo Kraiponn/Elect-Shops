@@ -1,61 +1,116 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 // Materials
 import { Box, Typography } from "@mui/material";
-
 import { motion } from "framer-motion";
+
+// Global state
+import {
+  useAppSelector,
+  useAppDispatch,
+} from "@/features/hooks/use-global-state";
+import {
+  asyncSignup,
+  clearErrorAndLoadingState,
+} from "@/features/global-state/reducers/auth";
+import { IAuthForm } from "@/features/types";
 
 // Components
 import DefaultLayout from "@/components/shares/layouts/defaut-layout";
 import AuthForm from "@/components/auth/auth-form";
+import MyDialog from "@/components/shares/loader/my-dialog";
 
 /****************************************************
- *  MAIN FUNCTION
+ *                 MAIN FUNCTION
  */
 const SignUp = () => {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const { isLoading, isSuccess, error } = useAppSelector((state) => state.auth);
+  const [finish, setFinish] = useState<boolean>(false);
+
+  const signupNewMember = (body: IAuthForm) => {
+    dispatch(asyncSignup(body));
+  };
+
+  // Toggle
+  const handleToggleDialogState = () => {
+    dispatch(clearErrorAndLoadingState());
+  };
+
+  useEffect(() => {
+    // Switch to the success page when signup is successfull
+    if (isSuccess) {
+      router.push("/auth/success");
+    }
+  });
+
   return (
     <DefaultLayout title="signup page">
-      <Box
-        sx={{
-          width: "100%",
-          height: "100vh",
-          position: "relative",
-        }}
-      >
+      <>
+        <MyDialog
+          isShow={error ? true : false}
+          type="MODAL"
+          title={error ? error.error : ""}
+          description={
+            error
+              ? Array.isArray(error.message)
+                ? error.message.join()
+                : error.message
+              : "-"
+          }
+          toggleDialogState={handleToggleDialogState}
+        />
+
         <Box
           sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: {xs: '70%', md: '35%'},
+            width: "100%",
+            height: "100vh",
+            position: "relative",
           }}
         >
-          <Typography
+          <Box
             sx={{
-              mt: 2,
-              fontWeight: "900",
-              fontSize: { xs: '1.5rem', md: '2rem', lg: '2.5rem' },
-              textAlign: "center",
-              marginBottom: "5rem",
-            }}
-            variant="h2"
-            component={motion.div}
-            initial={{ y: 0, opacity: 0 }}
-            animate={{ y: [50, -50, 0], opacity: 1 }}
-            exit={{ x: 0 }}
-            transition={{
-              dealy: 1,
-              ease: "linear",
-              duration: 1,
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: { xs: "70%", md: "35%" },
             }}
           >
-            {`Signup to Join Us`}
-          </Typography>
+            <Typography
+              sx={{
+                mt: 2,
+                fontWeight: "900",
+                fontSize: { xs: "1.5rem", md: "2rem", lg: "2.5rem" },
+                textAlign: "center",
+                marginBottom: "5rem",
+              }}
+              variant="h2"
+              component={motion.div}
+              initial={{ y: 0, opacity: 0 }}
+              animate={{ y: [50, -50, 0], opacity: 1 }}
+              exit={{ x: 0 }}
+              transition={{
+                dealy: 1,
+                ease: "linear",
+                duration: 1,
+              }}
+              onClick={() => setFinish(!finish)}
+            >
+              {`Signup to Join Us`}
+            </Typography>
 
-          <AuthForm authType="SIGNUP" />
+            <AuthForm
+              authType="SIGNUP"
+              signupNewMember={signupNewMember}
+              isLoading={isLoading}
+              isSuccess={isSuccess}
+            />
+          </Box>
         </Box>
-      </Box>
+      </>
     </DefaultLayout>
   );
 };

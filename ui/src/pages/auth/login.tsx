@@ -13,11 +13,11 @@ type Props = {};
 /****************************************************
  *  MAIN FUNCTION
  */
-const SignIn = (props: Props) => {
+const Login = (props: Props) => {
   const isDesktop = useMediaQuery("(min-width: 900px)");
 
   return (
-    <BlankLayout title="signin page">
+    <BlankLayout title="Login page">
       <Box
         sx={{
           width: "100%",
@@ -40,4 +40,4 @@ const SignIn = (props: Props) => {
   );
 };
 
-export default SignIn;
+export default Login;

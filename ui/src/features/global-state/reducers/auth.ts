@@ -1,31 +1,27 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { IAuth, IAuthForm } from "@/features/types";
+import { IAuth, IAuthForm, IErorrResponseData } from "@/features/types";
 import { http } from "@/features/services/http";
 import { AxiosError } from "axios";
-import { getHttpErrorMessage } from "@/features/services/errors";
-
-interface IErrorMessage {
-  message: string;
-}
+import { getHttpErrorObject } from "@/features/services/errors";
 
 const initialState: IAuth = {
   user: null,
   profile: null,
   access_token: "",
-  error: "",
+  error: null,
   isLoading: false,
   isSuccess: false,
 };
 
-/*************************
- *  Async method
- */
+/***************************************************************
+ *                Asynchronous Method
+ **************************************************************/
 export const asyncSignup = createAsyncThunk<
   IAuth,
   IAuthForm,
   {
-    rejectValue: IErrorMessage;
+    rejectValue: IErorrResponseData;
   }
 >("auth/asyncSignup", async (body, thunkApi) => {
   const controller = new AbortController();
@@ -33,8 +29,7 @@ export const asyncSignup = createAsyncThunk<
 
   try {
     const response = await http.post(
-      // `${process.env.NEXT_PUBLIC_API_URL}/auth/user/signup`,
-      `${process.env.NEXT_PUBLIC_API_URL}/auth/user/signup`,
+      `/auth/user/signup`,
       {
         email,
         password,
@@ -50,21 +45,30 @@ export const asyncSignup = createAsyncThunk<
     controller.abort();
     return response.data;
   } catch (error) {
-    const errMsg = getHttpErrorMessage(error as AxiosError);
-    return thunkApi.rejectWithValue({ message: errMsg } as IErrorMessage);
+    const errObj = getHttpErrorObject(error as AxiosError);
+    return thunkApi.rejectWithValue(errObj as IErorrResponseData);
   }
 });
 
+/***************************************************************
+ *              Create a slice of rducer
+ **************************************************************/
 export const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    clearErrorAndLoadingState: (state) => {
+      state.isLoading = false;
+      state.isSuccess = false;
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
-   /**********************************
-    *    SIGNUP
-    */
+    /**********************************
+     *    SIGNUP
+     */
     builder.addCase(asyncSignup.pending, (state, { payload }) => {
-      state.error = "";
+      state.error = null;
       state.isLoading = true;
       state.isSuccess = false;
     });
@@ -75,15 +79,15 @@ export const authSlice = createSlice({
       state.access_token = payload.access_token;
     });
     builder.addCase(asyncSignup.rejected, (state, action) => {
-      console.log("Error on rejected", action.payload);
+      // console.log("Error on rejected", action.payload);
 
-      state.error = action.payload?.message;
+      state.error = action.payload ? action.payload : null;
       state.isLoading = false;
       state.isSuccess = false;
     });
   },
 });
 
-// export const {} = authSlice.actions;
+export const { clearErrorAndLoadingState } = authSlice.actions;
 
 export default authSlice.reducer;

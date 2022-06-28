@@ -11,8 +11,8 @@ interface IProps {
 
 const DefautLayout = ({ children, title, description }: IProps) => {
   const handleToggleDialog = () => {
-    console.log('Ok backdrop is close')
-  }
+    console.log("Ok backdrop is close");
+  };
 
   return (
     <>
@@ -22,9 +22,11 @@ const DefautLayout = ({ children, title, description }: IProps) => {
         <meta name={title} content={description ? description : ""} />
       </Head>
 
-      <MyDialog isShow={true} type="MODAL"
+      {/* <MyDialog
+        isShow={true}
+        type="MODAL"
         handleToggleDialog={handleToggleDialog}
-      />
+      /> */}
 
       <TopNavigation />
       <main>{children}</main>

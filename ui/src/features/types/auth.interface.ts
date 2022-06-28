@@ -1,3 +1,5 @@
+import { IErorrResponseData } from "@/features/types";
+
 export enum UserType {
   GUEST,
   USER,
@@ -30,7 +32,7 @@ export interface IAuth {
   user?: IAuthPayload | null;
   profile?: IProfile | null;
   access_token?: string;
-  error?: string;
+  error?: IErorrResponseData | null;
   isLoading: boolean;
   isSuccess: boolean;
 }

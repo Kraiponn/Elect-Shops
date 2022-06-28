@@ -3,21 +3,47 @@ import React from "react";
 // Materials components
 import { Box, Typography } from "@mui/material";
 
+// Global state
+import {
+  useAppSelector,
+  useAppDispatch,
+} from "@/features/hooks/use-global-state";
+import {
+  asyncSignup,
+  clearErrorAndLoadingState,
+} from "@/features/global-state/reducers/auth";
+import { IAuthForm } from "@/features/types";
+
 // Animate effects
 import { motion } from "framer-motion";
+
+// Components
 import AuthForm from "@/components/auth/auth-form";
-import { clPrimary } from "@/features/const/colors";
 
-type Props = {};
+/****************************************************
+ *                MAIN FUNCTION
+ */
+const RightSide = () => {
+  const dispatch = useAppDispatch();
+  const { isLoading, isSuccess, user, error } = useAppSelector(
+    (state) => state.auth
+  );
 
-const RightSide = (props: Props) => {
+  const handleLogin = (body: IAuthForm) => {
+    dispatch(asyncSignup(body));
+  };
+
+  // Toggle
+  const handleToggleDialogState = () => {
+    dispatch(clearErrorAndLoadingState());
+  };
+
   return (
     <Box
       sx={{
         position: "relative",
         height: "100vh",
         width: "100%",
-        // bgcolor: "#fdfeff",
         p: 2,
       }}
     >
@@ -27,7 +53,7 @@ const RightSide = (props: Props) => {
           left: "50%",
           top: "50%",
           transform: "translate(-50%, -50%)",
-          width: {xs: '70%', md: '55%'},
+          width: { xs: "70%", md: "55%" },
         }}
       >
         <Typography
@@ -51,7 +77,12 @@ const RightSide = (props: Props) => {
           {`SignIn`}
         </Typography>
 
-        <AuthForm authType="SIGNIN" />
+        <AuthForm
+          authType="LOGIN"
+          signupNewMember={handleLogin}
+          isLoading={isLoading}
+          isSuccess={isSuccess}
+        />
       </Box>
     </Box>
   );

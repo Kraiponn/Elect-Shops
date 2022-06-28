@@ -1,26 +1,31 @@
 import { AxiosError } from "axios";
+import { IErorrResponseData } from "@/features/types";
 
-interface IErorrResponseData {
-  statusCode: number;
-  message: string | string[];
-  error: string;
-}
-
-export const getHttpErrorMessage = (error: AxiosError) => {
+export const getHttpErrorObject = (error: AxiosError) => {
   if (error.response) {
     console.log("RESPONSE ERROR", error.response.data);
     // console.log(error.response.status);
     // console.log(error.response.headers);
 
-    return errorResponseCase(error.response.data as IErorrResponseData);
+    /*****************************************
+     * error.response.data =>
+     * {
+     *    error: string;
+     *    message: string | string[]
+     *    statusCode: number;
+     * }
+     ****************************************/
+
+    // return errorResponseCase(error.response.data as IErorrResponseData);
+    return error.response.data as IErorrResponseData;
   } else if (error.request) {
     console.log("REQUEST ERROR", error.request);
 
-    return error.request;
+    return error.request as string;
   } else {
     console.log("My Error", error.message);
 
-    return error.message;
+    return error.message as string;
   }
 };
 

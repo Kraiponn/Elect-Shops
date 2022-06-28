@@ -11,10 +11,10 @@ interface IProps {
   type: "MODAL" | "LOADING";
   title?: string;
   description?: string;
-  handleToggleDialog: () => void
+  toggleDialogState: () => void;
 }
 
-const MyDialog = ({ type, isShow, title, description, handleToggleDialog }: IProps) => {
+const MyDialog = ({ type, isShow, title, description, toggleDialogState }: IProps) => {
   return isShow ? (
     <Box
       sx={{
@@ -24,12 +24,12 @@ const MyDialog = ({ type, isShow, title, description, handleToggleDialog }: IPro
         left: 0,
         top: 0,
         zIndex: 100,
-        background: "rgba(0, 0, 0, 0.92)",
+        background: "rgba(0, 0, 0, 0.79)",
       }}
-      onClick={() => handleToggleDialog()}
+      onClick={() => toggleDialogState()}
     >
       {type === "MODAL" ? (
-        <MyModal type="ERROR" title="hi!, Kraipon" description="Welcome back to code maker lab." />
+        <MyModal type="ERROR" title={title} description={description} />
       ) : (
         <LoadingDialog />
       )}

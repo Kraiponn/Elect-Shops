@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 
+// Material design components
 import {
   Box,
   Button,
@@ -10,29 +11,23 @@ import {
   Typography,
 } from "@mui/material";
 
+// Form validation
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 import { motion } from "framer-motion";
+
+// Components
+import { IAuthForm } from "@/features/types";
 import EmailInput from "@/components/shares/ui/email-input";
 import PasswordInput from "@/components/shares/ui/password-input";
 
-// Global state
-import {
-  useAppSelector,
-  useAppDispatch,
-} from "@/features/hooks/use-global-state";
-import { asyncSignup } from "@/features/global-state/reducers/auth";
-import { IAuthForm } from "@/features/types";
-
-// export interface IAuthForm {
-//   email?: string;
-//   password: string;
-// }
-
-interface IPageProps {
+interface IProps {
   authType: "LOGIN" | "SIGNUP";
+  signupNewMember: (body: IAuthForm) => void;
+  isLoading: boolean;
+  isSuccess: boolean;
 }
 
 interface IPwdInputBox {
@@ -54,18 +49,19 @@ const schema = yup
   .required();
 
 /****************************************************
- *  MAIN FUNCTION
+ *                  MAIN FUNCTION
  */
-const AuthForm = ({ authType }: IPageProps) => {
+const AuthForm = ({
+  authType,
+  signupNewMember,
+  isLoading,
+  isSuccess,
+}: IProps) => {
   const router = useRouter();
 
   const [values, setValues] = useState<IPwdInputBox>({
     showPassword: false,
   });
-  const dispatch = useAppDispatch();
-  const { isLoading, isSuccess, user, error } = useAppSelector(
-    (state) => state.auth
-  );
 
   const {
     handleSubmit,
@@ -91,8 +87,7 @@ const AuthForm = ({ authType }: IPageProps) => {
 
   // Form submit
   const onSubmit: SubmitHandler<IAuthForm> = (body) => {
-    // console.log(body);
-    dispatch(asyncSignup(body));
+    signupNewMember(body);
   };
 
   const goToAuthPage = () => {
@@ -156,7 +151,7 @@ const AuthForm = ({ authType }: IPageProps) => {
         >
           <Button sx={{ py: 1 }} type="submit" variant="contained" fullWidth>
             {isLoading ? (
-              <CircularProgress size={'1.5rem'} color="inherit" />
+              <CircularProgress size={"1.5rem"} color="inherit" />
             ) : (
               `Submit`
             )}

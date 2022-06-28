@@ -3,17 +3,21 @@
   top: 50%;
   left: 50%;
   z-index: 999;
+  width: 50%;
+  height: auto;
   --wekit-transform: translate(-50%, -50%) scale(0);
   transform: translate(-50%, -50%) scale(0);
-  
+
   background: white;
   padding: 0.7rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
   border-radius: 0.7rem;
   opacity: 0;
-  
+
   animation-name: animate;
-  animation-delay: 1s;
-  animation-duration: .5s;
+  animation-delay: 0.7s;
+  animation-duration: 0.5s;
   animation-fill-mode: forwards;
 }
 
