@@ -11,6 +11,7 @@ import { wrapper } from "@/features/global-state";
 
 import "@/assets/styles/globals.css";
 import "react-toastify/dist/ReactToastify.css";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();

@@ -1,6 +1,7 @@
 import React from "react";
 import Head from "next/head";
 import TopNavigation from "@/components/shares/navigates/top-navigation";
+import MyDialog from "@/components/shares/loader/my-dialog";
 
 interface IProps {
   children: React.ReactNode;
@@ -9,6 +10,10 @@ interface IProps {
 }
 
 const DefautLayout = ({ children, title, description }: IProps) => {
+  const handleToggleDialog = () => {
+    console.log('Ok backdrop is close')
+  }
+
   return (
     <>
       <Head>
@@ -16,6 +21,10 @@ const DefautLayout = ({ children, title, description }: IProps) => {
         <title>{title}</title>
         <meta name={title} content={description ? description : ""} />
       </Head>
+
+      <MyDialog isShow={true} type="MODAL"
+        handleToggleDialog={handleToggleDialog}
+      />
 
       <TopNavigation />
       <main>{children}</main>
