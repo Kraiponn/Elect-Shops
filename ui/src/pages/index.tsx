@@ -1,6 +1,8 @@
 import type { GetStaticProps, NextPage } from "next";
 import { Container } from "@mui/material";
 
+import Cookies from "js-cookie";
+
 // Components
 import DefautLayout from "@/components/shares/layouts/defaut-layout";
 

@@ -11,10 +11,10 @@ import {
   useAppDispatch,
 } from "@/features/hooks/use-global-state";
 import {
-  asyncSignup,
+  asyncAuth,
   clearErrorAndLoadingState,
 } from "@/features/global-state/reducers/auth";
-import { IAuthForm } from "@/features/types";
+import { IAuthForm, IAuthInput } from "@/features/types";
 
 // Components
 import DefaultLayout from "@/components/shares/layouts/defaut-layout";
@@ -30,8 +30,14 @@ const SignUp = () => {
   const { isLoading, isSuccess, error } = useAppSelector((state) => state.auth);
   const [finish, setFinish] = useState<boolean>(false);
 
-  const signupNewMember = (body: IAuthForm) => {
-    dispatch(asyncSignup(body));
+  const handleSignup = ({ email, password }: IAuthForm) => {
+    const values: IAuthInput = {
+      authType: 'SIGNUP',
+      email,
+      password
+    }
+
+    dispatch(asyncAuth(values));
   };
 
   // Toggle
@@ -104,7 +110,7 @@ const SignUp = () => {
 
             <AuthForm
               authType="SIGNUP"
-              signupNewMember={signupNewMember}
+              handleAuth={handleSignup}
               isLoading={isLoading}
               isSuccess={isSuccess}
             />

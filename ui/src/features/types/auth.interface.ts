@@ -42,6 +42,12 @@ export interface IAuthForm {
   password: string;
 }
 
+export interface IAuthInput {
+  authType: "SIGNUP" | "LOGIN";
+  email: string;
+  password: string;
+}
+
 export interface IAuthState {
   isLoading: boolean;
   isSuccess: boolean;

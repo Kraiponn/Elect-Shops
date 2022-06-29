@@ -76,10 +76,17 @@ export class UserController {
 
     // Set the secure cookie with httpOnly flag
     res.cookie('refresh_token', resp.refresh_token, { httpOnly: true });
-    delete resp.refresh_token;
+    // delete resp.refresh_token;
+
+    const { sub, email, role, access_token } = resp;
 
     return {
-      ...resp,
+      user: {
+        sub,
+        email,
+        role,
+      },
+      access_token,
     };
   }
 

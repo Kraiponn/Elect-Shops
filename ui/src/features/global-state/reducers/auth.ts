@@ -1,9 +1,11 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { IAuth, IAuthForm, IErorrResponseData } from "@/features/types";
+import { IAuth, IAuthInput, IErorrResponseData } from "@/features/types";
 import { http } from "@/features/services/http";
 import { AxiosError } from "axios";
 import { getHttpErrorObject } from "@/features/services/errors";
+
+import Cookies from "js-cookie";
 
 const initialState: IAuth = {
   user: null,
@@ -17,19 +19,21 @@ const initialState: IAuth = {
 /***************************************************************
  *                Asynchronous Method
  **************************************************************/
-export const asyncSignup = createAsyncThunk<
+
+//######### Signup And Login
+export const asyncAuth = createAsyncThunk<
   IAuth,
-  IAuthForm,
+  IAuthInput,
   {
     rejectValue: IErorrResponseData;
   }
->("auth/asyncSignup", async (body, thunkApi) => {
+>("auth/asyncAuth", async (body, thunkApi) => {
   const controller = new AbortController();
-  const { email, password } = body;
+  const { authType, email, password } = body;
 
   try {
     const response = await http.post(
-      `/auth/user/signup`,
+      authType === "LOGIN" ? `/auth/user/signin` : `/auth/user/signup`,
       {
         email,
         password,
@@ -61,29 +65,38 @@ export const authSlice = createSlice({
       state.isLoading = false;
       state.isSuccess = false;
       state.error = null;
+
+      Cookies.remove("access_token");
+      Cookies.remove("user");
     },
   },
   extraReducers: (builder) => {
     /**********************************
      *    SIGNUP
      */
-    builder.addCase(asyncSignup.pending, (state, { payload }) => {
+    builder.addCase(asyncAuth.pending, (state, { payload }) => {
       state.error = null;
       state.isLoading = true;
       state.isSuccess = false;
     });
-    builder.addCase(asyncSignup.fulfilled, (state, { payload }) => {
+    builder.addCase(asyncAuth.fulfilled, (state, { payload }) => {
       state.isSuccess = true;
       state.isLoading = false;
       state.user = payload.user;
       state.access_token = payload.access_token;
+
+      Cookies.set("access_token", payload.access_token as string);
+      Cookies.set("user", JSON.stringify(payload.user));
     });
-    builder.addCase(asyncSignup.rejected, (state, action) => {
+    builder.addCase(asyncAuth.rejected, (state, action) => {
       // console.log("Error on rejected", action.payload);
 
       state.error = action.payload ? action.payload : null;
       state.isLoading = false;
       state.isSuccess = false;
+
+      Cookies.remove("access_token");
+      Cookies.remove("user");
     });
   },
 });

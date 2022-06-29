@@ -25,7 +25,7 @@ import PasswordInput from "@/components/shares/ui/password-input";
 
 interface IProps {
   authType: "LOGIN" | "SIGNUP";
-  signupNewMember: (body: IAuthForm) => void;
+  handleAuth: (body: IAuthForm) => void;
   isLoading: boolean;
   isSuccess: boolean;
 }
@@ -53,7 +53,7 @@ const schema = yup
  */
 const AuthForm = ({
   authType,
-  signupNewMember,
+  handleAuth,
   isLoading,
   isSuccess,
 }: IProps) => {
@@ -87,7 +87,7 @@ const AuthForm = ({
 
   // Form submit
   const onSubmit: SubmitHandler<IAuthForm> = (body) => {
-    signupNewMember(body);
+    handleAuth(body);
   };
 
   const goToAuthPage = () => {
