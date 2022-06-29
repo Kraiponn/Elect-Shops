@@ -49,6 +49,19 @@ export const asyncAuth = createAsyncThunk<
     controller.abort();
     return response.data;
   } catch (error) {
+    const err = error as AxiosError;
+    // console.log("My error", error as AxiosError);
+
+    if (err.code === "ERR_NETWORK") {
+      const errObj = {
+        error: "Invalid connection",
+        message: "No internet(network) connection or api url is incorrect.",
+        statusCode: 500,
+      };
+
+      return thunkApi.rejectWithValue(errObj as IErorrResponseData);
+    }
+
     const errObj = getHttpErrorObject(error as AxiosError);
     return thunkApi.rejectWithValue(errObj as IErorrResponseData);
   }
@@ -66,8 +79,8 @@ export const authSlice = createSlice({
       state.isSuccess = false;
       state.error = null;
 
-      Cookies.remove("access_token");
-      Cookies.remove("user");
+      // Cookies.remove("access_token");
+      // Cookies.remove("user");
     },
   },
   extraReducers: (builder) => {
@@ -85,8 +98,12 @@ export const authSlice = createSlice({
       state.user = payload.user;
       state.access_token = payload.access_token;
 
-      Cookies.set("access_token", payload.access_token as string);
-      Cookies.set("user", JSON.stringify(payload.user));
+      Cookies.set("access_token", payload.access_token as string, {
+        expires: 7,
+      });
+      Cookies.set("user", JSON.stringify(payload.user), {
+        expires: 7,
+      });
     });
     builder.addCase(asyncAuth.rejected, (state, action) => {
       // console.log("Error on rejected", action.payload);
@@ -95,8 +112,8 @@ export const authSlice = createSlice({
       state.isLoading = false;
       state.isSuccess = false;
 
-      Cookies.remove("access_token");
-      Cookies.remove("user");
+      // Cookies.remove("access_token");
+      // Cookies.remove("user");
     });
   },
 });

@@ -32,6 +32,20 @@ export class UserController {
     private readonly configService: ConfigService,
   ) {}
 
+  @Get('/get-cookie')
+  async getCookie(
+    @Res({ passthrough: true }) res: Response,
+    // @Body() body: AuthDto,
+  ) {
+    // Set the secure cookie with httpOnly flag
+    res.cookie('refresh_token', 'Hello Cookie', { httpOnly: true });
+    // delete resp.refresh_token;
+
+    return {
+      access_token: 'Hello access token',
+    };
+  }
+
   /********************************
    * desc      Register new member
    * route     Post /v2/api/auth/user/signup

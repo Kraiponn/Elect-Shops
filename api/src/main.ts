@@ -14,12 +14,17 @@ async function bootstrap() {
   const appMode = configService.get<string>('NODE_ENV') || 'development';
 
   // Middlewares config
+  // app.enableCors();
   if (appMode === 'development') {
     app.enableCors();
   } else {
     app.enableCors({
       credentials: true,
-      origin: ['http://localhost:8000', 'http://localhost:3000'],
+      origin: [
+        'http://localhost:8000',
+        'http://localhost:3000',
+        'http://localhost:5000',
+      ],
     });
   }
 

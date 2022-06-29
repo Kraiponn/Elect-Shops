@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 
 // Materials components
-import { Box, Typography } from "@mui/material";
+import { Box, IconButton, Tooltip, Typography } from "@mui/material";
+import HomeIcon from "@mui/icons-material/Home";
 
 // Global state
 import {
@@ -26,7 +27,7 @@ import MyDialog from "@/components/shares/loader/my-dialog";
  *                MAIN FUNCTION
  */
 const RightSide = () => {
-  const router = useRouter()
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const { isLoading, isSuccess, user, error } = useAppSelector(
     (state) => state.auth
@@ -34,10 +35,10 @@ const RightSide = () => {
 
   const handleLogin = ({ email, password }: IAuthForm) => {
     const values: IAuthInput = {
-      authType: 'LOGIN',
+      authType: "LOGIN",
       email,
-      password
-    }
+      password,
+    };
     dispatch(asyncAuth(values));
   };
 
@@ -47,8 +48,10 @@ const RightSide = () => {
   };
 
   useEffect(() => {
-    // Switch to the home page 
+    // Switch to the home page
     if (isSuccess) {
+      dispatch(clearErrorAndLoadingState());
+
       router.push("/");
     }
   });
@@ -77,6 +80,22 @@ const RightSide = () => {
           p: 2,
         }}
       >
+        <Tooltip title={`home page`} placement="bottom" arrow>
+          <IconButton
+            sx={{
+              position: "absolute",
+              right: 0,
+              top: 0,
+              padding: "2rem",
+            }}
+            // size="small"
+            color="inherit"
+            onClick={() => router.push("/")}
+          >
+            <HomeIcon fontSize="large" color="inherit" />
+          </IconButton>
+        </Tooltip>
+
         <Box
           sx={{
             position: "absolute",
@@ -104,7 +123,7 @@ const RightSide = () => {
               duration: 1,
             }}
           >
-            {`SignIn`}
+            {`Log In`}
           </Typography>
 
           <AuthForm
