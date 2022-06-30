@@ -30,14 +30,14 @@ const arr = [
   "Code Maker Lab",
   "Code Maker Lab",
   "Code Maker Lab",
-]
+];
 
 const AccountListMenu = () => {
   const handleComponents = () => {
     return arr.map((str, index) => {
-      return (<div key={index}>{`${index}:${str}`}</div>)
-    })
-  }
+      return <div key={index}>{`${index}:${str}`}</div>;
+    });
+  };
 
   return (
     <>
@@ -45,43 +45,46 @@ const AccountListMenu = () => {
         className="account_list_menu"
         component="div"
         sx={{
-          visibility: 'hidden',
-          width: '15rem',
-          height: '20rem',
-          backgroundColor: clGrayBlackDark,
-          color: 'white',
-          fontSize: '1rem',
-          borderRadius: '.5rem',
-          // overflowY: 'auto',
-          padding: '.5rem',
-          textAlign: 'left',
-          boxShadow: '0 .2rem .2rem black',
+          visibility: "hidden",
+          width: "15rem",
+          background: "rgba(255, 255, 255, 1)",
+          color: "black",
+          fontSize: ".89rem",
+          borderRadius: ".2rem",
+          padding: ".5rem",
+          textAlign: "left",
+          boxShadow: "0 0 .2rem black",
+          borderTop: "transparent",
 
-          position: 'absolute',
-          top: '105%',
-          left: '50%',
+          position: "absolute",
+          top: "150%",
+          left: "50%",
           zIndex: 1300,
-          marginLeft: '-7.5rem',
+          marginLeft: "-7.5rem",
 
           opacity: 0,
-          transform: 'scale(0)',
-          transition: "opacity 1s, transform .45s",
+          transform: "scale(0)",
+          transition: "opacity .75s, transform .3s",
 
-          "&::after": {
-            content: '""',
-            position: 'absolute',
-            bottom: '100%',
-            left: '50%',
-            zIndex: '1300',
-            marginLeft: '-0.75rem',
-            borderWidth: '0.75rem',
-            borderStyle: 'solid',
-            borderColor: `transparent transparent ${clGrayBlackDark} transparent`,
-          }
-        }}>
-        <Box sx={{
-          overflowY: 'auto'
-        }}>
+          // "&::after": {
+          //   content: '""',
+          //   position: "absolute",
+          //   bottom: "100%",
+          //   left: "50%",
+          //   zIndex: "1300",
+          //   marginLeft: "-0.75rem",
+          //   borderWidth: ".75rem",
+          //   borderStyle: "inherit",
+          //   borderColor: `transparent transparent white transparent`,
+          // },
+        }}
+      >
+        <Box
+          sx={{
+            height: "20rem",
+            overflowY: "auto",
+          }}
+        >
           {handleComponents()}
         </Box>
       </Box>
