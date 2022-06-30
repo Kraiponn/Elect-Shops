@@ -2,7 +2,7 @@ import React from 'react'
 import { useRouter } from 'next/router'
 
 import { Badge, Box, IconButton, Toolbar, Typography } from '@mui/material'
-import { motion } from 'framer-motion'
+import { motion, transform } from 'framer-motion'
 import { clYellowMain } from '@/features/const/colors'
 
 // Icons
@@ -11,9 +11,12 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
+// Global state
+import { useAppSelector } from '@/features/hooks/use-global-state'
+
 // Components
 import SearchBox from "@/components/shares/ui/search-box";
-import AccountListMenu from "@/components/shares/navigates/account-list";
+import AccountListMenu from "@/components/shares/navigates/account/account-list";
 import TextButton from "@/components/shares/navigates/text-button";
 
 interface IProps {
@@ -22,6 +25,7 @@ interface IProps {
 
 const DesktopNav = (props: IProps) => {
   const router = useRouter()
+  const { user } = useAppSelector(state => state.auth)
 
   return (
     <Toolbar>
@@ -55,18 +59,32 @@ const DesktopNav = (props: IProps) => {
         </Badge>
       </IconButton>
 
-      <IconButton color="inherit">
-        <Badge badgeContent={1} color="secondary">
-          <NotificationsIcon color="inherit" />
-        </Badge>
-      </IconButton>
+      {user ? (
+        <IconButton color="inherit">
+          <Badge badgeContent={1} color="secondary">
+            <NotificationsIcon color="inherit" />
+          </Badge>
+        </IconButton>)
+        : null}
 
       <Box sx={{
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
       }}>
-        <IconButton size="large" color="inherit">
+        <IconButton
+          sx={{
+            position: 'relative',
+            display: 'inline-block',
+            "&:hover": {
+              ".account_list_menu": {
+                opacity: 1,
+                visibility: 'visible',
+                transform: 'scale(1.2)',
+              }
+            }
+          }}
+          size="large" color="inherit">
           <AccountCircleRoundedIcon
             sx={{
               fontSize: "2rem",
@@ -74,19 +92,22 @@ const DesktopNav = (props: IProps) => {
           />
           <AccountListMenu />
         </IconButton>
-        <TextButton
-          label={`Log In`}
-          OnClick={() => router.push('/auth/login')}
-        />
 
-        <Typography variant="h5" sx={{ p: 1 }}>
-          |
-        </Typography>
+        {!user && (<>
+          <TextButton
+            label={`Log In`}
+            OnClick={() => router.push('/auth/login')}
+          />
 
-        <TextButton
-          label={`Sign Up`}
-          OnClick={() => router.push('/auth/signup')}
-        />
+          <Typography variant="h5" sx={{ p: 1 }}>
+            |
+          </Typography>
+
+          <TextButton
+            label={`Sign Up`}
+            OnClick={() => router.push('/auth/signup')}
+          />
+        </>)}
       </Box>
     </Toolbar>
   )
