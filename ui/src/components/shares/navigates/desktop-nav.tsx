@@ -15,9 +15,9 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useAppSelector } from '@/features/hooks/use-global-state'
 
 // Components
-import SearchBox from "@/components/shares/ui/search-box";
-import AccountListMenu from "@/components/shares/navigates/account/account-list";
 import TextButton from "@/components/shares/navigates/text-button";
+import SearchBox from "@/components/shares/ui/search-box";
+import AccountSubListMenu from "@/components/shares/navigates/sub-menu/list-menu";
 
 interface IProps {
 
@@ -32,21 +32,11 @@ const DesktopNav = (props: IProps) => {
       <HomeIcon fontSize='large' />
       <Typography
         variant="h5"
-        component={motion.div}
         sx={{
           ml: 1,
           flexGrow: 1, cursor: "pointer",
         }}
         onClick={() => router.push("/")}
-        whileHover={{
-          scale: 1.009,
-          color: clYellowMain,
-          transition: {
-            ease: "linear",
-            duration: 0.3,
-            yoyo: Infinity,
-          },
-        }}
       >
         {`CML SHOP`}
       </Typography>
@@ -76,6 +66,7 @@ const DesktopNav = (props: IProps) => {
           sx={{
             position: 'relative',
             display: 'inline-block',
+            zIndex: 1300,
             "&:hover": {
               ".account_list_menu": {
                 opacity: 1,
@@ -84,13 +75,14 @@ const DesktopNav = (props: IProps) => {
               }
             }
           }}
-          size="large" color="inherit">
+          size="large"
+          color="inherit">
           <AccountCircleRoundedIcon
             sx={{
               fontSize: "2rem",
             }}
           />
-          <AccountListMenu />
+          <AccountSubListMenu />
         </IconButton>
 
         {!user && (<>
