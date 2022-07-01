@@ -1,20 +1,18 @@
 import * as React from "react";
 
-// Material
+// Material design
 import {
   Box,
   AppBar,
   useMediaQuery,
 } from "@mui/material";
 
-// Icons
-
 // Components
-import DesktopNav from "@/components/shares/navigates/desktop-nav";
-import MobileNav from "@/components/shares/navigates/mobile-nav";
+import DesktopNav from "@/components/shares/navigates/main/desktop-nav";
+import MobileNav from "@/components/shares/navigates/main/mobile-nav";
 
 /****************************************************
- *  MAIN FUNCTION
+ *                  MAIN FUNCTION
  */
 const TopNavigation = () => {
   const isDesktop = useMediaQuery("(min-width: 900px)");

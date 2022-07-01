@@ -1,6 +1,6 @@
 import React from "react";
 import Head from "next/head";
-import TopNavigation from "@/components/shares/navigates/top-navigation";
+import TopNavigation from "@/components/shares/navigates/main/top-navigation";
 import MyDialog from "@/components/shares/loader/my-dialog";
 
 interface IProps {
