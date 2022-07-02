@@ -2,41 +2,13 @@ import React from "react";
 
 // Material design
 import { IconButton, keyframes } from "@mui/material";
-import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 
 // Components
-import AccountSubListMenu from "@/components/shares/navigates/main/list-menu";
+import DropdownMenu from "@/components/shares/navigates/main/dropdown-menu";
+import ListAccountMenu from '@/components/shares/navigates/main/account/menu-list'
 
 type Props = {};
-
-const arr = [
-  "Code Maker Lab",
-  "Code Maker Lab",
-  "Code Maker Lab",
-  "Code Maker Lab",
-  "Code Maker Lab",
-  "Code Maker Lab",
-  "Code Maker Lab",
-  "Code Maker Lab",
-  "Code Maker Lab",
-  "Code Maker Lab",
-  "Code Maker Lab",
-  "Code Maker Lab",
-  "Code Maker Lab",
-  "Code Maker Lab",
-  "Code Maker Lab",
-  "Code Maker Lab",
-  "Code Maker Lab",
-  "Code Maker Lab",
-  "Code Maker Lab",
-  "Code Maker Lab",
-  "Code Maker Lab",
-  "Code Maker Lab",
-  "Code Maker Lab",
-  "Code Maker Lab",
-  "Code Maker Lab",
-  "Code Maker Lab",
-];
 
 const dropDownMenuAnimate = keyframes`
   0% {
@@ -60,20 +32,14 @@ const dropDownMenuAnimate = keyframes`
  *                MAIN METHOD                  *
  **********************************************/
 const AccountMenu = (props: Props) => {
-  const handleComponents = () => {
-    return arr.map((str, index) => {
-      return <div key={index}>{`${index}:${str}`}</div>;
-    });
-  };
 
   return (
     <IconButton
       color="inherit"
-      size="large"
       sx={{
         position: "relative",
         display: "inline-block",
-        zIndex: 1500,
+        mx: 1,
         "&:hover": {
           ".account_list_menu": {
             visibility: "visible",
@@ -83,12 +49,16 @@ const AccountMenu = (props: Props) => {
       }}
     >
       <>
-        <AccountCircleRoundedIcon
+        <ManageAccountsIcon
+          color="inherit"
+          fontSize="large"
           sx={{
-            fontSize: "2rem",
+            mt: 1,
           }}
         />
-        <AccountSubListMenu data={arr} />
+        <DropdownMenu>
+          <ListAccountMenu />
+        </DropdownMenu>
       </>
     </IconButton>
   );

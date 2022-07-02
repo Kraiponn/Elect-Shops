@@ -13,7 +13,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 // Components
 import SearchBox from "@/components/shares/ui/search-box";
-import AccountListMenu from "@/components/shares/navigates/main/list-menu";
+import AccountListMenu from "@/components/shares/navigates/main/dropdown-menu";
 import TextButton from "@/components/shares/navigates/text-button";
 
 interface IProps {

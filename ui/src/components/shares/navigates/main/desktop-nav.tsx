@@ -16,7 +16,7 @@ import TextButton from "@/components/shares/navigates/main/text-button";
 import SearchBox from "@/components/shares/ui/search-box";
 import AccountMenu from "@/components/shares/navigates/main/account";
 
-interface IProps {}
+interface IProps { }
 
 const DesktopNav = (props: IProps) => {
   const router = useRouter();
@@ -53,7 +53,7 @@ const DesktopNav = (props: IProps) => {
         </IconButton>
       ) : null}
 
-      <AccountMenu />
+      {!user ? (<AccountMenu />) : null}
 
       <Box
         sx={{

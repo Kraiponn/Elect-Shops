@@ -1,22 +1,16 @@
 import * as React from "react";
-import Image from "next/image";
 
+// Material design
 import { Box } from "@mui/material";
-import Logo from "@/assets/images/doctor.svg";
 
 interface IProps {
-  data: string[];
+  children: React.ReactNode;
 }
 
 /***********************************************
  *              MAIN METHOD
  */
-const ListMenu = ({ data }: IProps) => {
-  const handleComponents = () => {
-    return data.map((str, index) => {
-      return <div key={index}>{`${index}:${str}`}</div>;
-    });
-  };
+const DropdownMenu = ({ children }: IProps) => {
 
   return (
     <>
@@ -37,8 +31,8 @@ const ListMenu = ({ data }: IProps) => {
           top: "100%",
           right: "0",
           zIndex: 1502,
-          width: "14rem",
-          marginLeft: "-7rem",
+          width: "16rem",
+          marginLeft: "-7.5rem",
 
           opacity: 0,
           transform: "scale(0)",
@@ -48,8 +42,8 @@ const ListMenu = ({ data }: IProps) => {
             content: '""',
             position: "absolute",
             bottom: "100%",
-            left: "88%",
-            zIndex: 1309,
+            left: "89%",
+            zIndex: 1509,
             marginLeft: "-0.75rem",
             borderWidth: "0.75rem",
             borderStyle: "solid",
@@ -63,27 +57,14 @@ const ListMenu = ({ data }: IProps) => {
             height: "auto",
             maxHeight: "25rem",
             overflowY: "auto",
-            padding: "0.78rem",
+            padding: "0.25rem",
           }}
         >
-          {/* {handleComponents()} */}
-          <Box sx={{}}>
-            <Image
-              className="account-logo"
-              src={Logo}
-              alt="logo"
-              width={45}
-              height={45}
-            />
-            <div>
-              <div>kraipon@gmail.com </div>
-              <div>kraipon najaroon</div>
-            </div>
-          </Box>
+          {children}
         </Box>
       </Box>
     </>
   );
 };
 
-export default ListMenu;
+export default DropdownMenu;

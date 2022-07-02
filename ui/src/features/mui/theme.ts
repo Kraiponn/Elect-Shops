@@ -37,6 +37,26 @@ const theme = createTheme({
     h6: {
       fontSize: "0.85rem",
     },
+    subtitle1: {
+      fontSize: "1.2rem",
+      fontWeight: "inherit",
+      fontFamily: "Itim",
+    },
+    subtitle2: {
+      fontSize: "0.5rem",
+      fontWeight: "inherit",
+      fontFamily: "Itim",
+    },
+    body1: {
+      fontSize: "1rem",
+      fontWeight: "inherit",
+      fontFamily: "PromptThin",
+    },
+    body2: {
+      fontSize: "0.8rem",
+      fontWeight: "inherit",
+      fontFamily: "PromptThin",
+    },
   },
   components: {
     MuiAppBar: {

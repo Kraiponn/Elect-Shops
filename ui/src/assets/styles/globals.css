@@ -18,15 +18,36 @@
   src: url("../fonts/Roboto-Bold.ttf");
 }
 
+@font-face {
+  font-family: "PromptRegular";
+  src: url("../fonts/Prompt-Regular.ttf");
+}
+
+@font-face {
+  font-family: "PromptMedium";
+  src: url("../fonts/Prompt-Medium.ttf");
+}
+
+@font-face {
+  font-family: "PromptBold";
+  src: url("../fonts/Prompt-Bold.ttf");
+}
+
+@font-face {
+  font-family: "PromptThin";
+  src: url("../fonts/Prompt-Thin.ttf");
+}
+
 * {
   box-sizing: border-box;
+  font-family: 'PromptThin';
 }
 
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: RobotoRegular, -apple-system, sans-serif;
+  font-family: PromptThin, RobotoRegular, -apple-system, sans-serif;
 }
 
 a {
@@ -37,6 +58,4 @@ a {
 
 .account-logo {
   border-radius: 50%;
-  width: 1rem !important;
-  height: 1rem !important;
 }

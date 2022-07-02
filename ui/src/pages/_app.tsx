@@ -28,7 +28,7 @@ function MyApp({
   return (
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
+        {/* <CssBaseline /> */}
         <Component {...pageProps} />
       </ThemeProvider>
     </CacheProvider>
