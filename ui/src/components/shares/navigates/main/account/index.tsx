@@ -2,11 +2,11 @@ import React from "react";
 
 // Material design
 import { IconButton, keyframes } from "@mui/material";
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 
 // Components
 import DropdownMenu from "@/components/shares/navigates/main/dropdown-menu";
-import ListAccountMenu from '@/components/shares/navigates/main/account/menu-list'
+import ListAccountMenu from "@/components/shares/navigates/main/account/menu-list";
 
 type Props = {};
 
@@ -32,7 +32,6 @@ const dropDownMenuAnimate = keyframes`
  *                MAIN METHOD                  *
  **********************************************/
 const AccountMenu = (props: Props) => {
-
   return (
     <IconButton
       color="inherit"
@@ -53,7 +52,7 @@ const AccountMenu = (props: Props) => {
           color="inherit"
           fontSize="large"
           sx={{
-            mt: 1,
+            mt: 0.5,
           }}
         />
         <DropdownMenu>

@@ -57,8 +57,16 @@ export class UserController {
     @Res({ passthrough: true }) res: Response,
     @Body() body: AuthDto,
   ) {
-    const { sub, email, role, access_token, refresh_token } =
-      await this.userService.signup(body);
+    const {
+      sub,
+      email,
+      role,
+      first_name,
+      last_name,
+      image_url,
+      access_token,
+      refresh_token,
+    } = await this.userService.signup(body);
 
     res.cookie('refresh_token', refresh_token, {
       httpOnly: true,
@@ -70,7 +78,12 @@ export class UserController {
       user: {
         sub,
         email,
+        user_name:
+          first_name && last_name
+            ? `${first_name} ${last_name}`
+            : 'No credetial',
         role,
+        image_url,
       },
       access_token,
     };
@@ -92,13 +105,19 @@ export class UserController {
     res.cookie('refresh_token', resp.refresh_token, { httpOnly: true });
     // delete resp.refresh_token;
 
-    const { sub, email, role, access_token } = resp;
+    const { sub, email, first_name, last_name, image_url, role, access_token } =
+      resp;
 
     return {
       user: {
         sub,
         email,
+        user_name:
+          first_name && last_name
+            ? `${first_name} ${last_name}`
+            : 'No credetial',
         role,
+        image_url,
       },
       access_token,
     };

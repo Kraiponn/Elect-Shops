@@ -50,12 +50,19 @@ const theme = createTheme({
     body1: {
       fontSize: "1rem",
       fontWeight: "inherit",
-      fontFamily: "PromptThin",
+      fontFamily: "PromptMedium",
     },
     body2: {
       fontSize: "0.8rem",
       fontWeight: "inherit",
-      fontFamily: "PromptThin",
+      fontFamily: "Prompt",
+    },
+    button: {
+      fontFamily: "PromptRegular",
+      textTransform: "capitalize",
+    },
+    caption: {
+      fontFamily: "PromptRegular",
     },
   },
   components: {

@@ -30,7 +30,13 @@ export class UserService {
   /****************************
    * Sign Up
    */
-  async signup({ email, password }: AuthDto): Promise<ITokenPayload & ITokens> {
+  async signup({ email, password }: AuthDto): Promise<
+    ITokenPayload & {
+      first_name?: string;
+      last_name?: string;
+      image_url?: string;
+    } & ITokens
+  > {
     const alreadyAccount = await this.prismaService.user.findUnique({
       where: {
         email,
@@ -65,6 +71,9 @@ export class UserService {
 
       return {
         ...payload,
+        first_name: user.first_name ? user.first_name : '',
+        last_name: user.last_name ? user.last_name : '',
+        image_url: user.image_url ? user.image_url : '',
         access_token,
         refresh_token,
       };
@@ -80,7 +89,13 @@ export class UserService {
   /****************************
    * Sign In
    */
-  async signin({ email, password }: AuthDto): Promise<ITokenPayload & ITokens> {
+  async signin({ email, password }: AuthDto): Promise<
+    ITokenPayload & {
+      first_name?: string;
+      last_name?: string;
+      image_url?: string;
+    } & ITokens
+  > {
     const user = await this.prismaService.user.findUnique({
       where: { email },
     });
@@ -109,6 +124,9 @@ export class UserService {
 
     return {
       ...userPayload,
+      first_name: user.first_name ? user.first_name : '',
+      last_name: user.last_name ? user.last_name : '',
+      image_url: user.image_url ? user.image_url : '',
       access_token,
       refresh_token,
     };

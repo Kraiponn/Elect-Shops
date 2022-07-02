@@ -9,6 +9,8 @@ export enum UserType {
 export interface IAuthPayload {
   sub: number;
   email: string;
+  user_name?: string;
+  image_url?: string;
   role: UserType;
 }
 
@@ -52,4 +54,8 @@ export interface IAuthState {
   isLoading: boolean;
   isSuccess: boolean;
   data?: IAuthPayload | null;
+}
+
+export interface IResponseMessage {
+  message: string;
 }

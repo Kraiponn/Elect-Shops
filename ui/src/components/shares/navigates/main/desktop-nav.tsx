@@ -16,7 +16,7 @@ import TextButton from "@/components/shares/navigates/main/text-button";
 import SearchBox from "@/components/shares/ui/search-box";
 import AccountMenu from "@/components/shares/navigates/main/account";
 
-interface IProps { }
+interface IProps {}
 
 const DesktopNav = (props: IProps) => {
   const router = useRouter();
@@ -53,33 +53,32 @@ const DesktopNav = (props: IProps) => {
         </IconButton>
       ) : null}
 
-      {!user ? (<AccountMenu />) : null}
+      {user ? <AccountMenu /> : null}
 
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        {!user && (
-          <>
-            <TextButton
-              label={`Log In`}
-              OnClick={() => router.push("/auth/login")}
-            />
+      {!user && (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            mx: 1,
+          }}
+        >
+          <TextButton
+            label={`Log In`}
+            OnClick={() => router.push("/auth/login")}
+          />
 
-            <Typography variant="h5" sx={{ p: 1 }}>
-              |
-            </Typography>
+          <Typography variant="h5" sx={{ p: 1 }}>
+            |
+          </Typography>
 
-            <TextButton
-              label={`Sign Up`}
-              OnClick={() => router.push("/auth/signup")}
-            />
-          </>
-        )}
-      </Box>
+          <TextButton
+            label={`Sign Up`}
+            OnClick={() => router.push("/auth/signup")}
+          />
+        </Box>
+      )}
     </Toolbar>
   );
 };
