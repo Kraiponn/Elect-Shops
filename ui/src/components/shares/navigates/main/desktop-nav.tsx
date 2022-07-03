@@ -18,6 +18,9 @@ import AccountMenu from "@/components/shares/navigates/main/account";
 
 interface IProps {}
 
+/***********************************************
+ *                MAIN METHOD                  *
+ **********************************************/
 const DesktopNav = (props: IProps) => {
   const router = useRouter();
   const { user } = useAppSelector((state) => state.auth);

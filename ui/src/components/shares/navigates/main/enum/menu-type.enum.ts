@@ -1,0 +1,9 @@
+export enum MenuType {
+  ACCOUNT_SETTING,
+  PAYMENT_METHOD,
+  CART,
+  NOTIFICATION,
+  REPORT,
+  ORDER,
+  LOGOUT,
+}

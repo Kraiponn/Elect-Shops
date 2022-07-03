@@ -17,6 +17,7 @@ import { systemLogout } from "@/features/global-state/reducers/auth";
 
 // Components
 import AccountDetail from "@/components/shares/navigates/main/account/account-detail";
+import AccountItemMenu from '@/components/shares/navigates/main/menu-item'
 
 /***********************************************
  *                MAIN METHOD                  *
@@ -42,50 +43,16 @@ const MenuList = () => {
 
       <Divider sx={{ my: 2 }} />
 
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          mb: 1,
-          "&:hover": {
-            color: "red",
-          },
-        }}
-      >
-        <SettingsIcon color="inherit" />
-        <Typography
-          sx={{
-            fontFamily: "PropmptMedium",
-            fontSize: "1rem",
-            ml: 1,
-          }}
-        >
-          {`Account settings`}
-        </Typography>
-      </Box>
+      <AccountItemMenu
+        title={`Account settings`}
+        Icon={SettingsIcon}
+      />
 
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          mb: 1,
-          "&:hover": {
-            color: "red",
-          },
-        }}
-      >
-        <AttachMoneyIcon color="inherit" />
-        <Typography
-          sx={{
-            fontFamily: "PropmptMedium",
-            fontSize: "1rem",
-            ml: 1,
-          }}
-        >
-          {`Payment methods`}
-        </Typography>
-      </Box>
-      
+      <AccountItemMenu 
+        title={`Payment method`}
+        Icon={AttachMoneyIcon}
+      />
+
       <Divider sx={{ my: 2 }} />
 
       <Box

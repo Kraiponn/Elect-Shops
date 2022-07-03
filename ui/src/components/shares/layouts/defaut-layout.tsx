@@ -2,6 +2,7 @@ import React from "react";
 import Head from "next/head";
 import TopNavigation from "@/components/shares/navigates/main/top-navigation";
 import MyDialog from "@/components/shares/loader/my-dialog";
+import MobileMenu from "../navigates/main/mobile";
 
 interface IProps {
   children: React.ReactNode;
@@ -22,13 +23,8 @@ const DefautLayout = ({ children, title, description }: IProps) => {
         <meta name={title} content={description ? description : ""} />
       </Head>
 
-      {/* <MyDialog
-        isShow={true}
-        type="MODAL"
-        handleToggleDialog={handleToggleDialog}
-      /> */}
-
       <TopNavigation />
+      <MobileMenu showMenu={true} />
       <main>{children}</main>
     </>
   );
