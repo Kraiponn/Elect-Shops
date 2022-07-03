@@ -13,7 +13,7 @@ import {
 import {
   asyncAuth,
   clearErrorAndLoadingState,
-} from "@/features/global-state/reducers/auth";
+} from "@/features/global-state/reducers/auth/auth";
 import { IAuthForm, IAuthInput } from "@/features/types";
 
 // Animate effects

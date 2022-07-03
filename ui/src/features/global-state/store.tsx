@@ -1,11 +1,13 @@
 import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
 
-import authReducer from "@/features/global-state/reducers/auth";
+import authReducer from "@/features/global-state/reducers/auth/auth";
+import guiReducer from "@/features/global-state/reducers/gui";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
+    gui: guiReducer,
   },
   devTools: true,
 });

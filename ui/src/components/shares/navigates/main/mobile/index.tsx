@@ -1,101 +1,75 @@
-import React from 'react'
+import React from "react";
 
 // Material design
-import { Box, IconButton, keyframes } from '@mui/material'
-import ClearIcon from '@mui/icons-material/Clear';
+import { Box, IconButton } from "@mui/material";
+import ClearIcon from "@mui/icons-material/Clear";
+
+// Global state
+import {
+  useAppSelector,
+  useAppDispatch,
+} from "@/features/hooks/use-global-state";
+import { closeMobileMenu } from "@/features/global-state/reducers/gui";
 
 // Components
-import AccountDeail from '@/components/shares/navigates/main/account/account-detail'
-import MobileListMenu from '@/components/shares/navigates/main/mobile/list-menu';
+import MobileListMenu from "@/components/shares/navigates/main/mobile/list-menu";
 
-const menuAnimate = keyframes`
-  0% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 0.55;
-    transform: translateX(10%);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-    left: 0;
-  }
-`
+// Animations
+import {
+  backDropStyle,
+  openContentMobileMenuStyle,
+  closeContentMobileMenuStyle,
+  closeMobileButtonMenuStyle,
+} from "@/components/shares/navigates/main/mobile/animate";
 
-const exitButtonAnimate = keyframes`
-  0% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 0.55;
-    transform: scale(1.3);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-`
-
-interface IProps {
-  showMenu: boolean;
-}
+// interface IProps {
+//   showMenu: boolean;
+// }
 
 /***********************************************
  *                MAIN METHOD                  *
  **********************************************/
-const MobileMenu = ({ showMenu }: IProps) => {
+const MobileMenu = () => {
+  const { showMobileMenu, menuState } = useAppSelector((state) => state.gui);
+  const dispatch = useAppDispatch();
 
-  return showMenu ? (
-    <Box sx={{
-      position: 'fixed',
-      top: '0',
-      left: '0',
-      zIndex: 1500,
-      width: '100%',
-      height: '100%',
-      background: 'rgba(0, 0, 0, 0.89)',
-    }} >
-      <Box sx={{
-        position: 'absolute',
-        top: '0',
-        left: '-100%',
-        // left: '0%',
-        zIndex: 1501,
-        width: '45%',
-        height: '100vh',
-        background: 'rgba(255, 255, 255, 1)',
-        color: 'inherit',
-        boxShadow: '0 0.1rem 0.2rem inherit',
-        // p: 1,
+  const handleClosedMobileMenu = () => {
+    dispatch(closeMobileMenu());
+  };
 
-        opacity: 0,
-        animation: `${menuAnimate} .45s forwards ease-out`,
-      }}>
+  if (showMobileMenu && menuState === "NORMAL") {
+    return (
+      <Box sx={backDropStyle} onClick={handleClosedMobileMenu}>
+        <Box sx={openContentMobileMenuStyle}>
+          <IconButton
+            sx={closeMobileButtonMenuStyle}
+            size="large"
+            onClick={handleClosedMobileMenu}
+          >
+            <ClearIcon color="inherit" />
+          </IconButton>
+
+          <MobileListMenu />
+        </Box>
+      </Box>
+    );
+  } else if (!showMobileMenu && menuState === "CLOSE") {
+    return (
+      <Box sx={closeContentMobileMenuStyle}>
         <IconButton
-          sx={{
-            position: 'absolute',
-            top: '2%',
-            left: '105%',
-            opacity: 0,
-            transform: 'scale(0)',
-            animation: `${exitButtonAnimate} 0.3s 0.55s linear forwards`,
-            background: 'rgba(255, 255, 255, 1)',
-
-            "&:hover": {
-              background: 'rgba(255, 255, 255, 0.5)'
-            }
-          }}
-          size='large'>
-          <ClearIcon color='inherit' />
+          sx={closeMobileButtonMenuStyle}
+          size="large"
+          onClick={handleClosedMobileMenu}
+        >
+          <ClearIcon color="inherit" />
         </IconButton>
 
         <MobileListMenu />
       </Box>
+    );
+  } else {
+    return null;
+  }
+};
 
-    </Box >)
-    : null;
-}
-
-
-export default MobileMenu
+export default MobileMenu;

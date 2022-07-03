@@ -253,7 +253,7 @@ export const authSlice = createSlice({
       state.error = action.payload ? action.payload : null;
       state.isLoading = false;
       state.isSuccess = false;
-    });
+    })
   },
 });
 

@@ -13,11 +13,12 @@ import {
   useAppSelector,
   useAppDispatch,
 } from "@/features/hooks/use-global-state";
-import { systemLogout } from "@/features/global-state/reducers/auth";
+import { systemLogout } from "@/features/global-state/reducers/auth/auth";
 
 // Components
 import AccountDetail from "@/components/shares/navigates/main/account/account-detail";
-import AccountItemMenu from '@/components/shares/navigates/main/menu-item'
+import ItemMenu from "@/components/shares/navigates/main/menu-item";
+import { MenuType } from "../enum";
 
 /***********************************************
  *                MAIN METHOD                  *
@@ -33,6 +34,10 @@ const MenuList = () => {
     router.push("/auth/login");
   };
 
+  const handleItemSelectedType = (menuType: MenuType) => {
+    console.log(menuType);
+  };
+
   return (
     <>
       <AccountDetail
@@ -43,14 +48,18 @@ const MenuList = () => {
 
       <Divider sx={{ my: 2 }} />
 
-      <AccountItemMenu
+      <ItemMenu
+        menuType={MenuType.ACCOUNT_SETTING}
         title={`Account settings`}
         Icon={SettingsIcon}
+        handleSelectedItem={handleItemSelectedType}
       />
 
-      <AccountItemMenu 
+      <ItemMenu
+        menuType={MenuType.PAYMENT_METHOD}
         title={`Payment method`}
         Icon={AttachMoneyIcon}
+        handleSelectedItem={handleItemSelectedType}
       />
 
       <Divider sx={{ my: 2 }} />

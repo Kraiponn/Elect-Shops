@@ -6,7 +6,7 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 
 // Components
 import DropdownMenu from "@/components/shares/navigates/main/dropdown-menu";
-import ListAccountMenu from "@/components/shares/navigates/main/account/menu-list";
+import ListAccountMenu from "@/components/shares/navigates/main/account/list-menu";
 
 type Props = {};
 
