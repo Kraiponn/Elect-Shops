@@ -12,10 +12,12 @@ interface IProps {
   text: string;
   amount?: number;
   showIcon: boolean;
-  Icon: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
-    muiName: string;
-  } | any;
-  handleSelectedItem: (item: MenuType) => void;
+  Icon:
+    | (OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
+        muiName: string;
+      })
+    | any;
+  handleItemSelect: (item: MenuType) => void;
 }
 
 /***********************************************
@@ -29,10 +31,10 @@ const ItemMenu = ({
   amount,
   showIcon,
   Icon,
-  handleSelectedItem }: IProps
-) => {
+  handleItemSelect,
+}: IProps) => {
   const selectedItem = () => {
-    handleSelectedItem(menuType);
+    handleItemSelect(menuType);
   };
 
   return (
@@ -54,7 +56,7 @@ const ItemMenu = ({
       <Box
         sx={{
           display: "flex",
-          justifyContent: 'space-between',
+          justifyContent: "space-between",
           background: "inherit",
           my: 2,
           px: 2,
@@ -68,8 +70,7 @@ const ItemMenu = ({
         <Typography
           sx={{
             fontFamily: "PropmptMedium",
-            fontSize: "1rem",
-            // color: "black",
+            fontSize: "0.9rem",
             marginLeft: "0.5rem",
           }}
           onClick={selectedItem}
@@ -79,7 +80,16 @@ const ItemMenu = ({
 
         {showIcon ? (
           <Badge color="secondary" badgeContent={amount}>
-            <Icon color="inherit" />
+            <Icon
+              fontSize={
+                text.toLowerCase().includes("notification") ||
+                text.toLowerCase().includes("wishlist") ||
+                text.toLowerCase().includes("message")
+                  ? "medium"
+                  : "small"
+              }
+              color="inherit"
+            />
           </Badge>
         ) : null}
       </Box>

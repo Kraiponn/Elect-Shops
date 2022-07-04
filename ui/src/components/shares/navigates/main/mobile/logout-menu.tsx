@@ -35,7 +35,7 @@ const LogoutMenu = ({ handleSystemLogout }: IProps) => {
         onClick={handleLogout}
         sx={{
           fontFamily: "Itim",
-          fontSize: "1.2rem",
+          fontSize: "1.1rem",
           ml: 1,
         }}
       >

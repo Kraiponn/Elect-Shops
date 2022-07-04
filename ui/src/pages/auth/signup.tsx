@@ -13,7 +13,7 @@ import {
 import {
   asyncAuth,
   clearErrorAndLoadingState,
-} from "@/features/global-state/reducers/auth/auth";
+} from "@/features/global-state/reducers/auth";
 import { IAuthForm, IAuthInput } from "@/features/types";
 
 // Components
@@ -32,10 +32,10 @@ const SignUp = () => {
 
   const handleSignup = ({ email, password }: IAuthForm) => {
     const values: IAuthInput = {
-      authType: 'SIGNUP',
+      authType: "SIGNUP",
       email,
-      password
-    }
+      password,
+    };
 
     dispatch(asyncAuth(values));
   };

@@ -1,4 +1,4 @@
-import { Box, IconButton, keyframes } from "@mui/material";
+import { keyframes } from "@mui/material";
 
 /*******************************************************
  *                    ANIMATIONS                       *
@@ -65,12 +65,11 @@ const openContentMobileMenuStyle = {
   top: "0",
   left: "-100%",
   zIndex: 1501,
-  width: {xs: '50%', md: '45%'},
+  width: { xs: "50%", md: "45%" },
   height: "100vh",
   background: "rgba(255, 255, 255, 1)",
   color: "black",
   boxShadow: "0 0.1rem 0.2rem inherit",
-  // p: 1,
 
   opacity: 0,
   animation: `${animateOpenMobileMenu} .45s forwards ease-out`,
@@ -81,12 +80,11 @@ const closeContentMobileMenuStyle = {
   top: 0,
   left: 0,
   zIndex: 1501,
-  width: {xs: '50%', md: '45%'},
+  width: { xs: "50%", md: "45%" },
   height: "100vh",
   background: "rgba(255, 255, 255, 1)",
   color: "black",
   boxShadow: "0 0.1rem 0.2rem black",
-  // p: 1,
 
   opacity: 1,
   animation: `${animateClosedMobileMenu} 0.55s forwards ease-out`,
