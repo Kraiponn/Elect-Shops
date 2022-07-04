@@ -1,5 +1,5 @@
 import type { GetStaticProps, NextPage } from "next";
-import { Container } from "@mui/material";
+import { Button, Container } from "@mui/material";
 
 import Cookies from "js-cookie";
 
@@ -19,6 +19,7 @@ const Home: NextPage = () => {
       <Container>
         <h1>Home Page:</h1>
         <br />
+        <Button variant="contained" onClick={() => Cookies.set('access_token', 'my-token')}>Set cookie</Button>
       </Container>
     </DefautLayout>
   );

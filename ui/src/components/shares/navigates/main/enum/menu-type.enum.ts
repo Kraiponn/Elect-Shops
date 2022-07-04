@@ -3,6 +3,7 @@ export enum MenuType {
   PAYMENT_METHOD,
   CART,
   NOTIFICATION,
+  MESSAGE,
   REPORT,
   ORDER,
   LOGOUT,

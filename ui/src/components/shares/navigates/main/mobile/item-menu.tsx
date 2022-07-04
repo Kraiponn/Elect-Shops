@@ -2,54 +2,88 @@ import React from "react";
 
 // Material design
 import { OverridableComponent } from "@mui/material/OverridableComponent";
-import { Box, SvgIconTypeMap, Typography } from "@mui/material";
+import { Badge, Box, SvgIconTypeMap, Typography } from "@mui/material";
 import { MenuType } from "@/components/shares/navigates/main/enum";
 
 interface IProps {
+  isTitle: boolean;
+  titleLabel?: string;
   menuType: MenuType;
-  title: string;
+  text: string;
+  amount?: number;
+  showIcon: boolean;
   Icon: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
     muiName: string;
-  };
+  } | any;
   handleSelectedItem: (item: MenuType) => void;
 }
 
 /***********************************************
  *                MAIN METHOD                  *
  **********************************************/
-const ItemMenu = ({ menuType, title, Icon, handleSelectedItem }: IProps) => {
+const ItemMenu = ({
+  isTitle,
+  titleLabel,
+  menuType,
+  text,
+  amount,
+  showIcon,
+  Icon,
+  handleSelectedItem }: IProps
+) => {
   const selectedItem = () => {
     handleSelectedItem(menuType);
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        background: "inherit",
-        my: 2,
-        px: 2,
+    <>
+      {isTitle && (
+        <Typography
+          sx={{
+            fontFamily: "PromptRegular",
+            fontSize: "0.75rem",
+            fontWeight: 500,
+            mt: 1,
+            px: 2,
+          }}
+        >
+          {titleLabel}
+        </Typography>
+      )}
 
-        "&:hover": {
-          color: "red",
-          cursor: "pointer",
-        },
-      }}
-    >
-      <Icon color="inherit" />
-      <Typography
+      <Box
         sx={{
-          fontFamily: "PropmptMedium",
-          fontSize: "1rem",
-          // color: "black",
-          marginLeft: "0.5rem",
+          display: "flex",
+          justifyContent: 'space-between',
+          background: "inherit",
+          my: 2,
+          px: 2,
+
+          "&:hover": {
+            color: "red",
+            cursor: "pointer",
+          },
         }}
-        onClick={selectedItem}
       >
-        {title}
-      </Typography>
-    </Box>
+        <Typography
+          sx={{
+            fontFamily: "PropmptMedium",
+            fontSize: "1rem",
+            // color: "black",
+            marginLeft: "0.5rem",
+          }}
+          onClick={selectedItem}
+        >
+          {text}
+        </Typography>
+
+        {showIcon ? (
+          <Badge color="secondary" badgeContent={amount}>
+            <Icon color="inherit" />
+          </Badge>
+        ) : null}
+      </Box>
+    </>
   );
 };
 

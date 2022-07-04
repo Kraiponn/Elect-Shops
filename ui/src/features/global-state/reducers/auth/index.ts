@@ -250,10 +250,16 @@ export const authSlice = createSlice({
       Cookies.remove("user");
     });
     builder.addCase(systemLogout.rejected, (state, action) => {
-      state.error = action.payload ? action.payload : null;
+      // state.error = action.payload ? action.payload : null;
+      console.log("Reject error,", action.payload?.message);
+
+      state.error = null;
       state.isLoading = false;
       state.isSuccess = false;
-    })
+
+      Cookies.remove("user");
+      Cookies.remove("access_token");
+    });
   },
 });
 

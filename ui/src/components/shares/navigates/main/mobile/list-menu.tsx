@@ -1,48 +1,40 @@
 import React from "react";
 import { useRouter } from "next/router";
-import Image from "next/image";
 
 // Material design
-import { Box, Divider, Typography } from "@mui/material";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import PaidIcon from "@mui/icons-material/Paid";
+import { Box, Divider } from "@mui/material";
+// import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+// import PaidIcon from "@mui/icons-material/Paid";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import EmailIcon from "@mui/icons-material/Email";
-
-import styled from "@/assets/styles/AccountMenu.module.css";
 
 // Global state
 import {
   useAppSelector,
   useAppDispatch,
 } from "@/features/hooks/use-global-state";
-import { systemLogout } from "@/features/global-state/reducers/auth/auth";
-import Cookies from "js-cookie";
+import { systemLogout } from "@/features/global-state/reducers/auth";
 
 // Components
-import defaultProfileImage from "@/assets/images/little-pug-dog.webp";
 import MenuItem from "@/components/shares/navigates/main/mobile/item-menu";
 import { MenuType } from "@/components/shares/navigates/main/enum";
-
-import { clPrimaryDark } from "@/features/const/colors";
-import LogoutMenu from "./logout-menu";
+import LogoutMenu from "@/components/shares/navigates/main/mobile/logout-menu";
+import AccountBanner from "@/components/shares/navigates/main/mobile/account-banner";
 
 interface IProps {
-  user_name?: string;
-  email?: string;
+
 }
 
 /***********************************************
  *                MAIN METHOD                  *
  **********************************************/
-const MobileListMenu = ({ user_name, email }: IProps) => {
+const MobileListMenu = ({ }: IProps) => {
   const router = useRouter();
   const { user } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
   const handleSystemLogout = () => {
     dispatch(systemLogout());
-
     router.push("/auth/login");
   };
 
@@ -58,87 +50,51 @@ const MobileListMenu = ({ user_name, email }: IProps) => {
         overflowY: "auto",
       }}
     >
-      <Box
-        sx={{
-          width: "100%",
-          background: `${clPrimaryDark}`,
-          p: 1,
-        }}
-      >
-        <Box
-          sx={{
-            position: "relative",
-            width: "5rem",
-            height: "5rem",
-            borderRadius: "50%",
-            textAlign: "center",
-            margin: "1rem auto",
-          }}
-          component="div"
-        >
-          <Image
-            className={styled["account-logo"]}
-            src={defaultProfileImage}
-            alt="image profile"
-            layout="fill"
-            objectFit="fill"
-          />
-        </Box>
-
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            color: "white",
-          }}
-        >
-          <Typography
-            sx={{
-              fontSize: "1rem",
-            }}
-            variant="subtitle1"
-          >
-            {user_name ? user_name : "XXX"}
-          </Typography>
-          <Typography
-            sx={{
-              fontWeight: "100",
-              fontFamily: "PromptThin",
-              fontSize: "0.89rem",
-            }}
-          >
-            {email ? email : "example@mail.com"}
-          </Typography>
-        </Box>
-      </Box>
-
-      <MenuItem
-        menuType={MenuType.ACCOUNT_SETTING}
-        title={`Account settings`}
-        Icon={ManageAccountsIcon}
-        handleSelectedItem={handleItemSelectedType}
+      <AccountBanner
+        userName={user?.user_name}
+        email={user?.email}
+        imageUrl={user?.image_url}
       />
 
       <MenuItem
-        menuType={MenuType.PAYMENT_METHOD}
-        title={`Payment method`}
-        Icon={PaidIcon}
-        handleSelectedItem={handleItemSelectedType}
-      />
-
-      <MenuItem
-        menuType={MenuType.PAYMENT_METHOD}
-        title={`Notifications`}
+        isTitle={true}
+        titleLabel={`Alert`}
+        menuType={MenuType.NOTIFICATION}
+        text={`Notifications`}
+        showIcon={true}
+        amount={10}
         Icon={NotificationsIcon}
         handleSelectedItem={handleItemSelectedType}
       />
 
       <MenuItem
-        menuType={MenuType.PAYMENT_METHOD}
-        title={`Messages`}
+        isTitle={false}
+        menuType={MenuType.MESSAGE}
+        text={`Messages`}
+        showIcon={true}
+        amount={99}
         Icon={EmailIcon}
+        handleSelectedItem={handleItemSelectedType}
+      />
+
+      <Divider sx={{ my: 2 }} />
+
+      <MenuItem
+        isTitle={true}
+        titleLabel={`Account`}
+        menuType={MenuType.ACCOUNT_SETTING}
+        text={`Account settings`}
+        showIcon={false}
+        Icon={null}
+        handleSelectedItem={handleItemSelectedType}
+      />
+
+      <MenuItem
+        isTitle={false}
+        menuType={MenuType.PAYMENT_METHOD}
+        text={`Payment method`}
+        showIcon={false}
+        Icon={null}
         handleSelectedItem={handleItemSelectedType}
       />
 

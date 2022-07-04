@@ -13,7 +13,7 @@ import {
   useAppSelector,
   useAppDispatch,
 } from "@/features/hooks/use-global-state";
-import { systemLogout } from "@/features/global-state/reducers/auth/auth";
+import { systemLogout } from "@/features/global-state/reducers/auth";
 
 // Components
 import AccountDetail from "@/components/shares/navigates/main/account/account-detail";
