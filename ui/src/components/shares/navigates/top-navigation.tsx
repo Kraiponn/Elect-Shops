@@ -8,8 +8,8 @@ import {
 } from "@mui/material";
 
 // Components
-import DesktopNav from "@/components/shares/navigates/main/desktop-nav";
-import MobileNav from "@/components/shares/navigates/main/mobile-nav";
+import DesktopNav from "@/components/shares/navigates/desktop-nav";
+import MobileNav from "@/components/shares/navigates/mobile-nav";
 
 /****************************************************
  *                  MAIN FUNCTION

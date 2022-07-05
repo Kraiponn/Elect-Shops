@@ -3,7 +3,7 @@ import React from 'react'
 // Material design
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 import { Box, SvgIconTypeMap, Typography } from "@mui/material";
-import { MenuType } from '@/components/shares/navigates/main/enum';
+import { MenuType } from '@/components/shares/navigates/enum';
 
 interface IProps {
   menuType: MenuType;
@@ -17,7 +17,7 @@ interface IProps {
 /***********************************************
  *                MAIN METHOD                  *
  **********************************************/
-const MenuItem = ({ menuType, title, Icon, handleSelectedItem }: IProps) => {
+const ItemMenu = ({ menuType, title, Icon, handleSelectedItem }: IProps) => {
   const selectedItem = () => {
     handleSelectedItem(menuType);
   }
@@ -28,8 +28,8 @@ const MenuItem = ({ menuType, title, Icon, handleSelectedItem }: IProps) => {
         display: "flex",
         alignItems: "center",
         my: 2,
-        px: 2,
-        
+        px: 1,
+
         "&:hover": {
           color: "red",
           cursor: 'pointer',
@@ -39,8 +39,8 @@ const MenuItem = ({ menuType, title, Icon, handleSelectedItem }: IProps) => {
       <Icon color="inherit" />
       <Typography
         sx={{
-          fontFamily: "PropmptMedium",
-          fontSize: "1rem",
+          fontFamily: "PromptRegular",
+          fontSize: "0.89rem",
           marginLeft: '0.15rem',
         }}
         onClick={selectedItem}
@@ -51,4 +51,4 @@ const MenuItem = ({ menuType, title, Icon, handleSelectedItem }: IProps) => {
   )
 }
 
-export default MenuItem
+export default ItemMenu

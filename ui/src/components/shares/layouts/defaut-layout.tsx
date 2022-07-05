@@ -1,7 +1,6 @@
 import React from "react";
 import Head from "next/head";
-import TopNavigation from "@/components/shares/navigates/main/top-navigation";
-import MyDialog from "@/components/shares/loader/my-dialog";
+import TopNavigation from "@/components/shares/navigates/top-navigation";
 
 interface IProps {
   children: React.ReactNode;
@@ -10,9 +9,6 @@ interface IProps {
 }
 
 const DefautLayout = ({ children, title, description }: IProps) => {
-  const handleToggleDialog = () => {
-    console.log("Ok backdrop is close");
-  };
 
   return (
     <>

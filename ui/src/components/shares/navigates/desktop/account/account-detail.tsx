@@ -49,7 +49,7 @@ const AccountDetail = ({ user_name, email, image_url }: Props) => {
           }}
           variant="subtitle1"
         >
-          {user_name ? user_name : "XXX"}
+          {user_name ? user_name : ""}
         </Typography>
         <Typography
           sx={{

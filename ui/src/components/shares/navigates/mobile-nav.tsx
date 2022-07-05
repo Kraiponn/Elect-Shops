@@ -14,17 +14,17 @@ import {
 import { openMobileMenu } from "@/features/global-state/reducers/gui";
 
 // Components
-import MobileMenu from "@/components/shares/navigates/main/mobile";
+import MobileMenu from "@/components/shares/navigates/mobile";
 import SearchBox from "@/components/shares/ui/search-box";
 
-interface IProps {}
+interface IProps { }
 
 /***********************************************
  *                MAIN METHOD                  *
  **********************************************/
 const MobileNav = (props: IProps) => {
   const router = useRouter();
-  // const { showMobileMenu } = useAppSelector((state) => state.gui);
+  const { amount, totalPrice, products } = useAppSelector(state => state.product)
   const dispatch = useAppDispatch();
 
   const handleOpenMobileMenu = () => {
@@ -38,8 +38,6 @@ const MobileNav = (props: IProps) => {
       <Toolbar
         sx={{
           width: "100%",
-          // display: 'flex',
-          // justifyContent: 'space-between'
         }}
       >
         <IconButton
@@ -56,8 +54,12 @@ const MobileNav = (props: IProps) => {
 
         <SearchBox />
 
-        <IconButton color="inherit" sx={{ marginLeft: "1.2rem" }}>
-          <Badge badgeContent={9} color="secondary">
+        <IconButton
+          color="inherit"
+          sx={{ marginLeft: "1.2rem" }}
+          onClick={() => router.push('/products/cart')}
+        >
+          <Badge badgeContent={Number(amount)} color="secondary">
             <ShoppingCartIcon color="inherit" />
           </Badge>
         </IconButton>

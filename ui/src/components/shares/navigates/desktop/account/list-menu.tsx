@@ -1,10 +1,10 @@
 import React from "react";
 import { useRouter } from "next/router";
-import Image from "next/image";
 
 // Material design
 import { Box, Divider, Typography } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import LogoutIcon from "@mui/icons-material/Logout";
 
@@ -16,9 +16,9 @@ import {
 import { systemLogout } from "@/features/global-state/reducers/auth";
 
 // Components
-import AccountDetail from "@/components/shares/navigates/main/account/account-detail";
-import ItemMenu from "@/components/shares/navigates/main/menu-item";
-import { MenuType } from "../enum";
+import AccountDetail from "@/components/shares/navigates/desktop/account/account-detail";
+import ItemMenu from "@/components/shares/navigates/desktop/item-menu";
+import { MenuType } from "@/components/shares/navigates/enum";
 
 /***********************************************
  *                MAIN METHOD                  *
@@ -30,7 +30,6 @@ const MenuList = () => {
 
   const handleSystemLogout = () => {
     dispatch(systemLogout());
-
     router.push("/auth/login");
   };
 
@@ -51,14 +50,21 @@ const MenuList = () => {
       <ItemMenu
         menuType={MenuType.ACCOUNT_SETTING}
         title={`Account settings`}
-        Icon={SettingsIcon}
+        Icon={ManageAccountsIcon}
         handleSelectedItem={handleItemSelectedType}
       />
 
       <ItemMenu
         menuType={MenuType.PAYMENT_METHOD}
-        title={`Payment method`}
+        title={`Payment methods`}
         Icon={AttachMoneyIcon}
+        handleSelectedItem={handleItemSelectedType}
+      />
+
+      <ItemMenu
+        menuType={MenuType.PAYMENT_METHOD}
+        title={`App Settings`}
+        Icon={SettingsIcon}
         handleSelectedItem={handleItemSelectedType}
       />
 
@@ -68,7 +74,8 @@ const MenuList = () => {
         sx={{
           display: "flex",
           alignItems: "center",
-          mb: 1,
+          marginX: '0.75rem',
+          marginBottom: '1rem',
           "&:hover": {
             color: "red",
           },
@@ -78,7 +85,7 @@ const MenuList = () => {
         <Typography
           onClick={handleSystemLogout}
           sx={{
-            fontFamily: "PropmptMedium",
+            fontFamily: "PromptMedium",
             fontSize: "1rem",
             ml: 1,
           }}

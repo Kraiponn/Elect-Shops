@@ -3,30 +3,16 @@ import React from "react";
 // Material design
 import { IconButton, keyframes } from "@mui/material";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import PersonIcon from '@mui/icons-material/Person';
+
+// Animations
+import { dropDownMenuAnimate } from "@/components/shares/navigates/desktop/animate";
 
 // Components
-import DropdownMenu from "@/components/shares/navigates/main/dropdown-menu";
-import ListAccountMenu from "@/components/shares/navigates/main/account/list-menu";
+import DropdownMenu from "@/components/shares/navigates/desktop/dropdown-menu";
+import ListAccountMenu from "@/components/shares/navigates/desktop/account/list-menu";
 
 type Props = {};
-
-const dropDownMenuAnimate = keyframes`
-  0% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 0.5;
-    transform: scaleX(0.5);
-  }
-  75% {
-    opacity: 0.75;
-    transform: scaleX(1.1);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-`;
 
 /***********************************************
  *                MAIN METHOD                  *
@@ -40,7 +26,7 @@ const AccountMenu = (props: Props) => {
         display: "inline-block",
         mx: 1,
         "&:hover": {
-          ".account_list_menu": {
+          ".list-menu": {
             visibility: "visible",
             animation: `${dropDownMenuAnimate} .35s ease-out forwards`,
           },
@@ -55,7 +41,7 @@ const AccountMenu = (props: Props) => {
             mt: 0.5,
           }}
         />
-        <DropdownMenu>
+        <DropdownMenu top="105%" leftOfTopArrow="90%">
           <ListAccountMenu />
         </DropdownMenu>
       </>

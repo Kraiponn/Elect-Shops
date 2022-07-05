@@ -6,17 +6,17 @@ import { Badge, Box, IconButton, Toolbar, Typography } from "@mui/material";
 // Icons
 import HomeIcon from "@mui/icons-material/Home";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 // Global state
 import { useAppSelector } from "@/features/hooks/use-global-state";
 
 // Components
-import TextButton from "@/components/shares/navigates/main/text-button";
+import TextButton from "@/components/shares/navigates/desktop/text-button";
 import SearchBox from "@/components/shares/ui/search-box";
-import AccountMenu from "@/components/shares/navigates/main/account";
+import AccountMenu from "@/components/shares/navigates/desktop/account";
+import CartMenu from "@/components/shares/navigates/desktop/cart";
 
-interface IProps {}
+interface IProps { }
 
 /***********************************************
  *                MAIN METHOD                  *
@@ -42,11 +42,7 @@ const DesktopNav = (props: IProps) => {
 
       <SearchBox />
 
-      <IconButton color="inherit" sx={{ marginLeft: "1.2rem" }}>
-        <Badge badgeContent={9} color="secondary">
-          <ShoppingCartIcon color="inherit" />
-        </Badge>
-      </IconButton>
+      <CartMenu />
 
       {user ? (
         <IconButton color="inherit">
@@ -64,7 +60,8 @@ const DesktopNav = (props: IProps) => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            mx: 1,
+            marginX: '1rem',
+            marginLeft: '1.5rem',
           }}
         >
           <TextButton

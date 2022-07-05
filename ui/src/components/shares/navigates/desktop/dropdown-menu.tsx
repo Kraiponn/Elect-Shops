@@ -4,18 +4,20 @@ import * as React from "react";
 import { Box } from "@mui/material";
 
 interface IProps {
+  top: string;
+  leftOfTopArrow: string;
   children: React.ReactNode;
 }
 
 /***********************************************
  *              MAIN METHOD
  */
-const DropdownMenu = ({ children }: IProps) => {
+const DropdownMenu = ({ top, leftOfTopArrow, children }: IProps) => {
 
   return (
     <>
       <Box
-        className="account_list_menu"
+        className="list-menu"
         component="div"
         sx={{
           visibility: "hidden",
@@ -28,7 +30,7 @@ const DropdownMenu = ({ children }: IProps) => {
           boxShadow: "0 0.1rem 0.2rem 0 black",
 
           position: "absolute",
-          top: "100%",
+          top: top,
           right: "0",
           zIndex: 1502,
           width: "16rem",
@@ -42,7 +44,7 @@ const DropdownMenu = ({ children }: IProps) => {
             content: '""',
             position: "absolute",
             bottom: "100%",
-            left: "89%",
+            left: leftOfTopArrow,
             zIndex: 1509,
             marginLeft: "-0.75rem",
             borderWidth: "0.75rem",

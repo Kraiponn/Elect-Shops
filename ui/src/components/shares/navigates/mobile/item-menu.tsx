@@ -3,7 +3,7 @@ import React from "react";
 // Material design
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { Badge, Box, SvgIconTypeMap, Typography } from "@mui/material";
-import { MenuType } from "@/components/shares/navigates/main/enum";
+import { MenuType } from "@/components/shares/navigates/enum";
 
 interface IProps {
   isTitle: boolean;
@@ -13,10 +13,10 @@ interface IProps {
   amount?: number;
   showIcon: boolean;
   Icon:
-    | (OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
-        muiName: string;
-      })
-    | any;
+  | (OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
+    muiName: string;
+  })
+  | any;
   handleItemSelect: (item: MenuType) => void;
 }
 
@@ -83,8 +83,8 @@ const ItemMenu = ({
             <Icon
               fontSize={
                 text.toLowerCase().includes("notification") ||
-                text.toLowerCase().includes("wishlist") ||
-                text.toLowerCase().includes("message")
+                  text.toLowerCase().includes("wishlist") ||
+                  text.toLowerCase().includes("message")
                   ? "medium"
                   : "small"
               }

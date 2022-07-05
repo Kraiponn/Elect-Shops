@@ -12,7 +12,7 @@ import {
 import { closeMobileMenu } from "@/features/global-state/reducers/gui";
 
 // Components
-import MobileListMenu from "@/components/shares/navigates/main/mobile/list-menu";
+import MobileListMenu from "@/components/shares/navigates/mobile/list-menu";
 
 // Animations
 import {
@@ -20,11 +20,7 @@ import {
   openContentMobileMenuStyle,
   closeContentMobileMenuStyle,
   closeMobileButtonMenuStyle,
-} from "@/components/shares/navigates/main/mobile/animate";
-
-// interface IProps {
-//   showMenu: boolean;
-// }
+} from "@/components/shares/navigates/mobile/styles/animate";
 
 /***********************************************
  *                MAIN METHOD                  *
