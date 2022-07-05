@@ -17,7 +17,7 @@ import { systemLogout } from "@/features/global-state/reducers/auth";
 
 // Components
 import AccountDetail from "@/components/shares/navigates/desktop/account/account-detail";
-import ItemMenu from "@/components/shares/navigates/desktop/item-menu";
+import ItemMenu from "@/components/shares/navigates/desktop/account/item-menu";
 import { MenuType } from "@/components/shares/navigates/enum";
 
 /***********************************************

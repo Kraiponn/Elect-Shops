@@ -5,7 +5,7 @@ import { IconButton, Badge } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 // Global state
-import { useAppSelector, useAppDispatch } from "@/features/hooks/use-global-state";
+import { useAppSelector } from "@/features/hooks/use-global-state";
 
 // Animations
 import { dropDownMenuAnimate } from "@/components/shares/navigates/desktop/animate";
@@ -14,15 +14,13 @@ import { dropDownMenuAnimate } from "@/components/shares/navigates/desktop/anima
 import DropdownMenu from "@/components/shares/navigates/desktop/dropdown-menu";
 import ListMenu from "@/components/shares/navigates/desktop/cart/list-menu";
 
-interface IProps {
-
-}
+interface IProps {}
 
 /***********************************************
  *                MAIN METHOD                  *
  **********************************************/
-const CartMenu = ({ }: IProps) => {
-  const {amount} = useAppSelector(state => state.product)
+const CartMenu = ({}: IProps) => {
+  const { amount } = useAppSelector((state) => state.product);
 
   return (
     <IconButton
@@ -42,11 +40,15 @@ const CartMenu = ({ }: IProps) => {
     >
       <>
         <Badge badgeContent={amount} color="secondary">
-          <ShoppingCartIcon sx={{
-            mt: 0.5,
-          }} fontSize="medium" color="inherit" />
+          <ShoppingCartIcon
+            sx={{
+              mt: 0.5,
+            }}
+            fontSize="medium"
+            color="inherit"
+          />
         </Badge>
-        <DropdownMenu top="125%" leftOfTopArrow="92%">
+        <DropdownMenu top="125%" leftOfTopArrow="90%">
           <ListMenu />
         </DropdownMenu>
       </>

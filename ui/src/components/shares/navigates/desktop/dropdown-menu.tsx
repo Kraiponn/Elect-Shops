@@ -33,8 +33,8 @@ const DropdownMenu = ({ top, leftOfTopArrow, children }: IProps) => {
           top: top,
           right: "0",
           zIndex: 1502,
-          width: "16rem",
-          marginLeft: "-7.5rem",
+          width: "18rem",
+          marginLeft: "-9rem",
 
           opacity: 0,
           transform: "scale(0)",

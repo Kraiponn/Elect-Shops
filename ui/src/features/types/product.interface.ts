@@ -8,20 +8,20 @@ export interface ICategory {
 }
 
 export interface IProduct {
-  id: number;
+  id?: number;
   product_name: string;
   description: string;
-  in_stock: number;
+  in_stock?: number;
   unit_price: number;
-  image_id: string;
+  image_id?: string;
   image_url: string;
-  created_at: Date;
-  updated_at: Date;
-  category_id: number;
+  created_at?: Date;
+  updated_at?: Date;
+  category_id?: number;
 }
 
 export interface ICart {
   totalPrice: number;
-  products?: IProduct[] | null;
-  amount?: number;
+  products: IProduct[] | null;
+  amount: number;
 }
