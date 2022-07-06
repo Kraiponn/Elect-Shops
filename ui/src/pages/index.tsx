@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Typography, Box } from "@mui/material";
 
 import Cookies from "js-cookie";
+import Slider from "react-slick";
 import { Carousel } from "react-responsive-carousel";
 import styled from "@/assets/styles/Home.module.css";
 
@@ -13,85 +14,53 @@ import {
   useAppSelector,
   useAppDispatch,
 } from "@/features/hooks/use-global-state";
-import {
+import product, {
   addProductToCart,
   removeProductFromCart,
 } from "@/features/global-state/reducers/product";
+import { http } from "@/features/services/http";
 
 // Components
 import DefautLayout from "@/components/shares/layouts/defaut-layout";
 import { cmlProducts } from "@/features/services/dummy-data";
 import { clSecondaryGrayBlackDark } from "@/features/const/colors";
+import { IProduct, IProductResponse } from "@/features/types";
+import BannerSlider from "@/components/home/banner-slider";
+
+interface IProps {
+  products: IProduct[];
+}
 
 /***********************************************
  *                MAIN METHOD                  *
  **********************************************/
-const Home: NextPage = () => {
-  const dispatch = useAppDispatch();
-  const { products, totalPrice, amount } = useAppSelector(
-    (state) => state.product
-  );
+const Home = ({ products }: IProps) => {
+  // const dispatch = useAppDispatch();
+  // const { products, totalPrice, amount } = useAppSelector(
+  //   (state) => state.product
+  // );
+
+  // console.log("From client:", products);
 
   return (
     <DefautLayout title="home" description="welcome to shoping">
-      <Box
-        className="home-container"
-        sx={{
-          position: "relative",
-          width: "100%",
-          height: "45vh",
-          zIndex: "1499",
-          marginTop: "56px",
+      {products ? <BannerSlider products={products} /> : <div></div>}
 
-          // background: clSecondaryGrayBlackDark,
-        }}
-      >
-        <Carousel
-          className={styled["carousel-container"]}
-          autoPlay
-          infiniteLoop
-          showArrows={true}
-          showIndicators={true}
-          showStatus={true}
-          // showThumbs={true}
-        >
-          {cmlProducts.map((product, index) => {
-            return (
-              <Box
-                key={index}
-                component="div"
-                sx={{
-                  // position: "absolute",
-                  // top: 0,
-                  // left: 0,
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <Box
-                  sx={{ position: "relative", width: "100%", height: "100vh" }}
-                >
-                  <Image
-                    src={product.image_url}
-                    alt="demo1"
-                    layout="fill"
-                    objectFit="contain"
-                  />
-                </Box>
-
-                <Typography>{product.product_name}</Typography>
-              </Box>
-            );
-          })}
-        </Carousel>
-      </Box>
+      <Box sx={{}}>Welcome to code maker lab</Box>
     </DefautLayout>
   );
 };
 
 export const getStaticProps: GetStaticProps = async () => {
+  const response = await http.get(`/products?page=1&limit=12`);
+  // console.log("Response", response.data);
+
+  const productResponse: IProductResponse = response.data;
+
   return {
-    props: {},
+    props: {
+      products: productResponse.products,
+    },
   };
 };
 

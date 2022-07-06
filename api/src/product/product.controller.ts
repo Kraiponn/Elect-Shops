@@ -84,7 +84,7 @@ export class ProductController {
    * route     Get /v2/api/products?page=xx&limit=xx
    * access    Public(Role) - ADMIN or USER
    */
-  @UseGuards(AccessTokenGuard)
+  // @UseGuards(AccessTokenGuard)
   @Get()
   getProducts(@Query('page') page: number, @Query('limit') limit: number) {
     return this.productService.getProducts(Number(page), Number(limit));

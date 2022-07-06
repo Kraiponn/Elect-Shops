@@ -20,6 +20,20 @@ export interface IProduct {
   category_id?: number;
 }
 
+export interface IProductResponse {
+  current: number;
+  next: {
+    page: number;
+    limit: number;
+  };
+  prev: {
+    page: number;
+    limit: number;
+  };
+  products: IProduct[];
+  total: number;
+}
+
 export interface ICart {
   totalPrice: number;
   products: IProduct[] | null;
