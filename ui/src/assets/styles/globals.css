@@ -55,3 +55,16 @@ a {
   text-decoration: none;
   font-family: "RobotoRegular";
 }
+
+.carousel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.carousel .slide {
+  height: 40vh;
+}
+.carousel .slide my-img {
+  max-height: 100%;
+  width: auto;
+}

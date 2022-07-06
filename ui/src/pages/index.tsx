@@ -4,8 +4,7 @@ import Image from "next/image";
 // Material design
 import { Typography, Box } from "@mui/material";
 
-import Cookies from "js-cookie";
-import { Carousel } from "react-responsive-carousel";
+import Slider from "react-slick";
 import styled from "@/assets/styles/Home.module.css";
 
 // Global state
@@ -23,6 +22,18 @@ import DefautLayout from "@/components/shares/layouts/defaut-layout";
 import { cmlProducts } from "@/features/services/dummy-data";
 import { clSecondaryGrayBlackDark } from "@/features/const/colors";
 
+const settings = {
+  className: "",
+  dots: true,
+  infinite: true,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  adaptiveHeight: true,
+  autoplay: true,
+  autoplaySpeed: 2000,
+  pauseOnHover: true
+};
+
 /***********************************************
  *                MAIN METHOD                  *
  **********************************************/
@@ -33,66 +44,44 @@ const Home: NextPage = () => {
   );
 
   return (
-    <DefautLayout title="home" description="welcome to shoping">
-      <Box
-        className="home-container"
-        sx={{
-          position: "relative",
-          width: "100%",
-          height: "45vh",
-          zIndex: "1499",
-          marginTop: "56px",
-
-          // background: clSecondaryGrayBlackDark,
-        }}
-      >
-        <Carousel
-          className={styled["carousel-container"]}
-          autoPlay
-          infiniteLoop
-          showArrows={true}
-          showIndicators={true}
-          showStatus={true}
-          // showThumbs={true}
-        >
-          {cmlProducts.map((product, index) => {
+    <DefautLayout title="home">
+      <Box sx={{
+        width: "100%",
+        height: "35vh",
+      }}>
+        <Slider {...settings}>
+          {cmlProducts.map((p, index) => {
             return (
-              <Box
-                key={index}
-                component="div"
-                sx={{
-                  // position: "absolute",
-                  // top: 0,
-                  // left: 0,
-                  width: "100%",
-                  height: "100%",
-                }}
+              <Box key={index} component="div"
+                // sx={{
+                //   width: "100%",
+                //   height: "100%"
+                // }}
               >
                 <Box
-                  sx={{ position: "relative", width: "100%", height: "100vh" }}
+                  sx={{ position: "relative", width: "100%", height: "50vh" }}
                 >
                   <Image
-                    src={product.image_url}
-                    alt="demo1"
+                    className={styled['my-image']}
+                    src={p.image_url}
+                    alt={p.product_name}
                     layout="fill"
                     objectFit="contain"
                   />
                 </Box>
-
-                <Typography>{product.product_name}</Typography>
               </Box>
-            );
+            )
           })}
-        </Carousel>
+        </Slider>
       </Box>
     </DefautLayout>
-  );
+  )
 };
 
-export const getStaticProps: GetStaticProps = async () => {
-  return {
-    props: {},
-  };
-};
+// export const getStaticProps: GetStaticProps = async () => {
+//   return {
+//     props: {},
+//   };
+// };
 
 export default Home;
