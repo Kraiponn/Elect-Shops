@@ -9,12 +9,13 @@ import createEmotionCache from "@/features/mui/createEmotionCache";
 // Global state
 import { wrapper } from "@/features/global-state";
 
+// Import css files
+// import "slick-carousel/slick/slick.css";
+// import "slick-carousel/slick/slick-theme.css";
 import "@/assets/styles/globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-// import "react-responsive-carousel/lib/styles/carousel.min.css"; 
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();

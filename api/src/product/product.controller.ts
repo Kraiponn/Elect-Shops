@@ -22,6 +22,22 @@ import { ProductService } from './product.service';
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
+  @Get('/group')
+  getProductsAndGroupByCategoryId(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+    @Query('search') search: string,
+    @Query('groupBy') groupBy: string,
+  ) {
+    console.log('ok good');
+    return this.productService.getProductsAndGroupByCategoryId(
+      Number(page),
+      Number(limit),
+      search,
+      groupBy,
+    );
+  }
+
   /********************************
    * desc      Create product
    * route     Post /v2/api/products/:categoryId
@@ -73,7 +89,6 @@ export class ProductController {
    * route     Get /v2/api/products/:productId
    * access    Public(Role) - ADMIN OR USER
    */
-  @UseGuards(AccessTokenGuard)
   @Get('/:productId')
   getProductById(@Param('productId') productId: number) {
     return this.productService.getProductById(Number(productId));
@@ -81,12 +96,22 @@ export class ProductController {
 
   /********************************
    * desc      Get many products with pagination
-   * route     Get /v2/api/products?page=xx&limit=xx
+   * route     Get /v2/api/products?page=[number]&limit=[number]&search=[string or char]
+   *               &categoryId=[number]
    * access    Public(Role) - ADMIN or USER
    */
-  @UseGuards(AccessTokenGuard)
   @Get()
-  getProducts(@Query('page') page: number, @Query('limit') limit: number) {
-    return this.productService.getProducts(Number(page), Number(limit));
+  getProducts(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+    @Query('search') search: string,
+    @Query('categoryId') categoryId: number,
+  ) {
+    return this.productService.getProducts(
+      Number(page),
+      Number(limit),
+      search,
+      Number(categoryId),
+    );
   }
 }

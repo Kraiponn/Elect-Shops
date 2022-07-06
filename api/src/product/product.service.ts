@@ -170,18 +170,64 @@ export class ProductService {
   async getProducts(
     page: number,
     limit: number,
+    search: string,
+    categoryId: number,
   ): Promise<IPaginate & { products: IProduct[] }> {
     const startIndex = (page - 1) * limit;
     const lastIndex = page * limit;
 
-    const total = await this.prismaService.product.count();
-    const products = await this.prismaService.product.findMany({
-      take: limit,
-      skip: startIndex,
-      orderBy: {
-        id: 'asc',
-      },
-    });
+    // const total = await this.prismaService.product.count();
+    let products: IProduct[];
+
+    if (search) {
+      products = await this.prismaService.product.findMany({
+        where: {
+          product_name: {
+            contains: search,
+          },
+        },
+        take: limit,
+        skip: startIndex,
+        orderBy: {
+          id: 'asc',
+        },
+      });
+    } else if (search && categoryId) {
+      products = await this.prismaService.product.findMany({
+        where: {
+          product_name: {
+            contains: search,
+          },
+          category_id: categoryId,
+        },
+        take: limit,
+        skip: startIndex,
+        orderBy: {
+          id: 'asc',
+        },
+      });
+    } else if (categoryId) {
+      products = await this.prismaService.product.findMany({
+        where: {
+          category_id: categoryId,
+        },
+        take: limit,
+        skip: startIndex,
+        orderBy: {
+          id: 'asc',
+        },
+      });
+    } else {
+      products = await this.prismaService.product.findMany({
+        take: limit,
+        skip: startIndex,
+        orderBy: {
+          id: 'asc',
+        },
+      });
+    }
+
+    const total = products.length;
 
     const pagination: IPaginate = {
       total,
@@ -214,5 +260,89 @@ export class ProductService {
       ...pagination,
       products,
     };
+  }
+
+  /***************************************
+   * Get many products with pagination
+   */
+  async getProductsAndGroupByCategoryId(
+    page: number,
+    limit: number,
+    search: string,
+    groupBy: string,
+  ): Promise<any> {
+    const startIndex = (page - 1) * limit;
+    const lastIndex = page * limit;
+
+    // const total = await this.prismaService.product.count();
+    let products: IProduct[];
+
+    if (search) {
+      const resp = await this.prismaService.product.groupBy({
+        by: ['category_id'],
+        // _sum: {
+        //   in_stock: true,
+        // },
+        // where: {
+        //   product_name: {
+        //     contains: search,
+        //   },
+        // },
+        orderBy: {
+          category_id: 'asc',
+        },
+        skip: startIndex,
+      });
+
+      console.log(resp);
+      return resp;
+    } else {
+      products = await this.prismaService.product.findMany({
+        take: limit,
+        skip: startIndex,
+        orderBy: {
+          id: 'asc',
+        },
+      });
+
+      console.log(products);
+      return products;
+    }
+
+    return { message: 'success' };
+
+    // const total = products.length;
+
+    // const pagination: IPaginate = {
+    //   total,
+    //   current: page,
+    //   next: {
+    //     page: 0,
+    //     limit,
+    //   },
+    //   prev: {
+    //     page: 0,
+    //     limit,
+    //   },
+    // };
+
+    // if (lastIndex < total) {
+    //   pagination.next = {
+    //     page: page + 1,
+    //     limit,
+    //   };
+    // }
+
+    // if (startIndex > 0) {
+    //   pagination.prev = {
+    //     page: page - 1,
+    //     limit,
+    //   };
+    // }
+
+    // return {
+    //   ...pagination,
+    //   products,
+    // };
   }
 }

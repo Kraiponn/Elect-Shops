@@ -1,21 +1,7 @@
 .carousel-container {
-  /* padding-top: 50px; */
-  /* position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1500;
-  width: 100%; */
-  /* height: 100% !important; */
-}
-.carousel .slide {
-  height: 50vh;
 }
 
-/* .carousel-container .carousel-slider {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-} */
-
+.carousel .slide .legend {
+  width: 100px;
+  margin: 0 auto;
+}
