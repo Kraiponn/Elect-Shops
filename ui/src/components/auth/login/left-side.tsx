@@ -96,7 +96,7 @@ const LeftSide = () => {
             duration: 2,
           }}
         >
-          {`Welcome to cmkl online store. Please signin to join with us.`}
+          {`Welcome to shob shop. Please signin to join with us.`}
         </Typography>
       </Box>
     </Box>

@@ -1,9 +1,23 @@
-import React from "react";
+// Material design
+import { Toolbar } from "@mui/material";
 
-type Props = {};
+// Components
+import DefautLayout from "@/components/shares/layouts/defaut-layout";
+import Content from "@/components/cart/content";
 
-const Cart = (props: Props) => {
-  return <div>Cart</div>;
+interface IProps {}
+
+/***********************************************
+ *                MAIN METHOD                  *
+ **********************************************/
+const Cart = ({}: IProps) => {
+  return (
+    <DefautLayout title="Cart" description="product on your cart">
+      <Toolbar />
+
+      <Content />
+    </DefautLayout>
+  );
 };
 
 export default Cart;

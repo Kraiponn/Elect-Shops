@@ -5,6 +5,7 @@ import { Box } from "@mui/material";
 
 interface IProps {
   top: string;
+  right: string;
   leftOfTopArrow: string;
   children: React.ReactNode;
 }
@@ -12,33 +13,31 @@ interface IProps {
 /***********************************************
  *              MAIN METHOD
  */
-const DropdownMenu = ({ top, leftOfTopArrow, children }: IProps) => {
-
+const DropdownMenu = ({ top, right, leftOfTopArrow, children }: IProps) => {
   return (
     <>
       <Box
-        className="list-menu"
+        className="dropdown--list-menu"
         component="div"
         sx={{
-          visibility: "hidden",
+          boxShadow: "0 0rem .7rem rgb(0, 0, 0)",
           background: "rgba(255, 255, 255, 1)",
           color: "black",
           fontSize: ".89rem",
           borderRadius: ".2rem",
           padding: ".3rem",
           textAlign: "left",
-          boxShadow: "0 0.1rem 0.2rem 0 black",
 
           position: "absolute",
           top: top,
-          right: "0",
+          right: right,
           zIndex: 1502,
           width: "18rem",
           marginLeft: "-9rem",
 
           opacity: 0,
+          visibility: "hidden",
           transform: "scale(0)",
-          // transition: "opacity 0.75s",
 
           "&::after": {
             content: '""',
@@ -46,24 +45,14 @@ const DropdownMenu = ({ top, leftOfTopArrow, children }: IProps) => {
             bottom: "100%",
             left: leftOfTopArrow,
             zIndex: 1509,
-            marginLeft: "-0.75rem",
-            borderWidth: "0.75rem",
+            marginLeft: "-0.89rem",
+            borderWidth: "0.89rem",
             borderStyle: "solid",
             borderColor: `transparent transparent white transparent`,
           },
         }}
       >
-        <Box
-          component="div"
-          sx={{
-            height: "auto",
-            maxHeight: "25rem",
-            overflowY: "auto",
-            padding: "0.25rem",
-          }}
-        >
-          {children}
-        </Box>
+        {children}
       </Box>
     </>
   );

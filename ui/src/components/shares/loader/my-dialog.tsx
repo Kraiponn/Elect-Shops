@@ -1,10 +1,9 @@
 import React from "react";
 
-import { Box, Typography } from "@mui/material";
-import { motion } from "framer-motion";
+import { Box } from "@mui/material";
 
-import MyModal from '@/components/shares/loader/modal'
-import LoadingDialog from '@/components/shares/loader/loading'
+import MyModal from "@/components/shares/loader/modal";
+import LoadingDialog from "@/components/shares/loader/loading";
 
 interface IProps {
   isShow: boolean;
@@ -14,7 +13,13 @@ interface IProps {
   toggleDialogState: () => void;
 }
 
-const MyDialog = ({ type, isShow, title, description, toggleDialogState }: IProps) => {
+const MyDialog = ({
+  type,
+  isShow,
+  title,
+  description,
+  toggleDialogState,
+}: IProps) => {
   return isShow ? (
     <Box
       sx={{

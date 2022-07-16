@@ -1,14 +1,5 @@
-export interface ICategory {
-  id: number;
-  category_name: string;
-  description: string;
-  created_at: Date;
-  updated_at: Date;
-  products?: IProduct[] | null;
-}
-
 export interface IProduct {
-  id?: number;
+  id: number;
   product_name: string;
   description: string;
   in_stock?: number;
@@ -34,8 +25,14 @@ export interface IProductResponse {
   total: number;
 }
 
-export interface ICart {
+export interface IOrderProduct {
+  product: IProduct;
   totalPrice: number;
-  products: IProduct[] | null;
+  amount: number;
+}
+
+export interface ICart {
+  orders: IOrderProduct[];
+  totalPrice: number;
   amount: number;
 }

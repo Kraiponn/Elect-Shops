@@ -1,0 +1,35 @@
+.activity-slider .slick-arrow.slick-prev,
+.activity-slider .slick-arrow.slick-next {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 3rem;
+  height: 5rem;
+  background: rgba(255, 255, 2, 0.031);
+  color: rgba(0, 0, 0, 0.007);
+  z-index: 1;
+}
+
+.activity-slider .slick-arrow.slick-prev:hover,
+.activity-slider .slick-arrow.slick-next:hover {
+  background: rgba(255, 255, 2, 0.98);
+  color: rgba(0, 0, 0, 0.945);
+}
+
+.activity-slider .slick-arrow.slick-prev::before,
+.activity-slider .slick-arrow.slick-next::before {
+  display: none;
+}
+
+.activity-slider .slick-arrow.slick-prev {
+  left: 0;
+  border-top-right-radius: .55rem;
+  border-bottom-right-radius: .55rem;
+}
+.activity-slider .slick-arrow.slick-next {
+  right: 0;
+  border-top-left-radius: .55rem;
+  border-bottom-left-radius: .55rem;
+}
+
+

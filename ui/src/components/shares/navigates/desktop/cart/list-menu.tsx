@@ -7,10 +7,12 @@ import OutletIcon from "@mui/icons-material/Outlet";
 // Global state
 import { useAppSelector } from "@/features/hooks/use-global-state";
 
+// Converter
+import { ThaiCurrencyFormatWithBuildIn } from "@/features/services";
+
 // Components
 import TotalOrder from "@/components/shares/navigates/desktop/cart/total-order";
 import ProductItem from "@/components/shares/navigates/desktop/cart/item-menu";
-import { cmlProducts } from "@/features/services/dummy-data";
 
 interface IProps {}
 
@@ -18,28 +20,36 @@ interface IProps {}
  *                MAIN METHOD                  *
  **********************************************/
 const ListMenu = ({}: IProps) => {
-  const { amount, totalPrice, products } = useAppSelector(
+  const { amount, totalPrice, orders } = useAppSelector(
     (state) => state.product
   );
-  // const { product_name, description } = products[0];
 
   return (
     <Box
+      className="list-menu_cart"
       component="div"
       sx={{
+        position: "relative",
+        left: 0,
+        top: 0,
         display: "flex",
         flexDirection: "column",
+        height: "auto",
+        width: "100%",
+        maxHeight: "25rem",
+        overflowY: "auto",
       }}
     >
-      {amount && cmlProducts
-        ? cmlProducts.map((product, index) => {
+      {amount && orders
+        ? orders.map((order, index) => {
             return (
               <ProductItem
                 key={index}
-                product_name={product.product_name as string}
-                description={product.description as string}
-                unit_price={Number(product.unit_price)}
-                image_url={product.image_url as string}
+                id={order.product.id}
+                product_name={order.product.product_name as string}
+                description={order.product.description as string}
+                unit_price={Number(order.product.unit_price)}
+                image_url={order.product.image_url as string}
               />
             );
           })

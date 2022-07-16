@@ -1,9 +1,8 @@
 import React from "react";
 
 // Material design
-import { IconButton, keyframes } from "@mui/material";
+import { IconButton } from "@mui/material";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import PersonIcon from '@mui/icons-material/Person';
 
 // Animations
 import { dropDownMenuAnimate } from "@/components/shares/navigates/desktop/animate";
@@ -11,13 +10,12 @@ import { dropDownMenuAnimate } from "@/components/shares/navigates/desktop/anima
 // Components
 import DropdownMenu from "@/components/shares/navigates/desktop/dropdown-menu";
 import ListAccountMenu from "@/components/shares/navigates/desktop/account/list-menu";
-
-type Props = {};
+import { NextPage } from "next";
 
 /***********************************************
  *                MAIN METHOD                  *
  **********************************************/
-const AccountMenu = (props: Props) => {
+const AccountMenu: NextPage = () => {
   return (
     <IconButton
       color="inherit"
@@ -26,7 +24,7 @@ const AccountMenu = (props: Props) => {
         display: "inline-block",
         mx: 1,
         "&:hover": {
-          ".list-menu": {
+          ".dropdown--list-menu": {
             visibility: "visible",
             animation: `${dropDownMenuAnimate} .35s ease-out forwards`,
           },
@@ -41,7 +39,7 @@ const AccountMenu = (props: Props) => {
             mt: 0.5,
           }}
         />
-        <DropdownMenu top="105%" leftOfTopArrow="90%">
+        <DropdownMenu top="110%" right="0" leftOfTopArrow="90%">
           <ListAccountMenu />
         </DropdownMenu>
       </>

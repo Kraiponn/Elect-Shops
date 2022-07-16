@@ -1,4 +1,5 @@
 import React from "react";
+import { NextPage } from "next";
 
 // Materials
 import { Box, Grid, useMediaQuery } from "@mui/material";
@@ -8,12 +9,10 @@ import BlankLayout from "@/components/shares/layouts/blank-layout";
 import LeftSide from "@/components/auth/login/left-side";
 import RightSide from "@/components/auth/login/right-side";
 
-type Props = {};
-
 /****************************************************
  *  MAIN FUNCTION
  */
-const Login = (props: Props) => {
+const Login: NextPage = () => {
   const isDesktop = useMediaQuery("(min-width: 900px)");
 
   return (

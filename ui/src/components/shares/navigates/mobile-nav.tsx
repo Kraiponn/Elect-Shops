@@ -16,15 +16,16 @@ import { openMobileMenu } from "@/features/global-state/reducers/gui";
 // Components
 import MobileMenu from "@/components/shares/navigates/mobile";
 import SearchBox from "@/components/shares/ui/search-box";
+import { clSecondary } from "@/features/const/colors";
 
-interface IProps { }
+interface IProps {}
 
 /***********************************************
  *                MAIN METHOD                  *
  **********************************************/
-const MobileNav = (props: IProps) => {
+const MobileNav = ({}: IProps) => {
   const router = useRouter();
-  const { amount, totalPrice, products } = useAppSelector(state => state.product)
+  const { amount } = useAppSelector((state) => state.product);
   const dispatch = useAppDispatch();
 
   const handleOpenMobileMenu = () => {
@@ -47,7 +48,7 @@ const MobileNav = (props: IProps) => {
           aria-label="menu"
           onClick={handleOpenMobileMenu}
         >
-          <MenuIcon />
+          <MenuIcon fontSize="large" />
         </IconButton>
 
         <Box sx={{ flexGrow: 1 }}></Box>
@@ -57,9 +58,17 @@ const MobileNav = (props: IProps) => {
         <IconButton
           color="inherit"
           sx={{ marginLeft: "1.2rem" }}
-          onClick={() => router.push('/products/cart')}
+          onClick={() => router.push("/products/cart")}
         >
-          <Badge badgeContent={Number(amount)} color="secondary">
+          <Badge
+            badgeContent={amount}
+            sx={{
+              "& .MuiBadge-badge": {
+                color: "white",
+                backgroundColor: clSecondary,
+              },
+            }}
+          >
             <ShoppingCartIcon color="inherit" />
           </Badge>
         </IconButton>

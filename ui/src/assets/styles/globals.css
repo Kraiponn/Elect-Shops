@@ -34,19 +34,24 @@
 }
 
 @font-face {
+  font-family: "PromptLight";
+  src: url("../fonts/Prompt-Light.ttf");
+}
+
+@font-face {
   font-family: "PromptThin";
   src: url("../fonts/Prompt-Thin.ttf");
 }
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html,
 body {
-  padding: 0;
-  margin: 0;
-  font-family: RobotoRegular, PromptRegular, -apple-system, sans-serif;
+  font-family: RobotoRegular, PromptLight, -apple-system, sans-serif;
   font-size: 14px;
 }
 
@@ -56,15 +61,33 @@ a {
   font-family: "RobotoRegular";
 }
 
-.carousel {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.multine-ellipsis {
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
 }
-.carousel .slide {
-  height: 40vh;
+
+.multine-ellipsis_1 {
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
 }
-.carousel .slide my-img {
-  max-height: 100%;
-  width: auto;
+
+.multine-ellipsis_2 {
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+ul li {
+  list-style: none;
 }

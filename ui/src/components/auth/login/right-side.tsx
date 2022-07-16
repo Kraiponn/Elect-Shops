@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useRouter } from "next/router";
 
 // Materials components
@@ -29,7 +29,7 @@ import MyDialog from "@/components/shares/loader/my-dialog";
 const RightSide = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { isLoading, isSuccess, user, error } = useAppSelector(
+  const { isLoading, isSuccess, error } = useAppSelector(
     (state) => state.auth
   );
 
@@ -47,14 +47,11 @@ const RightSide = () => {
     dispatch(clearErrorAndLoadingState());
   };
 
-  useEffect(() => {
-    // Switch to the home page
-    if (isSuccess) {
-      dispatch(clearErrorAndLoadingState());
+  if (isSuccess) {
+    dispatch(clearErrorAndLoadingState());
 
-      router.push("/");
-    }
-  });
+    return router.push("/");
+  }
 
   return (
     <>

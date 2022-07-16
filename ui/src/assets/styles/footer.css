@@ -1,0 +1,21 @@
+.footer--container {
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.969);
+  color: rgba(240, 235, 235, 0.722);
+  font-family: "PromptLight";
+}
+
+.footer__service {
+  list-style: none;
+  padding-inline-start: 0.5rem;
+  margin-top: 0.45rem;
+}
+
+.footer__service li {
+  font-size: 0.99rem;
+  margin-bottom: 0.55rem;
+}
+
+.footer__service li:hover {
+  color: rgba(240, 235, 235, 0.917);
+}

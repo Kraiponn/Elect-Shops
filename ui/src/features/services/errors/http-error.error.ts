@@ -2,6 +2,16 @@ import { AxiosError } from "axios";
 import { IErorrResponseData } from "@/features/types";
 
 export const getHttpErrorObject = (error: AxiosError) => {
+  if (error.code === "ERR_NETWORK" || error.code === "ECONNREFUSED") {
+    const errObj = {
+      error: "Invalid connection",
+      message: "No internet(network) connection or api url is incorrect.",
+      statusCode: 500,
+    };
+
+    return errObj;
+  }
+
   if (error.response) {
     console.log("RESPONSE ERROR", error.response.data);
     // console.log(error.response.status);

@@ -4,6 +4,7 @@ import React from "react";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { Badge, Box, SvgIconTypeMap, Typography } from "@mui/material";
 import { MenuType } from "@/components/shares/navigates/enum";
+import { clSecondary } from "@/features/const/colors";
 
 interface IProps {
   isTitle: boolean;
@@ -13,10 +14,10 @@ interface IProps {
   amount?: number;
   showIcon: boolean;
   Icon:
-  | (OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
-    muiName: string;
-  })
-  | any;
+    | (OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
+        muiName: string;
+      })
+    | any;
   handleItemSelect: (item: MenuType) => void;
 }
 
@@ -69,7 +70,7 @@ const ItemMenu = ({
       >
         <Typography
           sx={{
-            fontFamily: "PropmptMedium",
+            fontFamily: "PromptLight",
             fontSize: "0.9rem",
             marginLeft: "0.5rem",
           }}
@@ -79,12 +80,20 @@ const ItemMenu = ({
         </Typography>
 
         {showIcon ? (
-          <Badge color="secondary" badgeContent={amount}>
+          <Badge
+            badgeContent={amount}
+            sx={{
+              "& .MuiBadge-badge": {
+                color: "white",
+                backgroundColor: clSecondary,
+              },
+            }}
+          >
             <Icon
               fontSize={
                 text.toLowerCase().includes("notification") ||
-                  text.toLowerCase().includes("wishlist") ||
-                  text.toLowerCase().includes("message")
+                text.toLowerCase().includes("wishlist") ||
+                text.toLowerCase().includes("message")
                   ? "medium"
                   : "small"
               }

@@ -1,7 +1,8 @@
 import React from "react";
+import { useRouter } from "next/router";
 
 // Material design
-import { IconButton, Badge } from "@mui/material";
+import { Badge, Box } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 // Global state
@@ -13,6 +14,7 @@ import { dropDownMenuAnimate } from "@/components/shares/navigates/desktop/anima
 // Components
 import DropdownMenu from "@/components/shares/navigates/desktop/dropdown-menu";
 import ListMenu from "@/components/shares/navigates/desktop/cart/list-menu";
+import { clSecondary } from "@/features/const/colors";
 
 interface IProps {}
 
@@ -20,26 +22,36 @@ interface IProps {}
  *                MAIN METHOD                  *
  **********************************************/
 const CartMenu = ({}: IProps) => {
+  const router = useRouter();
   const { amount } = useAppSelector((state) => state.product);
 
   return (
-    <IconButton
-      color="inherit"
+    <Box
       sx={{
         position: "relative",
         display: "inline-block",
         mx: 1,
-        ml: 2,
+        ml: 5,
         "&:hover": {
-          ".list-menu": {
+          ".dropdown--list-menu": {
             visibility: "visible",
             animation: `${dropDownMenuAnimate} .35s ease-out forwards`,
           },
         },
       }}
+      onClick={() => router.push(`/products/cart`)}
     >
       <>
-        <Badge badgeContent={amount} color="secondary">
+        <Badge
+          badgeContent={amount}
+          sx={{
+            "& .MuiBadge-badge": {
+              backgroundColor: clSecondary,
+              color: "white",
+            },
+            cursor: "pointer",
+          }}
+        >
           <ShoppingCartIcon
             sx={{
               mt: 0.5,
@@ -48,11 +60,11 @@ const CartMenu = ({}: IProps) => {
             color="inherit"
           />
         </Badge>
-        <DropdownMenu top="125%" leftOfTopArrow="90%">
+        <DropdownMenu top="190%" right="-90%" leftOfTopArrow="89%">
           <ListMenu />
         </DropdownMenu>
       </>
-    </IconButton>
+    </Box>
   );
 };
 

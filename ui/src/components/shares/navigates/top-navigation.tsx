@@ -1,11 +1,7 @@
 import * as React from "react";
 
 // Material design
-import {
-  Box,
-  AppBar,
-  useMediaQuery,
-} from "@mui/material";
+import { Box, AppBar, useMediaQuery } from "@mui/material";
 
 // Components
 import DesktopNav from "@/components/shares/navigates/desktop-nav";
@@ -19,8 +15,8 @@ const TopNavigation = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="sticky">
-        {isDesktop ? (<DesktopNav />) : (<MobileNav />)}
+      <AppBar position="fixed" sx={{ background: "rgba(0, 0, 0, 0.851)" }}>
+        {isDesktop ? <DesktopNav /> : <MobileNav />}
       </AppBar>
     </Box>
   );

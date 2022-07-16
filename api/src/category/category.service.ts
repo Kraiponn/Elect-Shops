@@ -100,6 +100,22 @@ export class CategoryService {
   }
 
   /***************************************************
+   * Query categories for hot navagation
+   */
+  async getHotCategoriesNavigation(): Promise<any> {
+    const categories = await this.prismaService.category.findMany({
+      take: 7,
+      include: {
+        products: {
+          take: 5,
+        },
+      },
+    });
+
+    return categories;
+  }
+
+  /***************************************************
    * Query categories and response with pagination
    */
   async getCategories(

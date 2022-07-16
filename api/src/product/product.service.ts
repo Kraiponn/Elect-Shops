@@ -179,12 +179,13 @@ export class ProductService {
     // const total = await this.prismaService.product.count();
     let products: IProduct[];
 
-    if (search) {
+    if (search && categoryId) {
       products = await this.prismaService.product.findMany({
         where: {
           product_name: {
             contains: search,
           },
+          category_id: categoryId,
         },
         take: limit,
         skip: startIndex,
@@ -192,13 +193,12 @@ export class ProductService {
           id: 'asc',
         },
       });
-    } else if (search && categoryId) {
+    } else if (search) {
       products = await this.prismaService.product.findMany({
         where: {
           product_name: {
             contains: search,
           },
-          category_id: categoryId,
         },
         take: limit,
         skip: startIndex,

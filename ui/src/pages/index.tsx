@@ -1,68 +1,104 @@
-import type { GetStaticProps, NextPage } from "next";
-import Image from "next/image";
+import type { GetStaticProps } from "next";
+import { useRouter } from "next/router";
+import { AxiosError } from "axios";
 
 // Material design
-import { Typography, Box } from "@mui/material";
+import { Box, Toolbar, useMediaQuery } from "@mui/material";
 
-import Cookies from "js-cookie";
-import Slider from "react-slick";
-import { Carousel } from "react-responsive-carousel";
-import styled from "@/assets/styles/Home.module.css";
-
-// Global state
+// Services
+import { http, getHttpErrorObject } from "@/features/services";
 import {
-  useAppSelector,
-  useAppDispatch,
-} from "@/features/hooks/use-global-state";
-import product, {
-  addProductToCart,
-  removeProductFromCart,
-} from "@/features/global-state/reducers/product";
-import { http } from "@/features/services/http";
+  IProduct,
+  IProductResponse,
+  IErorrResponseData,
+} from "@/features/types";
+import { dummyBanner } from "@/features/services/dummy-data";
+import { hotNavigationData } from "@/components/home/home-dummy-data";
 
 // Components
 import DefautLayout from "@/components/shares/layouts/defaut-layout";
-import { cmlProducts } from "@/features/services/dummy-data";
-import { clSecondaryGrayBlackDark } from "@/features/const/colors";
-import { IProduct, IProductResponse } from "@/features/types";
 import BannerSlider from "@/components/home/banner-slider";
 import Content from "@/components/home/content";
+import HotNavigation from "@/components/home/hot-navigation";
+import ErrorShow from "@/components/errors";
 
 interface IProps {
-  products: IProduct[];
+  electrics: IProduct[];
+  books: IProduct[];
+  errObj?: IErorrResponseData;
 }
 
 /***********************************************
  *                MAIN METHOD                  *
  **********************************************/
-const Home = ({ products }: IProps) => {
-  // const dispatch = useAppDispatch();
-  // const { products, totalPrice, amount } = useAppSelector(
-  //   (state) => state.product
-  // );
+const Home = ({ electrics, books, errObj }: IProps) => {
+  const router = useRouter();
+  const matches = useMediaQuery("(min-width:845px)");
 
-  // console.log("From client:", products);
+  const handleRefreshPage = () => {
+    router.reload();
+  };
+
+  if (errObj) {
+    return (
+      <ErrorShow errorObject={errObj} handleRefreshPage={handleRefreshPage} />
+    );
+  }
 
   return (
     <DefautLayout title="home" description="welcome to shoping">
-      {products ? <BannerSlider products={products} /> : <div></div>}
+      <Toolbar />
 
-      <Content products={products} />
+      {matches && <HotNavigation categories={hotNavigationData} />}
+
+      {dummyBanner ? <BannerSlider dummyBanner={dummyBanner} /> : <div></div>}
+
+      <Box
+        sx={{
+          width: "30%",
+          margin: "0 auto",
+          marginTop: "5rem",
+          borderTop: "0.1rem solid gray",
+        }}
+      />
+
+      <Content electrics={electrics} books={books} />
     </DefautLayout>
-  )
+  );
 };
 
+/*********************************************************
+ *                     SERVER PART                       *
+ ********************************************************/
 export const getStaticProps: GetStaticProps = async () => {
-  const response = await http.get(`/products?page=1&limit=12`);
-  // console.log("Response", response.data);
+  try {
+    const electricsData = await http.get(
+      `/products?page=1&limit=12&categoryId=6`
+    );
+    const booksData = await http.get(`/products?page=1&limit=12&categoryId=3`);
 
-  const productResponse: IProductResponse = response.data;
+    // console.log("Response", response.data);
+    const electrics: IProductResponse = electricsData.data.products;
+    const books: IProductResponse = booksData.data["products"];
 
-  return {
-    props: {
-      products: productResponse.products,
-    },
-  };
+    return {
+      props: {
+        electrics,
+        books,
+      },
+    };
+  } catch (error) {
+    // console.log("My error", error as AxiosError);
+    const errResponse = getHttpErrorObject(error as AxiosError);
+
+    return {
+      props: {
+        electrics: [],
+        books: [],
+        errObj: errResponse,
+      },
+    };
+  }
 };
 
 export default Home;

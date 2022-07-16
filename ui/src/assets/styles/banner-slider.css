@@ -1,0 +1,41 @@
+.banner-slider .slick-arrow.slick-prev,
+.banner-slider .slick-arrow.slick-next {
+  background: rgba(0, 0, 0, 0.243);
+  color: rgba(255, 255, 255, 0.176);
+  width: 4rem;
+  height: 7rem;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.banner-slider .slick-arrow.slick-prev:hover,
+.banner-slider .slick-arrow.slick-next:hover {
+  background: rgba(0, 0, 0, 0.633);
+  color: rgba(255, 255, 255, 0.716);
+}
+
+.banner-slider .slick-arrow.slick-prev {
+  left: 0;
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+.banner-slider .slick-arrow.slick-next {
+  right: 0;
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
+
+.banner-slider .slick-arrow.slick-prev::before,
+.banner-slider .slick-arrow.slick-next::before {
+  display: none;
+}
+
+.banner-slider .slick-dots {
+  bottom: 1rem;
+}
+
+.banner-slider .slick-dots li button:before {
+  font-size: 1.1rem;
+}

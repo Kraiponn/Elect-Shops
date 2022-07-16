@@ -168,6 +168,18 @@ export const authSlice = createSlice({
       // Cookies.remove("access_token");
       // Cookies.remove("user");
     },
+    setAuthSuccess: (
+      state,
+      {
+        payload,
+      }: PayloadAction<
+        Omit<IAuth, "profile" | "error" | "isLoading" | "isSuccess">
+      >
+    ) => {
+      const { user, access_token } = payload;
+      state.user = user;
+      state.access_token = access_token;
+    },
   },
   extraReducers: (builder) => {
     /**********************************
@@ -263,6 +275,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const { clearErrorAndLoadingState } = authSlice.actions;
+export const { clearErrorAndLoadingState, setAuthSuccess } = authSlice.actions;
 
 export default authSlice.reducer;

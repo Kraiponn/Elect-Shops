@@ -13,6 +13,7 @@ import {
 import {
   asyncAuth,
   clearErrorAndLoadingState,
+  setAuthSuccess,
 } from "@/features/global-state/reducers/auth";
 import { IAuthForm, IAuthInput } from "@/features/types";
 
@@ -20,6 +21,7 @@ import { IAuthForm, IAuthInput } from "@/features/types";
 import DefaultLayout from "@/components/shares/layouts/defaut-layout";
 import AuthForm from "@/components/auth/auth-form";
 import MyDialog from "@/components/shares/loader/my-dialog";
+import Cookies from "js-cookie";
 
 /****************************************************
  *                 MAIN FUNCTION
@@ -27,7 +29,9 @@ import MyDialog from "@/components/shares/loader/my-dialog";
 const SignUp = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { isLoading, isSuccess, error } = useAppSelector((state) => state.auth);
+  const { isLoading, isSuccess, error, user, access_token } = useAppSelector(
+    (state) => state.auth
+  );
   const [finish, setFinish] = useState<boolean>(false);
 
   const handleSignup = ({ email, password }: IAuthForm) => {
@@ -45,12 +49,18 @@ const SignUp = () => {
     dispatch(clearErrorAndLoadingState());
   };
 
-  useEffect(() => {
-    // Switch to the success page when signup is successfull
-    if (isSuccess) {
-      router.push("/auth/success");
+  if (!user && !access_token) {
+    const _user = Cookies.get("user");
+    const _accessToken = Cookies.get("access_token");
+
+    if (_user && _accessToken) {
+      dispatch(
+        setAuthSuccess({ user: JSON.parse(_user), access_token: _accessToken })
+      );
     }
-  });
+  } else if (isSuccess) {
+    return router.push("/auth/success");
+  }
 
   return (
     <DefaultLayout title="signup page">

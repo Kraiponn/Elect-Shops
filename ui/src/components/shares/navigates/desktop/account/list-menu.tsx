@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 // Material design
 import { Box, Divider, Typography } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import LogoutIcon from "@mui/icons-material/Logout";
 
@@ -35,6 +35,21 @@ const MenuList = () => {
 
   const handleItemSelectedType = (menuType: MenuType) => {
     console.log(menuType);
+
+    switch (menuType) {
+      case MenuType.ACCOUNT_SETTING:
+        router.push("/account/dashboard");
+        break;
+      case MenuType.PAYMENT_METHOD:
+        router.push("/account/dashboard");
+        break;
+      case MenuType.APP_SETTING:
+        router.push("/system/settings");
+        break;
+
+      default:
+        break;
+    }
   };
 
   return (
@@ -62,7 +77,7 @@ const MenuList = () => {
       />
 
       <ItemMenu
-        menuType={MenuType.PAYMENT_METHOD}
+        menuType={MenuType.APP_SETTING}
         title={`App Settings`}
         Icon={SettingsIcon}
         handleSelectedItem={handleItemSelectedType}
@@ -74,8 +89,8 @@ const MenuList = () => {
         sx={{
           display: "flex",
           alignItems: "center",
-          marginX: '0.75rem',
-          marginBottom: '1rem',
+          marginX: "0.75rem",
+          marginBottom: "1rem",
           "&:hover": {
             color: "red",
           },

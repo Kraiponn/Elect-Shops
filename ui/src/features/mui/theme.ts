@@ -1,16 +1,29 @@
 import { createTheme } from "@mui/material/styles";
 import { red } from "@mui/material/colors";
-import { clPrimary, clSecondary } from "../const/colors";
+import {
+  clOrange400,
+  clOrange500,
+  clOrange700,
+  clPrimary,
+  clPrimaryDark,
+  clPrimaryLight,
+  clSecondary,
+  clSecondaryDark,
+  clWhite,
+} from "@/features/const/colors";
 
 // Create a theme instance.
 const theme = createTheme({
   palette: {
-    mode: "light",
+    // mode: "light",
     primary: {
       main: clPrimary,
+      light: clPrimaryLight,
+      dark: clPrimaryDark,
     },
     secondary: {
       main: clSecondary,
+      dark: clSecondaryDark,
     },
     error: {
       main: red.A400,
@@ -21,12 +34,15 @@ const theme = createTheme({
     // fontSize: 16,
     h1: {
       fontSize: "3.5rem",
+      fontWeight: 800,
     },
     h2: {
       fontSize: "2.5rem",
+      fontWeight: 700,
     },
     h3: {
       fontSize: "2rem",
+      fontWeight: 500,
     },
     h4: {
       fontSize: "1.75rem",
@@ -55,7 +71,7 @@ const theme = createTheme({
     body2: {
       fontSize: "0.8rem",
       fontWeight: "inherit",
-      fontFamily: "Prompt",
+      fontFamily: "PromptLight",
     },
     button: {
       fontFamily: "PromptRegular",
@@ -68,7 +84,7 @@ const theme = createTheme({
   components: {
     MuiAppBar: {
       defaultProps: {
-        elevation: 0,
+        elevation: 2,
       },
     },
   },

@@ -2,66 +2,70 @@ import React from "react";
 import Image from "next/image";
 
 // Material design
-import { Typography, Box } from "@mui/material";
+import { Box } from "@mui/material";
 
 // Styles
-import { Carousel } from "react-responsive-carousel";
-import styled from "@/assets/styles/Home.module.css";
+import Slider from "react-slick";
+// import styled from "@/assets/styles/banner-slider.module.css";
 
 // Types
 import { IProduct } from "@/features/types";
+import { IDummyData } from "@/features/services";
+
+// Components
+import {
+  NextButton,
+  PreviousButton,
+} from "@/components/home/custom-arrow-slider";
 
 interface IProps {
-  products: IProduct[];
+  products?: IProduct[];
+  dummyBanner?: IDummyData[];
 }
 
 /***********************************************
  *                MAIN METHOD                  *
  **********************************************/
-const BannerSlider = ({ products }: IProps) => {
-//   console.log("From client:", products);
-
+const BannerSlider = ({ products, dummyBanner }: IProps) => {
   return (
-    <Carousel
-      className={styled["carousel-container"]}
-      showThumbs={false}
-      showArrows={true}
-      showIndicators={true}
-      showStatus={true}
-      infiniteLoop={true}
-      autoPlay={true}
-      interval={3000}
-      stopOnHover={true}
-      onClickItem={(item: number) => {
-        console.log("Click item no ", item);
-      }}
-    >
-      {products.map((product) => {
-        return (
-          <Box
-            key={product.id}
-            sx={{
-              background: "rgba(0, 0, 0, 1)",
-              "&:hover": {
-                cursor: "pointer",
-              },
-            }}
-          >
-            <div
-              style={{ width: "100%", height: "45vh", position: "relative" }}
+    <Box sx={{ display: "flex", justifyContent: "center" }}>
+      <div style={{ width: "100%" }}>
+        <Slider
+          className="banner-slider"
+          autoplay={true}
+          slidesToShow={1}
+          slidesToScroll={1}
+          autoplaySpeed={2000}
+          infinite={true}
+          pauseOnHover
+          nextArrow={<NextButton />}
+          prevArrow={<PreviousButton />}
+          dots
+        >
+          {dummyBanner?.map((banner) => (
+            <Box
+              key={banner.id}
+              sx={{
+                width: "100%",
+                height: "45vh",
+                position: "relative",
+                "& :hover": {
+                  cursor: "pointer",
+                },
+              }}
             >
               <Image
-                src={product.image_url}
-                alt={product.product_name}
+                src={banner.image}
+                alt={banner.product_name}
                 layout="fill"
-                objectFit="contain"
+                objectFit="fill"
+                priority={true}
               />
-            </div>
-            <p className={"legend"}>{product.product_name}</p>
-          </Box>
-        );
-      })}
-    </Carousel>
+            </Box>
+          ))}
+        </Slider>
+      </div>
+    </Box>
   );
 };
 

@@ -30,8 +30,9 @@ interface IProps {
   isSuccess: boolean;
 }
 
-interface IPwdInputBox {
+interface IInputBox {
   showPassword: boolean;
+  isRemember: boolean;
 }
 
 const schema = yup
@@ -51,16 +52,11 @@ const schema = yup
 /****************************************************
  *                  MAIN FUNCTION
  */
-const AuthForm = ({
-  authType,
-  handleAuth,
-  isLoading,
-  isSuccess,
-}: IProps) => {
+const AuthForm = ({ authType, handleAuth, isLoading }: IProps) => {
   const router = useRouter();
-
-  const [values, setValues] = useState<IPwdInputBox>({
+  const [values, setValues] = useState<IInputBox>({
     showPassword: false,
+    isRemember: false,
   });
 
   const {
@@ -149,11 +145,16 @@ const AuthForm = ({
             ease: "linear",
           }}
         >
-          <Button sx={{ py: 1 }} type="submit" variant="contained" fullWidth>
+          <Button
+            sx={{ py: 1, fontSize: "0.89rem" }}
+            type="submit"
+            variant="contained"
+            fullWidth
+          >
             {isLoading ? (
               <CircularProgress size={"1.5rem"} color="inherit" />
             ) : (
-              `Submit`
+              `SUBMIT`
             )}
           </Button>
         </Box>
@@ -187,18 +188,29 @@ const AuthForm = ({
 
           <Divider />
 
-          <Typography variant="h6" sx={{ mt: 2 }}>
+          <Typography
+            component="h5"
+            sx={{
+              mt: 2,
+              fontFamily: "PromptRegular",
+              fontStyle: "italic",
+              fontSize: ".89rem",
+            }}
+          >
             {authType === "LOGIN"
               ? `Don\'t have an account?`
               : `Already have an account?`}
           </Typography>
 
           <Typography
-            variant="h6"
+            component="h5"
             sx={{
               cursor: "pointer",
               color: "red",
               textDecoration: "underline",
+              fontFamily: "PromptBold",
+              fontStyle: "italic",
+              fontSize: ".89rem",
             }}
             onClick={goToAuthPage}
           >

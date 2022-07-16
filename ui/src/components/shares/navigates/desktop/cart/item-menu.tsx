@@ -1,11 +1,18 @@
 import React from "react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 // Material design
-import { Box, Divider, Typography } from "@mui/material";
-import DefaultProductImage from "@/assets/images/doctor.svg";
+import { Box, Grid, Typography } from "@mui/material";
+
+// Converter
+import { ThaiCurrencyFormatWithBuildIn } from "@/features/services";
+
+// Components
+import DefaultProductImage from "@/assets/images/little-pug-dog.webp";
 
 interface IProps {
+  id: number;
   product_name: string;
   description: string;
   unit_price: number;
@@ -16,69 +23,96 @@ interface IProps {
  *                MAIN METHOD                  *
  **********************************************/
 const ItemMenu = ({
+  id,
   product_name,
   description,
   unit_price,
   image_url,
 }: IProps) => {
+  const router = useRouter();
+
+  const handleShowProductDetail = (productId: number) => {
+    // router.push({
+    //   pathname: `/products/${productId}`,
+    //   query: { productId },
+    // });
+    router.push(`/products/${productId}`);
+  };
+
   return (
-    <>
-      <Box
-        component="div"
-        sx={{
-          display: "flex",
-          justifyContent: "flex-start",
-          alignItems: "center",
-        }}
-      >
-        <Box
-          sx={{
-            width: "8rem",
-            height: "5rem",
-            position: "relative",
-          }}
-        >
-          <Image
-            src={image_url ? image_url : DefaultProductImage}
-            alt="product-image"
-            layout="fill"
-            objectFit="contain"
-          />
-        </Box>
-
-        <Box sx={{ ml: 1 }}>
-          <Typography
+    <Box
+      component="div"
+      onClick={() => handleShowProductDetail(id)}
+      sx={{
+        borderBottom: ".1rem solid black",
+        paddingY: "0.5rem",
+        paddingX: "0.75rem",
+        width: "100%",
+        "&:hover": {
+          cursor: "pointer",
+        },
+      }}
+    >
+      <Grid container>
+        <Grid item xs={4}>
+          <Box
             sx={{
-              fontSize: "0.89rem",
-              fontFamily: "PromptMedium",
-              fontWeight: 500,
+              width: "100%",
+              height: "5rem",
+              position: "relative",
             }}
           >
-            {product_name}
-          </Typography>
+            <Image
+              src={image_url ? image_url : DefaultProductImage}
+              alt="product-image"
+              layout="fill"
+              objectFit="cover"
+            />
+          </Box>
+        </Grid>
 
-          <Typography
+        <Grid item xs={8}>
+          <Box
             sx={{
-              fontSize: "0.75rem",
-              fontFamily: "PromptThin",
-              fontWeight: 700,
+              marginLeft: "10px",
+              width: "100%",
+              height: "5rem",
             }}
           >
-            {description}
-          </Typography>
+            <Typography
+              className="multine-ellipsis_2"
+              sx={{
+                fontSize: "1.1rem",
+                fontFamily: "PromptBold",
+              }}
+            >
+              {product_name}
+            </Typography>
 
-          <Typography
-            sx={{
-              fontSize: "0.75rem",
-              fontFamily: "PromptBold",
-              fontWeight: 200,
-            }}
-          >{`฿${unit_price}`}</Typography>
-        </Box>
-      </Box>
+            {/* <Typography
+                className="multine-ellipsis_2"
+                sx={{
+                  fontSize: "0.75rem",
+                  fontFamily: "PromptThin",
+                  fontWeight: 700,
+                }}
+              >
+                {description}
+              </Typography> */}
 
-      <Divider sx={{ my: 1 }} />
-    </>
+            <Typography
+              sx={{
+                fontSize: "1rem",
+                fontFamily: "PromptMedium",
+                fontWeight: 200,
+                fontStyle: "italic",
+                color: "red",
+              }}
+            >{`${ThaiCurrencyFormatWithBuildIn(unit_price)}`}</Typography>
+          </Box>
+        </Grid>
+      </Grid>
+    </Box>
   );
 };
 
