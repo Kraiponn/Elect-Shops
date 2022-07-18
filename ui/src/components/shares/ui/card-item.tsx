@@ -174,7 +174,7 @@ const CardItem = ({ product }: ICardItem) => {
           src={product.image_url}
           alt={product.product_name}
           layout="fill"
-          objectFit="cover"
+          objectFit="contain"
         />
       </Box>
 
