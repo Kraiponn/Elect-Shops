@@ -133,7 +133,7 @@ const CartListItem = ({
                   color: "inherit",
                 }}
               >
-                {order.amount}
+                {order.quantity}
               </Typography>
 
               <IconButton

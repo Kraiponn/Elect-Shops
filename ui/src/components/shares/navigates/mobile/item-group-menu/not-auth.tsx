@@ -16,10 +16,12 @@ interface IProps {
 /***********************************************
  *                MAIN METHOD                  *
  **********************************************/
-export default function NotAuthItemMenuGroup({ handleItemSelectedType }: IProps) {
+export default function NotAuthItemMenuGroup({
+  handleItemSelectedType,
+}: IProps) {
   const handleItemSelecte = (item: MenuType) => {
-    handleItemSelectedType(item)
-  }
+    handleItemSelectedType(item);
+  };
 
   return (
     <>
@@ -29,7 +31,7 @@ export default function NotAuthItemMenuGroup({ handleItemSelectedType }: IProps)
         menuType={MenuType.REGISTER}
         text={`Sign Up`}
         showIcon={true}
-        amount={0}
+        quantity={0}
         Icon={AppRegistrationIcon}
         handleItemSelect={() => handleItemSelecte(MenuType.REGISTER)}
       />
@@ -38,11 +40,11 @@ export default function NotAuthItemMenuGroup({ handleItemSelectedType }: IProps)
         menuType={MenuType.LOGIN}
         text={`Log In`}
         showIcon={true}
-        amount={0}
+        quantity={0}
         Icon={VpnKeyIcon}
         handleItemSelect={() => handleItemSelecte(MenuType.LOGIN)}
       />
       <Divider sx={{ my: 2 }} />
     </>
-  )
+  );
 }

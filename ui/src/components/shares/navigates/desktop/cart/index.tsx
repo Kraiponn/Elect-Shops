@@ -23,7 +23,7 @@ interface IProps {}
  **********************************************/
 const CartMenu = ({}: IProps) => {
   const router = useRouter();
-  const { amount } = useAppSelector((state) => state.product);
+  const { quantity } = useAppSelector((state) => state.product);
 
   return (
     <Box
@@ -43,7 +43,7 @@ const CartMenu = ({}: IProps) => {
     >
       <>
         <Badge
-          badgeContent={amount}
+          badgeContent={quantity}
           sx={{
             "& .MuiBadge-badge": {
               backgroundColor: clSecondary,

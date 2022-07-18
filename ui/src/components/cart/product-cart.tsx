@@ -18,14 +18,14 @@ import CartSummay from "@/components/cart/cart-summary";
 
 interface IProps {
   orders: IOrderProduct[];
-  amount: number;
+  quantity: number;
   totalPrice: number;
 }
 
 /*****************************************************************
  *                         MAIN METHOD                           *
  ****************************************************************/
-const ProductCart = ({ orders, amount, totalPrice }: IProps) => {
+const ProductCart = ({ orders, quantity, totalPrice }: IProps) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
@@ -55,7 +55,7 @@ const ProductCart = ({ orders, amount, totalPrice }: IProps) => {
       />
 
       <CartSummay
-        amount={amount}
+        quantity={quantity}
         totalPrice={totalPrice}
         handleShopingMoreProduct={handleShopingMoreProduct}
       />

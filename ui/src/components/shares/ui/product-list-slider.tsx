@@ -14,31 +14,34 @@ import {
   NextButton,
   PreviousButton,
 } from "@/components/home/custom-arrow-slider";
-import CardItem from "@/components/home/card-item";
+import CardItem from "@/components/shares/ui/card-item";
 
 interface IProps {
-  title: string;
+  title?: string;
+  titleFontSize?: string;
   products: IProduct[];
 }
 
 /********************************************************
  *                     MAIN METHOD                      *
  *******************************************************/
-const ProductListItem = ({ title, products }: IProps) => {
+const ProductListItem = ({ title, titleFontSize, products }: IProps) => {
   return (
     <Box sx={{ margin: "1rem" }}>
-      <Typography
-        sx={{
-          my: 5,
-          ml: "2rem",
-          mb: 0,
-          fontSize: "2rem",
-          fontFamily: "PromptBold",
-        }}
-        component="h2"
-      >
-        {title}
-      </Typography>
+      {title && (
+        <Typography
+          sx={{
+            my: 5,
+            ml: titleFontSize ? "0rem" : "2rem",
+            mb: 0,
+            fontSize: titleFontSize ? titleFontSize : "2rem",
+            fontFamily: titleFontSize ? "PromptRegular" : "PromptBold",
+          }}
+          component="h2"
+        >
+          {title}
+        </Typography>
+      )}
 
       <Slider
         className="product-content"

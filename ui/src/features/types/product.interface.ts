@@ -25,14 +25,19 @@ export interface IProductResponse {
   total: number;
 }
 
+export interface IInputCart {
+  product: IProduct;
+  quantity: number;
+}
+
 export interface IOrderProduct {
   product: IProduct;
   totalPrice: number;
-  amount: number;
+  quantity: number;
 }
 
 export interface ICart {
   orders: IOrderProduct[];
   totalPrice: number;
-  amount: number;
+  quantity: number;
 }

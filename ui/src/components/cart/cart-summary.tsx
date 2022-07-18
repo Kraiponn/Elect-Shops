@@ -15,7 +15,7 @@ import { DELIVERY_CHARGE } from "@/features/const/currency";
 import TextHorizontal from "@/components/cart/text-horizontal";
 
 interface IProps {
-  amount: number;
+  quantity: number;
   totalPrice: number;
   handleShopingMoreProduct: () => void;
 }
@@ -24,7 +24,7 @@ interface IProps {
  *                MAIN METHOD                  *
  **********************************************/
 const CartSummary = ({
-  amount,
+  quantity,
   totalPrice,
   handleShopingMoreProduct,
 }: IProps) => {
@@ -88,9 +88,9 @@ const CartSummary = ({
           <Button variant="contained">{`Applied`}</Button>
         </Box>
 
-        {/************ Amount Order *************/}
+        {/************ quantity Order *************/}
         <TextHorizontal
-          title={`${amount} Items`}
+          title={`${quantity} Items`}
           value={totalPrice}
           fontWeight={700}
           marginTop="1.5rem"

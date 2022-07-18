@@ -7,20 +7,15 @@ import OutletIcon from "@mui/icons-material/Outlet";
 // Global state
 import { useAppSelector } from "@/features/hooks/use-global-state";
 
-// Converter
-import { ThaiCurrencyFormatWithBuildIn } from "@/features/services";
-
 // Components
 import TotalOrder from "@/components/shares/navigates/desktop/cart/total-order";
 import ProductItem from "@/components/shares/navigates/desktop/cart/item-menu";
 
-interface IProps {}
-
 /***********************************************
  *                MAIN METHOD                  *
  **********************************************/
-const ListMenu = ({}: IProps) => {
-  const { amount, totalPrice, orders } = useAppSelector(
+const ListMenu = () => {
+  const { quantity, totalPrice, orders } = useAppSelector(
     (state) => state.product
   );
 
@@ -40,7 +35,7 @@ const ListMenu = ({}: IProps) => {
         overflowY: "auto",
       }}
     >
-      {amount && orders
+      {quantity && orders
         ? orders.map((order, index) => {
             return (
               <ProductItem
@@ -56,7 +51,7 @@ const ListMenu = ({}: IProps) => {
         : null}
 
       <TotalOrder
-        amount={Number(amount)}
+        quantity={Number(quantity)}
         totalPrice={totalPrice}
         Icon={OutletIcon}
       />

@@ -10,7 +10,7 @@ import { clPrimaryDark } from "@/features/const/colors";
 import { ThaiCurrencyFormatWithBuildIn } from "@/features/services";
 
 interface IProps {
-  amount: number;
+  quantity: number;
   totalPrice: number;
   Icon: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
     muiName: string;
@@ -20,10 +20,10 @@ interface IProps {
 /***********************************************
  *                MAIN METHOD                  *
  **********************************************/
-const TotalOrder = ({ amount, totalPrice, Icon }: IProps) => {
+const TotalOrder = ({ quantity, totalPrice, Icon }: IProps) => {
   const router = useRouter();
 
-  return amount <= 0 ? (
+  return quantity <= 0 ? (
     <Box
       sx={{
         display: "flex",

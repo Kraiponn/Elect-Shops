@@ -1,5 +1,5 @@
 // Material design
-import { Container, Typography } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 
 // Services & Global state
 import { useAppSelector } from "@/features/hooks/use-global-state";
@@ -7,14 +7,19 @@ import { useAppSelector } from "@/features/hooks/use-global-state";
 // Components
 import EmptyCart from "@/components/cart/empty-cart";
 import ProductCart from "@/components/cart/product-cart";
+import ProductSlider from "@/components/shares/ui/product-list-slider";
+import { IProduct } from "@/features/types";
+import RecommendProduct from "./recommend-products";
 
-interface IProps {}
+interface IProps {
+  products: IProduct[];
+}
 
 /***********************************************
  *                MAIN METHOD                  *
  **********************************************/
-const Content = ({}: IProps) => {
-  const { orders, amount, totalPrice } = useAppSelector(
+const Content = ({ products }: IProps) => {
+  const { orders, quantity, totalPrice } = useAppSelector(
     (state) => state.product
   );
 
@@ -40,14 +45,22 @@ const Content = ({}: IProps) => {
           marginTop: "2.5rem",
         }}
       >
-        {`${amount} Products in Cart`}
+        {`${quantity} Products in Cart`}
       </Typography>
 
-      {orders.length > 0 && amount > 0 ? (
-        <ProductCart orders={orders} amount={amount} totalPrice={totalPrice} />
+      {orders.length > 0 && quantity > 0 ? (
+        <ProductCart
+          orders={orders}
+          quantity={quantity}
+          totalPrice={totalPrice}
+        />
       ) : (
         <EmptyCart />
       )}
+
+      <Box sx={{ marginTop: "5rem" }}>
+        <RecommendProduct products={products} />
+      </Box>
     </Container>
   );
 };

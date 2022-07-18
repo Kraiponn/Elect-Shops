@@ -19,8 +19,8 @@ interface IProps {
  **********************************************/
 export default function AlertItemMenuGroup({ handleItemSelectedType }: IProps) {
   const handleItemSelecte = (item: MenuType) => {
-    handleItemSelectedType(item)
-  }
+    handleItemSelectedType(item);
+  };
 
   return (
     <>
@@ -30,7 +30,7 @@ export default function AlertItemMenuGroup({ handleItemSelectedType }: IProps) {
         menuType={MenuType.NOTIFICATION}
         text={`Notifications`}
         showIcon={true}
-        amount={7}
+        quantity={7}
         Icon={NotificationsIcon}
         handleItemSelect={() => handleItemSelecte(MenuType.NOTIFICATION)}
       />
@@ -39,7 +39,7 @@ export default function AlertItemMenuGroup({ handleItemSelectedType }: IProps) {
         menuType={MenuType.MESSAGE}
         text={`Messages`}
         showIcon={true}
-        amount={8}
+        quantity={8}
         Icon={EmailIcon}
         handleItemSelect={() => handleItemSelecte(MenuType.MESSAGE)}
       />
@@ -48,11 +48,11 @@ export default function AlertItemMenuGroup({ handleItemSelectedType }: IProps) {
         menuType={MenuType.WISHLIST}
         text={`Wishlist`}
         showIcon={true}
-        amount={9}
+        quantity={9}
         Icon={FavoriteIcon}
         handleItemSelect={() => handleItemSelecte(MenuType.WISHLIST)}
       />
       <Divider sx={{ my: 2 }} />
     </>
-  )
+  );
 }

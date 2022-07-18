@@ -71,15 +71,21 @@ const Home = ({ electrics, books, errObj }: IProps) => {
  *                     SERVER PART                       *
  ********************************************************/
 export const getStaticProps: GetStaticProps = async () => {
+  const controller = new AbortController();
+
   try {
     const electricsData = await http.get(
-      `/products?page=1&limit=12&categoryId=6`
+      `/products?page=1&limit=12&categoryId=6`,
+      { signal: controller.signal }
     );
-    const booksData = await http.get(`/products?page=1&limit=12&categoryId=3`);
+    const booksData = await http.get(`/products?page=1&limit=12&categoryId=3`, {
+      signal: controller.signal,
+    });
 
     // console.log("Response", response.data);
     const electrics: IProductResponse = electricsData.data.products;
     const books: IProductResponse = booksData.data["products"];
+    controller.abort();
 
     return {
       props: {

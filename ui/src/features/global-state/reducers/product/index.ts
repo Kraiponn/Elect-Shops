@@ -4,6 +4,7 @@ import {
   ICart,
   IErorrResponseData,
   IResponseMessage,
+  IInputCart,
 } from "@/features/types";
 import { http } from "@/features/services/http";
 import { AxiosError } from "axios";
@@ -14,7 +15,7 @@ import Cookies from "js-cookie";
 const initialState: ICart = {
   totalPrice: 0,
   orders: [],
-  amount: 0,
+  quantity: 0,
 };
 
 export const fetchProducts = createAsyncThunk<
@@ -49,32 +50,97 @@ const productSlice = createSlice({
   name: "product",
   initialState,
   reducers: {
+    increaseProductToCartWithSpecify: (
+      state,
+      { payload }: PayloadAction<IInputCart>
+    ) => {
+      let mQuantity: number = 0;
+      let mTotalPrice: number = 0;
+      const { product, quantity } = payload;
+
+      const orderIndex = state.orders.findIndex(
+        (order) => product.id === order.product.id
+      );
+
+      // Loop for add exists products
+      if (orderIndex !== -1) {
+        mQuantity = state.orders[orderIndex].quantity;
+        mTotalPrice = state.orders[orderIndex].totalPrice;
+
+        for (let index = 0; index < quantity; index++) {
+          mQuantity += 1;
+          mTotalPrice += product.unit_price;
+        }
+
+        state.orders[orderIndex] = {
+          ...state.orders[orderIndex],
+          quantity: mQuantity,
+          totalPrice: mTotalPrice,
+        };
+      } else {
+        let onceLoop = true;
+
+        for (let index = 0; index < quantity; index++) {
+          if (onceLoop) {
+            onceLoop = false;
+            state.orders.push({
+              product: product,
+              quantity: 1,
+              totalPrice: product.unit_price,
+            });
+          } else {
+            const index = state.orders.findIndex(
+              (order) => order.product.id === product.id
+            );
+            const _quantity = state.orders[index].quantity;
+            const _totalPrice = state.orders[index].totalPrice;
+
+            mQuantity = _quantity + 1;
+            mTotalPrice = _totalPrice + product.unit_price;
+
+            state.orders[index] = {
+              ...state.orders[index],
+              quantity: mQuantity,
+              totalPrice: mTotalPrice,
+            };
+          }
+        }
+      }
+
+      state.quantity = state.orders.reduce((accumulate, { quantity }) => {
+        return accumulate + quantity;
+      }, 0);
+
+      state.totalPrice = state.orders.reduce((accumulate, { totalPrice }) => {
+        return accumulate + totalPrice;
+      }, 0);
+    },
     increaseProductToCart: (state, { payload }: PayloadAction<IProduct>) => {
-      let amount: number = 0;
+      let quantity: number = 0;
       let totalPrice: number = 0;
       const orderIndex = state.orders.findIndex(
         (order) => payload.id === order.product.id
       );
 
       if (orderIndex !== -1) {
-        amount = state.orders[orderIndex].amount + 1;
+        quantity = state.orders[orderIndex].quantity + 1;
         totalPrice = state.orders[orderIndex].totalPrice + payload.unit_price;
 
         state.orders[orderIndex] = {
           ...state.orders[orderIndex],
-          amount,
+          quantity,
           totalPrice,
         };
       } else {
         state.orders.push({
           product: payload,
-          amount: 1,
+          quantity: 1,
           totalPrice: payload.unit_price,
         });
       }
 
-      state.amount = state.orders.reduce((accumulate, { amount }) => {
-        return accumulate + amount;
+      state.quantity = state.orders.reduce((accumulate, { quantity }) => {
+        return accumulate + quantity;
       }, 0);
 
       state.totalPrice = state.orders.reduce((accumulate, { totalPrice }) => {
@@ -87,22 +153,24 @@ const productSlice = createSlice({
         (order) => productId === order.product.id
       );
 
+      if (orderIndex <= -1) return;
+
       const order = state.orders[orderIndex];
-      const amount = order.amount - 1;
+      const quantity = order.quantity - 1;
       const totalPrice = order.totalPrice - order.product.unit_price;
 
-      if (order.amount === 1) {
+      if (order.quantity === 1) {
         state.orders.splice(orderIndex, 1);
       } else {
         state.orders[orderIndex] = {
           ...state.orders[orderIndex],
-          amount,
+          quantity,
           totalPrice,
         };
       }
 
-      state.amount = state.orders.reduce((accumulate, { amount }) => {
-        return accumulate + amount;
+      state.quantity = state.orders.reduce((accumulate, { quantity }) => {
+        return accumulate + quantity;
       }, 0);
 
       state.totalPrice = state.orders.reduce((accumulate, { totalPrice }) => {
@@ -117,8 +185,8 @@ const productSlice = createSlice({
       );
       state.orders.splice(orderIndex, 1);
 
-      state.amount = state.orders.reduce((accumulate, { amount }) => {
-        return accumulate + amount;
+      state.quantity = state.orders.reduce((accumulate, { quantity }) => {
+        return accumulate + quantity;
       }, 0);
 
       state.totalPrice = state.orders.reduce((accumulate, { totalPrice }) => {
@@ -143,6 +211,7 @@ const productSlice = createSlice({
 });
 
 export const {
+  increaseProductToCartWithSpecify,
   increaseProductToCart,
   decreaseProductFromCart,
   removeProductFromCart,

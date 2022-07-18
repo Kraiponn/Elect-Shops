@@ -25,7 +25,7 @@ interface IProps {}
  **********************************************/
 const MobileNav = ({}: IProps) => {
   const router = useRouter();
-  const { amount } = useAppSelector((state) => state.product);
+  const { quantity } = useAppSelector((state) => state.product);
   const dispatch = useAppDispatch();
 
   const handleOpenMobileMenu = () => {
@@ -61,7 +61,7 @@ const MobileNav = ({}: IProps) => {
           onClick={() => router.push("/products/cart")}
         >
           <Badge
-            badgeContent={amount}
+            badgeContent={quantity}
             sx={{
               "& .MuiBadge-badge": {
                 color: "white",

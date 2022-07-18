@@ -11,7 +11,7 @@ interface IProps {
   titleLabel?: string;
   menuType: MenuType;
   text: string;
-  amount?: number;
+  quantity?: number;
   showIcon: boolean;
   Icon:
     | (OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
@@ -29,7 +29,7 @@ const ItemMenu = ({
   titleLabel,
   menuType,
   text,
-  amount,
+  quantity,
   showIcon,
   Icon,
   handleItemSelect,
@@ -81,7 +81,7 @@ const ItemMenu = ({
 
         {showIcon ? (
           <Badge
-            badgeContent={amount}
+            badgeContent={quantity}
             sx={{
               "& .MuiBadge-badge": {
                 color: "white",

@@ -5,7 +5,7 @@ import { Box } from "@mui/material";
 
 // Types
 import { IProduct } from "@/features/types";
-import ProductListSlider from "@/components/home/product-list-slider";
+import ProductListSlider from "@/components/shares/ui/product-list-slider";
 import PromotionsContent from "@/components/home/promotion-content";
 
 interface IProps {
