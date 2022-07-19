@@ -28,6 +28,6 @@ export interface IOrderResponse {
 
 export interface ISingleOrderResponse {
   totalPrice: number;
-  amount: number;
+  quantity: number;
   order: IOrder;
 }

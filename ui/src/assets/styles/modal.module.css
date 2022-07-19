@@ -1,0 +1,58 @@
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 999;
+  width: 50%;
+  height: auto;
+  --wekit-transform: translate(-50%, -50%) scale(0);
+  transform: translate(-50%, -50%) scale(0);
+
+  background: white;
+  padding: 0.7rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-radius: 0.7rem;
+  opacity: 0;
+
+  animation-name: animate;
+  animation-delay: 0.7s;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes animate {
+  0% {
+    opacity: 0;
+    --webkit-transform: translate(-50%, -50%) scale(0);
+  }
+  50% {
+    opacity: 0.8;
+    --webkit-transform: scale(1.5);
+  }
+  100% {
+    opacity: 1;
+    --webkit-transform: scale(1);
+  }
+}
+
+@keyframes animate {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.title-msg {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}

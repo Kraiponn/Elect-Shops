@@ -19,16 +19,27 @@ import { AdminRoleInterceptor } from 'src/auth/interceptors';
 /***************************************************************
  *  All routes must be an Admin role(UserType)1
  */
-@UseInterceptors(AdminRoleInterceptor)
+
 @Controller('categories')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
+
+  /**********************************************************
+   * desc      Get categories for hot navigation
+   * route     Get /v2/api/categories/hot-menu
+   * access    Public
+   */
+  @Get('/hot-menu')
+  getCategoriesMenu() {
+    return this.categoryService.getHotCategoriesNavigation();
+  }
 
   /********************************
    * desc      Create category
    * route     Post /v2/api/categories
    * access    Private(Role) - ADMIN
    */
+  @UseInterceptors(AdminRoleInterceptor)
   @UseGuards(AccessTokenGuard)
   @Post()
   async createCategory(@Body() body: CategoryDto) {
@@ -40,6 +51,7 @@ export class CategoryController {
    * route     Put /v2/api/categories/:categoryId
    * access    Private(Role) - ADMIN
    */
+  @UseInterceptors(AdminRoleInterceptor)
   @UseGuards(AccessTokenGuard)
   @Put('/:categoryId')
   updateCategory(
@@ -54,6 +66,7 @@ export class CategoryController {
    * route     Delete /v2/api/categories/:categoryId
    * access    Private(Role) - ADMIN
    */
+  @UseInterceptors(AdminRoleInterceptor)
   @UseGuards(AccessTokenGuard)
   @Delete('/:categoryId')
   deleteCategory(@Param('categoryId') categoryId: number) {
@@ -63,9 +76,9 @@ export class CategoryController {
   /********************************
    * desc      Get category by id
    * route     Get /v2/api/categories/:categoryId
-   * access    Private(Role) - ADMIN
+   * access    Public
    */
-  @UseGuards(AccessTokenGuard)
+
   @Get('/:categoryId')
   getCategoryById(@Param('categoryId') categoryId: number) {
     return this.categoryService.getCategoryById(Number(categoryId));
@@ -74,9 +87,8 @@ export class CategoryController {
   /********************************
    * desc      Get many categories with pagination
    * route     Get /v2/api/categories?page=xx&limit=xx
-   * access    Private(Role) - ADMIN
+   * access    Public
    */
-  @UseGuards(AccessTokenGuard)
   @Get()
   getCategories(@Query('page') page: number, @Query('limit') limit: number) {
     return this.categoryService.getCategories(Number(page), Number(limit));

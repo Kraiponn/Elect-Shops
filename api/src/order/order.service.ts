@@ -276,7 +276,7 @@ export class OrderService {
 
     const totalPrice = products.reduce((prev, curr) => prev + curr, 0);
 
-    return { totalPrice, amount: products.length, order };
+    return { totalPrice, quantity: products.length, order };
   }
 
   /***************************************************

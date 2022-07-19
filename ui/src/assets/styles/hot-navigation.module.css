@@ -1,0 +1,62 @@
+.hot-nav__container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0rem;
+  padding: 1.1rem 0;
+  background: rgba(255, 255, 255, 0.593);
+  color: inherit;
+  font-weight: 600;
+  font-family: 'Itim';
+  font-size: 1.1rem;
+}
+
+.list-menu {
+  display: flex;
+  position: relative;
+}
+
+.list-menu li {
+  position: relative;
+  z-index: 789;
+  cursor: pointer;
+}
+
+.list-menu li::after {
+  content: "";
+  position: absolute;
+  top: 60%;
+  left: 30%;
+  border-width: 0.79rem;
+  border-style: solid;
+  border-color: transparent transparent black transparent;
+  visibility: hidden;
+  opacity: 0,
+}
+
+.list-menu li:hover::after {
+  visibility: visible;
+  opacity: 1;
+}
+
+.list-menu li:hover .product-list__menu {
+  visibility: visible;
+  opacity: 1;
+}
+
+.product-list__menu {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  background: rgba(1, 1, 1, 0.888);
+  color: rgb(246, 242, 242);
+  position: fixed;
+  top: 16%;
+  left: 0;
+  z-index: 789;
+  padding: 1rem 0;
+
+  opacity: 0;
+  visibility: hidden;
+}

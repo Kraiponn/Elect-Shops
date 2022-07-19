@@ -1,0 +1,34 @@
+.product-content .slick-arrow.slick-prev,
+.product-content .slick-arrow.slick-next {
+  background: rgba(29, 30, 29, 0.89);
+  color: rgba(255, 255, 255, 0.89);
+  box-shadow: 0 0.1rem 1.2rem -0.25rem black;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  top: 32%;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.product-content .slick-arrow.slick-prev:hover,
+.product-content .slick-arrow.slick-next:hover {
+  background: rgba(29, 30, 29, 0.806);
+  color: rgba(255, 255, 255, 0.5);
+  width: 3.7rem;
+  height: 3.7rem;
+}
+
+.product-content .slick-arrow.slick-prev::before,
+.product-content .slick-arrow.slick-next::before {
+  display: none;
+}
+
+.product-content .slick-arrow.slick-prev {
+  left: 0;
+}
+.product-content .slick-arrow.slick-next {
+  right: 0;
+}

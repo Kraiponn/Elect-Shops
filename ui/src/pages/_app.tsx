@@ -1,7 +1,6 @@
 import type { AppProps } from "next/app";
 
 import { ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
 import { CacheProvider, EmotionCache } from "@emotion/react";
 import theme from "@/features/mui/theme";
 import createEmotionCache from "@/features/mui/createEmotionCache";
@@ -9,8 +8,17 @@ import createEmotionCache from "@/features/mui/createEmotionCache";
 // Global state
 import { wrapper } from "@/features/global-state";
 
+// Import css files
 import "@/assets/styles/globals.css";
 import "react-toastify/dist/ReactToastify.css";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+import "@/assets/styles/banner-slider.css";
+import "@/assets/styles/product-list-slider.css";
+import "@/assets/styles/footer.css";
+import "@/assets/styles/activity-slider.css";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -27,7 +35,7 @@ function MyApp({
   return (
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
+        {/* <CssBaseline /> */}
         <Component {...pageProps} />
       </ThemeProvider>
     </CacheProvider>

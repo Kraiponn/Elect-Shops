@@ -32,9 +32,23 @@ export class UserController {
     private readonly configService: ConfigService,
   ) {}
 
+  @Get('/get-cookie')
+  async getCookie(
+    @Res({ passthrough: true }) res: Response,
+    // @Body() body: AuthDto,
+  ) {
+    // Set the secure cookie with httpOnly flag
+    res.cookie('refresh_token', 'Hello Cookie', { httpOnly: true });
+    // delete resp.refresh_token;
+
+    return {
+      access_token: 'Hello access token',
+    };
+  }
+
   /********************************
    * desc      Register new member
-   * route     Post /api/auth/user/signin
+   * route     Post /v2/api/auth/user/signup
    * access    Public
    */
   @Post('/signup')
@@ -43,8 +57,16 @@ export class UserController {
     @Res({ passthrough: true }) res: Response,
     @Body() body: AuthDto,
   ) {
-    const { sub, email, role, access_token, refresh_token } =
-      await this.userService.signup(body);
+    const {
+      sub,
+      email,
+      role,
+      first_name,
+      last_name,
+      image_url,
+      access_token,
+      refresh_token,
+    } = await this.userService.signup(body);
 
     res.cookie('refresh_token', refresh_token, {
       httpOnly: true,
@@ -56,7 +78,12 @@ export class UserController {
       user: {
         sub,
         email,
+        user_name:
+          first_name && last_name
+            ? `${first_name} ${last_name}`
+            : 'No credetial',
         role,
+        image_url,
       },
       access_token,
     };
@@ -76,10 +103,23 @@ export class UserController {
 
     // Set the secure cookie with httpOnly flag
     res.cookie('refresh_token', resp.refresh_token, { httpOnly: true });
-    delete resp.refresh_token;
+    // delete resp.refresh_token;
+
+    const { sub, email, first_name, last_name, image_url, role, access_token } =
+      resp;
 
     return {
-      ...resp,
+      user: {
+        sub,
+        email,
+        user_name:
+          first_name && last_name
+            ? `${first_name} ${last_name}`
+            : 'No credetial',
+        role,
+        image_url,
+      },
+      access_token,
     };
   }
 
