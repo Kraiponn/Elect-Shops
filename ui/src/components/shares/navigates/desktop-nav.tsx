@@ -17,12 +17,12 @@ import NotificationMenu from "@/components/shares/navigates/desktop/notify";
 import AuthMenu from "@/components/shares/navigates/desktop/auth";
 import SearchProduct from "@/components/shares/ui/search-product";
 
-interface IProps {}
+interface IProps { }
 
 /***********************************************
  *                MAIN METHOD                  *
  **********************************************/
-const DesktopNav = ({}: IProps) => {
+const DesktopNav = ({ }: IProps) => {
   const router = useRouter();
   const { user } = useAppSelector((state) => state.auth);
 
@@ -42,8 +42,8 @@ const DesktopNav = ({}: IProps) => {
 
       <Box sx={{ flexGrow: 1 }} />
 
-      {/* <SearchProduct /> */}
-      <SearchBox />
+      <SearchProduct />
+      {/* <SearchBox /> */}
 
       <CartMenu />
 

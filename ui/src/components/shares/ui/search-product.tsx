@@ -1,20 +1,18 @@
-// Material design
-import { GetServerSideProps } from "next";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { getHttpErrorObject, http } from "@/features/services";
-import { AxiosError } from "axios";
+
+// Material Design
+import { Box, InputBase, TextField } from "@mui/material";
+import { styled, alpha } from "@mui/material/styles";
+import SearchIcon from "@mui/icons-material/Search";
+
+// Global state and Types
 import {
-  IErorrResponseData,
-  IProduct,
-  IProductResponse,
-} from "@/features/types";
+  useAppDispatch,
+  useAppSelector,
+} from "@/features/hooks/use-global-state";
+import { fetchProducts } from "@/features/global-state/reducers/product";
 
-import { Box, TextField, Toolbar } from "@mui/material";
-
-// Components
-import DefautLayout from "@/components/shares/layouts/defaut-layout";
-import Content from "@/components/cart/content";
-import ErrorShow from "@/components/errors";
 
 interface IProps {
 
@@ -24,28 +22,42 @@ interface IProps {
  *                MAIN METHOD                  *
  **********************************************/
 const SearchProduct = ({ }: IProps) => {
+  const [value, setValue] = useState<string>("");
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const { isLoading, isSuccess, isError, products } = useAppSelector(
+    (state) => state.product
+  );
+
   const handleSearchChange = (
     event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => {
-    // setTimeout(() => {
-    //   console.log(event.target.value);
-    // }, 2000);
+    setValue(event.target.value);
   };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    // console.log(event.code)
-
-    if (event.code === 'Enter') {
-      console.log("hello world")
+    if (event.code === "Enter") {
+      // console.log("Search key:", value);
+      dispatch(fetchProducts(value));
     }
+  };
+
+  if (!isLoading && isSuccess && products) {
+    router.push({
+      pathname: "/[search]",
+      query: { search: "search", keyword: value },
+    });
   }
 
   return (
     <Box sx={{}}>
       <TextField
+        variant="outlined"
         size="small"
         onChange={handleSearchChange}
         onKeyDown={handleKeyPress}
+        value={value}
+        sx={{background: 'rgb(255, 255, 255)'}}
       />
     </Box>
   )

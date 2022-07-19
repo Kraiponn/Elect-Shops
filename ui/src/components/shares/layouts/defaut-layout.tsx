@@ -52,8 +52,7 @@ const DefautLayout = ({ children, title, description }: IProps) => {
         isShow={isLoading}
         toggleDialogState={() => {}}
       />
-
-      <TopNavigation />
+      {/* <TopNavigation /> */}
 
       <Box
         sx={{

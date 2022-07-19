@@ -1,10 +1,10 @@
-import React from "react";
+import React, {useState} from "react";
 import type { GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import { AxiosError } from "axios";
 
 // Material design
-import { Box, Toolbar, useMediaQuery } from "@mui/material";
+import { Box, TextField, Toolbar, useMediaQuery } from "@mui/material";
 
 // Services & Global state
 import {
@@ -35,6 +35,7 @@ import MyDialog from "@/components/shares/loader/my-dialog";
 const ProductPage = () => {
   const router = useRouter();
   const matches = useMediaQuery("(min-width:845px)");
+  const [value, setValue] = useState<string>("");
   const { isLoading, isSuccess, isError } = useAppSelector(
     (state) => state.product
   );
@@ -47,6 +48,23 @@ const ProductPage = () => {
     //
   };
 
+  const handleSearchChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
+    setValue(event.target.value);
+  };
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.code === "Enter") {
+      // console.log("Search key:", value);
+      // dispatch(fetchProducts(value));
+      router.push({
+        pathname: "/[search]",
+        query: { search: "search", keyword: value },
+      });
+    }
+  };
+
   return (
     <DefautLayout title="home" description="welcome to shoping">
       <MyDialog
@@ -56,8 +74,12 @@ const ProductPage = () => {
       />
       <Toolbar />
 
-      
-
+      <TextField 
+        value={value}
+        onChange={handleSearchChange}
+        onKeyDown={handleKeyPress}
+      />
+      <h1>Product page</h1>
     </DefautLayout>
   );
 };

@@ -62,7 +62,7 @@ const SearchBox = () => {
   const [value, setValue] = useState<string>("");
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { isLoading, isSuccess, isError } = useAppSelector(
+  const { isLoading, isSuccess, isError, products } = useAppSelector(
     (state) => state.product
   );
 
@@ -75,21 +75,23 @@ const SearchBox = () => {
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.code === "Enter") {
       // console.log("Search key:", value);
-      // dispatch(fetchProducts(value));
-      router.push({
-        pathname: "/[search]",
-        query: { search: "search", keyword: "nginx" },
-      });
+      dispatch(fetchProducts(value));
+      // router.push({
+      //   pathname: "/[search]",
+      //   query: { search: "search", keyword: "nginx" },
+      // });
     }
   };
 
-  if (!isLoading && isSuccess) {
+  if (!isLoading && isSuccess && products) {
     router.push({
       pathname: "/[search]",
-      query: { search: "search", keyword: "nginx" },
+      query: { search: "search", keyword: value },
     });
 
     // return <div></div>;
+    console.log('Search is successfully')
+    // router.push('/products')
   }
 
   return (
@@ -104,6 +106,7 @@ const SearchBox = () => {
           inputProps={{ "aria-label": "search" }}
           onChange={handleSearchChange}
           onKeyDown={handleKeyPress}
+          value={value}
         />
       </Search>
     </>

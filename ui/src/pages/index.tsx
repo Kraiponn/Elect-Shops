@@ -27,6 +27,9 @@ import Content from "@/components/home/content";
 import HotNavigation from "@/components/home/hot-navigation";
 import ErrorShow from "@/components/errors";
 import MyDialog from "@/components/shares/loader/my-dialog";
+import SearchBox from "@/components/shares/ui/search-box";
+import SearchProduct from "@/components/shares/ui/search-product";
+import TopNavigation from "@/components/shares/navigates/top-navigation";
 
 interface IProps {
   electrics: IProduct[];
@@ -40,9 +43,9 @@ interface IProps {
 const Home = ({ electrics, books, errObj }: IProps) => {
   const router = useRouter();
   const matches = useMediaQuery("(min-width:845px)");
-  const { isLoading, isSuccess, isError } = useAppSelector(
-    (state) => state.product
-  );
+  // const { isLoading, isSuccess, isError } = useAppSelector(
+  //   (state) => state.product
+  // );
 
   const handleRefreshPage = () => {
     router.reload();
@@ -56,12 +59,14 @@ const Home = ({ electrics, books, errObj }: IProps) => {
 
   return (
     <DefautLayout title="home" description="welcome to shoping">
+      <TopNavigation />
       {/* <MyDialog
         type="LOADING"
         isShow={isLoading}
         toggleDialogState={() => {}}
       /> */}
       <Toolbar />
+      {/* <SearchProduct /> */}
 
       {matches && <HotNavigation categories={hotNavigationData} />}
 
