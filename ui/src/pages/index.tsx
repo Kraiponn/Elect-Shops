@@ -5,7 +5,12 @@ import { AxiosError } from "axios";
 // Material design
 import { Box, Toolbar, useMediaQuery } from "@mui/material";
 
-// Services
+// Services & Global state
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "@/features/hooks/use-global-state";
+import { fetchProducts } from "@/features/global-state/reducers/product";
 import { http, getHttpErrorObject } from "@/features/services";
 import {
   IProduct,
@@ -21,6 +26,7 @@ import BannerSlider from "@/components/home/banner-slider";
 import Content from "@/components/home/content";
 import HotNavigation from "@/components/home/hot-navigation";
 import ErrorShow from "@/components/errors";
+import MyDialog from "@/components/shares/loader/my-dialog";
 
 interface IProps {
   electrics: IProduct[];
@@ -34,6 +40,9 @@ interface IProps {
 const Home = ({ electrics, books, errObj }: IProps) => {
   const router = useRouter();
   const matches = useMediaQuery("(min-width:845px)");
+  const { isLoading, isSuccess, isError } = useAppSelector(
+    (state) => state.product
+  );
 
   const handleRefreshPage = () => {
     router.reload();
@@ -47,6 +56,11 @@ const Home = ({ electrics, books, errObj }: IProps) => {
 
   return (
     <DefautLayout title="home" description="welcome to shoping">
+      {/* <MyDialog
+        type="LOADING"
+        isShow={isLoading}
+        toggleDialogState={() => {}}
+      /> */}
       <Toolbar />
 
       {matches && <HotNavigation categories={hotNavigationData} />}

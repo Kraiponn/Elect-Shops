@@ -17,6 +17,9 @@ const initialState: ICart = {
   totalPrice: 0,
   orders: [],
   quantity: 0,
+  isLoading: false,
+  isSuccess: false,
+  isError: null,
 };
 
 export const fetchProducts = createAsyncThunk<
@@ -38,12 +41,15 @@ export const fetchProducts = createAsyncThunk<
           "Content-Type": "application/json",
         },
         signal: controller.signal,
-      } //020164888
+      }
     );
 
+    // console.log(response.data);
+
     controller.abort();
-    console.log(response.data);
-    return response.data;
+
+    const products = response.data["products"];
+    return products;
   } catch (error) {
     const errObj = getHttpErrorObject(error as AxiosError);
     return thunkApi.rejectWithValue(errObj as IErorrResponseData);
@@ -205,14 +211,24 @@ const productSlice = createSlice({
     /**********************************
      *    Get product
      */
-    builder.addCase(fetchProducts.pending, (state, { payload }) => {});
+    builder.addCase(fetchProducts.pending, (state, { payload }) => {
+      state.isLoading = true;
+      state.isSuccess = false;
+      state.isError = null;
+    });
     builder.addCase(fetchProducts.fulfilled, (state, { payload }) => {
       console.log("Products", payload);
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.products = [];
+      state.products.push(payload);
     });
     builder.addCase(fetchProducts.rejected, (state, action) => {
       console.log("Error on rejected", action.payload);
-      // Cookies.remove("access_token");
-      // Cookies.remove("user");
+
+      state.isLoading = false;
+      state.isSuccess = false;
+      state.isError = action.payload as IErorrResponseData;
     });
   },
 });

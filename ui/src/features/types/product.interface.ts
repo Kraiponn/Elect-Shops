@@ -1,3 +1,5 @@
+import { IErorrResponseData } from "@/features/types";
+
 export interface IProduct {
   id: number;
   product_name: string;
@@ -41,4 +43,7 @@ export interface ICart {
   orders: IOrderProduct[];
   totalPrice: number;
   quantity: number;
+  isLoading: boolean;
+  isSuccess: boolean;
+  isError: IErorrResponseData | null;
 }

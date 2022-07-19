@@ -7,7 +7,10 @@ import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 
 // Global state and Types
-import { useAppDispatch, useAppSelector } from "@/features/hooks/use-global-state";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "@/features/hooks/use-global-state";
 import { fetchProducts } from "@/features/global-state/reducers/product";
 
 const Search = styled("div")(({ theme }) => ({
@@ -52,28 +55,43 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-interface IProps { }
-
 /****************************************************
  *                  MAIN FUNCTION
  ***************************************************/
 const SearchBox = () => {
-  const [value, setValue] = useState<string>('')
-  const router = useRouter()
-  const dispatch = useAppDispatch()
+  const [value, setValue] = useState<string>("");
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const { isLoading, isSuccess, isError } = useAppSelector(
+    (state) => state.product
+  );
 
   const handleSearchChange = (
     event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => {
-    setValue(event.target.value)
+    setValue(event.target.value);
   };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.code === 'Enter') {
-      console.log('Search key:', value)
-      dispatch(fetchProducts(value))
+    if (event.code === "Enter") {
+      // console.log("Search key:", value);
+      // dispatch(fetchProducts(value));
+      router.push({
+        pathname: "/[search]",
+        query: { search: "search", keyword: "nginx" },
+      });
     }
+  };
+
+  if (!isLoading && isSuccess) {
+    router.push({
+      pathname: "/[search]",
+      query: { search: "search", keyword: "nginx" },
+    });
+
+    // return <div></div>;
   }
+
   return (
     <>
       <Search>

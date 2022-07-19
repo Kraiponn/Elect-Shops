@@ -1,11 +1,14 @@
 import React from "react";
 import { Box } from "@mui/material";
+import { useRouter } from "next/router";
 
 type Props = {};
 
 const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 const TestPage = (props: Props) => {
+  const router = useRouter();
+
   return (
     <Box
       sx={{
@@ -22,7 +25,7 @@ const TestPage = (props: Props) => {
         sx={{
           width: "50%",
           height: "auto",
-          position: 'relative'
+          position: "relative",
           //  maxHeight: "250px",
           //  overflowY: "auto",
         }}
@@ -76,10 +79,15 @@ const TestPage = (props: Props) => {
             bottom: "-45%",
             zIndex: 99,
           }}
+          onClick={() =>
+            router.push({
+              pathname: "/[search]",
+              query: { search: "search", keyword: "nginx" },
+            })
+          }
         >
           hello
         </Box>
-
       </Box>
     </Box>
   );

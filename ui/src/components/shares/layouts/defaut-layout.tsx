@@ -12,6 +12,8 @@ import { setAuthSuccess } from "@/features/global-state/reducers/auth";
 // Components
 import TopNavigation from "@/components/shares/navigates/top-navigation";
 import Footer from "@/components/shares/footer";
+import MyDialog from "@/components/shares/loader/my-dialog";
+import { Box } from "@mui/material";
 
 interface IProps {
   children: React.ReactNode;
@@ -22,6 +24,9 @@ interface IProps {
 const DefautLayout = ({ children, title, description }: IProps) => {
   const dispatch = useAppDispatch();
   const { user, access_token } = useAppSelector((state) => state.auth);
+  const { isLoading, isSuccess, isError } = useAppSelector(
+    (state) => state.product
+  );
 
   if (!user && !access_token) {
     const _user = Cookies.get("user");
@@ -42,9 +47,21 @@ const DefautLayout = ({ children, title, description }: IProps) => {
         <meta name={title} content={description ? description : ""} />
       </Head>
 
+      <MyDialog
+        type="LOADING"
+        isShow={isLoading}
+        toggleDialogState={() => {}}
+      />
+
       <TopNavigation />
 
-      <main>{children}</main>
+      <Box
+        sx={{
+          minHeight: "100vh",
+        }}
+      >
+        {children}
+      </Box>
 
       <Footer />
     </>
