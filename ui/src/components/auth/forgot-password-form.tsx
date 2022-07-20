@@ -1,7 +1,6 @@
 import React from "react";
-import { useRouter } from "next/router";
 
-import { Box, Button, Divider, IconButton, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -9,10 +8,11 @@ import * as yup from "yup";
 
 import { motion } from "framer-motion";
 import PasswordInput from "@/components/shares/ui/password-input";
+import { IAuthForm } from "@/features/types";
 
-export interface IResetPWDForm {
-  password: string;
-}
+// export interface IResetPWDForm {
+//   password: string;
+// }
 
 interface IPwdInputBox {
   showPassword: boolean;
@@ -32,14 +32,14 @@ const schema = yup
   .required();
 
 /****************************************************
- *  MAIN FUNCTION
- */
+ *                  MAIN FUNCTION
+ ***************************************************/
 const ForgotPasswordForm = () => {
   const {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<IResetPWDForm>({
+  } = useForm<IAuthForm>({
     resolver: yupResolver(schema),
     reValidateMode: "onChange",
   });
@@ -62,7 +62,7 @@ const ForgotPasswordForm = () => {
   };
 
   // Form submit
-  const onSubmit: SubmitHandler<IResetPWDForm> = (data) => {
+  const onSubmit: SubmitHandler<IAuthForm> = (data) => {
     console.log(data);
   };
 

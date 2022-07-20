@@ -11,8 +11,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import LockIcon from "@mui/icons-material/Lock";
 
 import { Controller, FieldError, Control } from "react-hook-form";
-import { IResetPWDForm } from "@/components/auth/forgot-password-form";
-import { IAuthForm } from "@/components/auth/auth-form";
+import { IAuthForm } from "@/features/types";
 
 type ErrorsInputType = {
   password?: FieldError | undefined;
@@ -22,7 +21,7 @@ type ErrorsInputType = {
 interface IEmailProps {
   pwdType: "password" | "confirmPassword";
   errors: ErrorsInputType;
-  control: Control<IAuthForm | IResetPWDForm, any>;
+  control: Control<IAuthForm, any>;
   showPassword: boolean;
   handleClickShowPassword: () => void;
   handleMouseDownPassword: (e: React.MouseEvent<HTMLButtonElement>) => void;

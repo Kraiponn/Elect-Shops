@@ -4,8 +4,8 @@ import { InputAdornment, OutlinedInput, Typography } from "@mui/material";
 import EmailIcon from "@mui/icons-material/Email";
 
 import { Controller, FieldError, Control } from "react-hook-form";
-import { IAuthForm } from "@/components/auth/auth-form";
-import { IResetPWDForm } from "@/components/auth/forgot-password-form";
+// import { IAuthForm } from "@/components/auth/auth-form";
+import { IAuthForm, IResetPWDForm } from "@/features/types";
 
 type ErrorsInputType = {
   email?: FieldError | undefined;
@@ -15,9 +15,12 @@ type ErrorsInputType = {
 interface IEmailProps {
   errors: ErrorsInputType;
   // control: Control<IAuthForm, any> | Control<IResetPWDForm, any>;
-  control: Control<IAuthForm | IResetPWDForm, any>;
+  control: Control<IAuthForm, any>;
 }
 
+/****************************************************
+ *                  MAIN FUNCTION
+ ***************************************************/
 const EmailInput = ({ errors, control }: IEmailProps) => {
   return (
     <>

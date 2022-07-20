@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 
 // Material design
 import { Box, AppBar, useMediaQuery } from "@mui/material";

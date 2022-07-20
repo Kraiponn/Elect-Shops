@@ -40,14 +40,18 @@ export interface IAuth {
 }
 
 export interface IAuthForm {
-  email: string;
+  email?: string;
+  password?: string;
+}
+
+export interface IResetPWDForm {
   password: string;
 }
 
 export interface IAuthInput {
   authType: "SIGNUP" | "LOGIN";
-  email: string;
-  password: string;
+  email?: string;
+  password?: string;
 }
 
 export interface IAuthState {

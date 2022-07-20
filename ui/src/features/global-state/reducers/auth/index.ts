@@ -48,6 +48,7 @@ export const asyncAuth = createAsyncThunk<
           "Content-Type": "application/json",
         },
         signal: controller.signal,
+        withCredentials: false,
       }
     );
 
@@ -57,15 +58,15 @@ export const asyncAuth = createAsyncThunk<
     const err = error as AxiosError;
     // console.log("My error", error as AxiosError);
 
-    if (err.code === "ERR_NETWORK") {
-      const errObj = {
-        error: "Invalid connection",
-        message: "No internet(network) connection or api url is incorrect.",
-        statusCode: 500,
-      };
+    // if (err.code === "ERR_NETWORK") {
+    //   const errObj = {
+    //     error: "Invalid connection",
+    //     message: "No internet(network) connection or api url is incorrect.",
+    //     statusCode: 500,
+    //   };
 
-      return thunkApi.rejectWithValue(errObj as IErorrResponseData);
-    }
+    //   return thunkApi.rejectWithValue(errObj as IErorrResponseData);
+    // }
 
     const errObj = getHttpErrorObject(error as AxiosError);
     return thunkApi.rejectWithValue(errObj as IErorrResponseData);
@@ -131,6 +132,7 @@ export const systemLogout = createAsyncThunk<
         Authorization: `Bearer ${accessToken}`,
       },
       signal: controller.signal,
+      withCredentials: false,
     });
 
     controller.abort();

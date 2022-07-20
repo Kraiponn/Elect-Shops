@@ -13,6 +13,11 @@ export interface IProduct {
   category_id?: number;
 }
 
+export interface IProductSearchResponse {
+  products: IProduct[];
+  keyword: string;
+}
+
 export interface IProductResponse {
   current: number;
   next: {
@@ -46,4 +51,5 @@ export interface ICart {
   isLoading: boolean;
   isSuccess: boolean;
   isError: IErorrResponseData | null;
+  keyword: string;
 }

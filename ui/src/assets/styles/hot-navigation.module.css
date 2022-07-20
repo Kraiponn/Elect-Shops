@@ -52,7 +52,7 @@
   background: rgba(1, 1, 1, 0.888);
   color: rgb(246, 242, 242);
   position: fixed;
-  top: 16%;
+  bottom: 32%;
   left: 0;
   z-index: 789;
   padding: 1rem 0;

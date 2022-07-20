@@ -5,6 +5,7 @@ import {
   IErorrResponseData,
   IResponseMessage,
   IInputCart,
+  IProductSearchResponse,
 } from "@/features/types";
 import { http } from "@/features/services/http";
 import { AxiosError } from "axios";
@@ -20,15 +21,16 @@ const initialState: ICart = {
   isLoading: false,
   isSuccess: false,
   isError: null,
+  keyword: "",
 };
 
 export const fetchProducts = createAsyncThunk<
-  IProduct,
+  IProductSearchResponse,
   string,
   {
     rejectValue: IErorrResponseData;
   }
->("products/fetchProducts", async (searchKey, thunkApi) => {
+>("products/fetchProducts", async (searchKey, { rejectWithValue }) => {
   const controller = new AbortController();
 
   try {
@@ -41,18 +43,19 @@ export const fetchProducts = createAsyncThunk<
           "Content-Type": "application/json",
         },
         signal: controller.signal,
+        withCredentials: false,
       }
     );
 
     // console.log(response.data);
 
     controller.abort();
+    const products = response.data["products"] as IProduct[];
 
-    const products = response.data["products"];
-    return products;
+    return { products, keyword: searchKey };
   } catch (error) {
     const errObj = getHttpErrorObject(error as AxiosError);
-    return thunkApi.rejectWithValue(errObj as IErorrResponseData);
+    return rejectWithValue(errObj as IErorrResponseData);
   }
 });
 
@@ -222,14 +225,16 @@ const productSlice = createSlice({
       state.isError = null;
     });
     builder.addCase(fetchProducts.fulfilled, (state, { payload }) => {
-      console.log("Products", payload);
+      // console.log("Products", payload);
+
       state.isLoading = false;
       state.isSuccess = true;
       state.products = [];
-      state.products.push(payload);
+      state.products = payload.products;
+      state.keyword = payload.keyword;
     });
     builder.addCase(fetchProducts.rejected, (state, action) => {
-      console.log("Error on rejected", action.payload);
+      // console.log("Error on rejected", action.payload);
 
       state.isLoading = false;
       state.isSuccess = false;

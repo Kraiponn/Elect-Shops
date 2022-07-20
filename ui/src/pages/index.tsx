@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import { AxiosError } from "axios";
@@ -41,11 +42,26 @@ interface IProps {
  *                MAIN METHOD                  *
  **********************************************/
 const Home = ({ electrics, books, errObj }: IProps) => {
+  // const [value, setValue] = useState<string>("");
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const matches = useMediaQuery("(min-width:845px)");
-  // const { isLoading, isSuccess, isError } = useAppSelector(
-  //   (state) => state.product
-  // );
+  const { isLoading, isSuccess, isError, products } = useAppSelector(
+    (state) => state.product
+  );
+
+  // const handleSearchChange = (
+  //   event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  // ) => {
+  //   setValue(event.target.value);
+  // };
+
+  // const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  //   if (event.code === "Enter") {
+  //     // console.log("Search key:", value);
+  //     dispatch(fetchProducts(value));
+  //   }
+  // };
 
   const handleRefreshPage = () => {
     router.reload();
@@ -57,9 +73,19 @@ const Home = ({ electrics, books, errObj }: IProps) => {
     );
   }
 
+  if (!isLoading && products.length > 0) {
+    router.push({
+      pathname: "/[search]",
+      query: {
+        search: "search",
+        keyword: "keyword",
+      },
+    });
+  }
+
   return (
     <DefautLayout title="home" description="welcome to shoping">
-      <TopNavigation />
+      {/* <TopNavigation /> */}
       {/* <MyDialog
         type="LOADING"
         isShow={isLoading}
@@ -68,9 +94,8 @@ const Home = ({ electrics, books, errObj }: IProps) => {
       <Toolbar />
       {/* <SearchProduct /> */}
 
-      {matches && <HotNavigation categories={hotNavigationData} />}
-
       {dummyBanner ? <BannerSlider dummyBanner={dummyBanner} /> : <div></div>}
+      {matches && <HotNavigation categories={hotNavigationData} />}
 
       <Box
         sx={{
@@ -111,9 +136,9 @@ export const getStaticProps: GetStaticProps = async () => {
         electrics,
         books,
       },
+      revalidate: 10,
     };
   } catch (error) {
-    // console.log("My error", error as AxiosError);
     const errResponse = getHttpErrorObject(error as AxiosError);
 
     return {

@@ -9,7 +9,7 @@ import {
   useAppSelector,
   useAppDispatch,
 } from "@/features/hooks/use-global-state";
-import { clearErrorAndLoadingState } from "@/features/global-state/reducers/auth/auth";
+import { clearErrorAndLoadingState } from "@/features/global-state/reducers/auth";
 
 // Components
 import DefaultLayout from "@/components/shares/layouts/defaut-layout";

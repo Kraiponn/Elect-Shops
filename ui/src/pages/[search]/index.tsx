@@ -8,7 +8,10 @@ import {
   useAppSelector,
   useAppDispatch,
 } from "@/features/hooks/use-global-state";
-import { fetchProducts, clearProductState } from "@/features/global-state/reducers/product";
+import {
+  fetchProducts,
+  clearProductState,
+} from "@/features/global-state/reducers/product";
 import { setAuthSuccess } from "@/features/global-state/reducers/auth";
 import { ParsedUrlQuery } from "querystring";
 
@@ -17,7 +20,6 @@ import Footer from "@/components/shares/footer";
 import TopNavigation from "@/components/shares/navigates/top-navigation";
 import DefautLayout from "@/components/shares/layouts/defaut-layout";
 import { Box, Toolbar } from "@mui/material";
-
 
 interface IParseQuery extends ParsedUrlQuery {
   keyword: string;
@@ -33,7 +35,7 @@ const Keyword = () => {
     (state) => state.product
   );
 
-  const { keyword } = query as IParseQuery
+  const { keyword } = query as IParseQuery;
 
   console.log("Keyword: ", query);
 
@@ -41,8 +43,7 @@ const Keyword = () => {
     // setTimeout(() => {
     //   dispatch(fetchProducts(keyword));
     // }, 1000);
-
-    console.log('run...')
+    // console.log("run...");
   }
 
   useEffect(() => {
@@ -53,14 +54,15 @@ const Keyword = () => {
 
     return () => {
       // isSet = false;
-      console.log('Unmounting..')
-      dispatch(clearProductState())
-    }
-  }, [])
+      console.log("Unmounting..");
+      dispatch(clearProductState());
+    };
+  }, [dispatch]);
 
   return (
     <DefautLayout title="home" description="welcome to shoping">
-      <TopNavigation />
+      {/* <TopNavigation /> */}
+
       <Toolbar />
       <h1>keyword</h1>
     </DefautLayout>

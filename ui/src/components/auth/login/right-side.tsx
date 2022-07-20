@@ -21,117 +21,86 @@ import { motion } from "framer-motion";
 
 // Components
 import AuthForm from "@/components/auth/auth-form";
-import MyDialog from "@/components/shares/loader/my-dialog";
+
+interface IProps {
+  isLoading: boolean;
+  isSuccess: boolean;
+  handleLogin: ({ email, password }: IAuthForm) => void;
+  navigateToHomePage: () => void;
+}
 
 /****************************************************
- *                MAIN FUNCTION
- */
-const RightSide = () => {
-  const router = useRouter();
-  const dispatch = useAppDispatch();
-  const { isLoading, isSuccess, error } = useAppSelector(
-    (state) => state.auth
-  );
-
-  const handleLogin = ({ email, password }: IAuthForm) => {
-    const values: IAuthInput = {
-      authType: "LOGIN",
-      email,
-      password,
-    };
-    dispatch(asyncAuth(values));
-  };
-
-  // Toggle
-  const handleToggleDialogState = () => {
-    dispatch(clearErrorAndLoadingState());
-  };
-
-  if (isSuccess) {
-    dispatch(clearErrorAndLoadingState());
-
-    return router.push("/");
-  }
-
+ *                  MAIN FUNCTION
+ ***************************************************/
+const RightSide = ({
+  isLoading,
+  isSuccess,
+  handleLogin,
+  navigateToHomePage,
+}: IProps) => {
   return (
-    <>
-      <MyDialog
-        isShow={error ? true : false}
-        type="MODAL"
-        title={error ? error.error : ""}
-        description={
-          error
-            ? Array.isArray(error.message)
-              ? error.message.join()
-              : error.message
-            : "-"
-        }
-        toggleDialogState={handleToggleDialogState}
-      />
+    <Box
+      sx={{
+        position: "relative",
+        height: "100vh",
+        width: "100%",
+        p: 2,
+      }}
+    >
+      <Tooltip title={`home page`} placement="bottom" arrow>
+        <IconButton
+          sx={{
+            position: "absolute",
+            right: 0,
+            top: 0,
+            padding: "2rem",
+          }}
+          // size="small"
+          color="inherit"
+          onClick={navigateToHomePage}
+        >
+          <HomeIcon fontSize="large" color="inherit" />
+        </IconButton>
+      </Tooltip>
 
       <Box
         sx={{
-          position: "relative",
-          height: "100vh",
-          width: "100%",
-          p: 2,
+          position: "absolute",
+          left: "50%",
+          top: "50%",
+          transform: "translate(-50%, -50%)",
+          width: { xs: "70%", md: "55%" },
         }}
       >
-        <Tooltip title={`home page`} placement="bottom" arrow>
-          <IconButton
-            sx={{
-              position: "absolute",
-              right: 0,
-              top: 0,
-              padding: "2rem",
-            }}
-            // size="small"
-            color="inherit"
-            onClick={() => router.push("/")}
-          >
-            <HomeIcon fontSize="large" color="inherit" />
-          </IconButton>
-        </Tooltip>
-
-        <Box
+        <Typography
           sx={{
-            position: "absolute",
-            left: "50%",
-            top: "50%",
-            transform: "translate(-50%, -50%)",
-            width: { xs: "70%", md: "55%" },
+            mt: 2,
+            fontWeight: "900",
+            textAlign: "center",
+            marginBottom: "5rem",
+          }}
+          variant="h2"
+          component={motion.div}
+          initial={{ y: 0, opacity: 0 }}
+          animate={{ y: [50, -50, 0], opacity: 1 }}
+          exit={{ x: 0 }}
+          transition={{
+            dealy: 1,
+            ease: "linear",
+            duration: 1,
           }}
         >
-          <Typography
-            sx={{
-              mt: 2,
-              fontWeight: "900",
-              textAlign: "center",
-              marginBottom: "5rem",
-            }}
-            variant="h2"
-            component={motion.div}
-            initial={{ y: 0, opacity: 0 }}
-            animate={{ y: [50, -50, 0], opacity: 1 }}
-            exit={{ x: 0 }}
-            transition={{
-              dealy: 1,
-              ease: "linear",
-              duration: 1,
-            }}
-          >
-            {`Log In`}
-          </Typography>
+          {`Log In`}
+        </Typography>
 
-          <AuthForm
-            authType="LOGIN"
-            handleAuth={handleLogin}
-            isLoading={isLoading}
-            isSuccess={isSuccess}
-          />
-        </Box>
+        <AuthForm
+          authType="LOGIN"
+          handleAuth={handleLogin}
+          isLoading={isLoading}
+          isSuccess={isSuccess}
+        />
       </Box>
-    </>
+    </Box>
   );
 };
 
