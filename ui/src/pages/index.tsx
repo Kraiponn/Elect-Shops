@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import { AxiosError } from "axios";
@@ -11,7 +11,7 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "@/features/hooks/use-global-state";
-import { fetchProducts } from "@/features/global-state/reducers/product";
+import { fetchProducts, clearProductState, clearStateWithoutProducts } from "@/features/global-state/reducers/product";
 import { http, getHttpErrorObject } from "@/features/services";
 import {
   IProduct,
@@ -42,30 +42,25 @@ interface IProps {
  *                MAIN METHOD                  *
  **********************************************/
 const Home = ({ electrics, books, errObj }: IProps) => {
-  // const [value, setValue] = useState<string>("");
   const dispatch = useAppDispatch();
   const router = useRouter();
   const matches = useMediaQuery("(min-width:845px)");
-  const { isLoading, isSuccess, isError, products } = useAppSelector(
+  const { isLoading, isSuccess, isError, products, keyword } = useAppSelector(
     (state) => state.product
   );
-
-  // const handleSearchChange = (
-  //   event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  // ) => {
-  //   setValue(event.target.value);
-  // };
-
-  // const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-  //   if (event.code === "Enter") {
-  //     // console.log("Search key:", value);
-  //     dispatch(fetchProducts(value));
-  //   }
-  // };
 
   const handleRefreshPage = () => {
     router.reload();
   };
+
+  useEffect(() => {
+    console.log('Hello home page');
+
+    return () => {
+      console.log('Home page unmount..')
+      dispatch(clearStateWithoutProducts())
+    }
+  }, [dispatch])
 
   if (errObj) {
     return (
@@ -73,24 +68,17 @@ const Home = ({ electrics, books, errObj }: IProps) => {
     );
   }
 
-  if (!isLoading && products.length > 0) {
+  if (!isLoading && isSuccess && products.length > 0) {
     router.push({
-      pathname: "/[search]",
+      pathname: "/search",
       query: {
-        search: "search",
-        keyword: "keyword",
+        keyword: keyword,
       },
     });
   }
 
   return (
     <DefautLayout title="home" description="welcome to shoping">
-      {/* <TopNavigation /> */}
-      {/* <MyDialog
-        type="LOADING"
-        isShow={isLoading}
-        toggleDialogState={() => {}}
-      /> */}
       <Toolbar />
       {/* <SearchProduct /> */}
 

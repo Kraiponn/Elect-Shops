@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
-import { Box, Toolbar, Typography } from "@mui/material";
-
-// Icons
-import HomeIcon from "@mui/icons-material/Home";
-
 // Global state and Types
 import {
   useAppDispatch,
@@ -13,67 +8,58 @@ import {
 } from "@/features/hooks/use-global-state";
 import {
   fetchProducts,
-  clearProductState,
 } from "@/features/global-state/reducers/product";
 
+// Material ui
+import { Box, Toolbar, Typography } from "@mui/material";
+import HomeIcon from "@mui/icons-material/Home";
+
 // Components
-import SearchBox from "@/components/shares/ui/search-box";
+// import SearchBox from "@/components/shares/ui/search-box";
 import AccountMenu from "@/components/shares/navigates/desktop/account";
 import CartMenu from "@/components/shares/navigates/desktop/cart";
 import NotificationMenu from "@/components/shares/navigates/desktop/notify";
 import AuthMenu from "@/components/shares/navigates/desktop/auth";
 import SearchProduct from "@/components/shares/ui/search-product";
 
-interface IProps {}
+interface IProps { }
 
 /***********************************************
  *                MAIN METHOD                  *
  **********************************************/
-const DesktopNav = ({}: IProps) => {
+const DesktopNav = ({ }: IProps) => {
   const router = useRouter();
-  const [keyword, setKeyword] = useState<string>("");
+  const [searchKey, setSearchKey] = useState<string>("");
 
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
-  const { isLoading, isSuccess, isError, products } = useAppSelector(
-    (state) => state.product
-  );
+  const { keyword } = useAppSelector(state => state.product)
 
   const handleSearchChange = (
     event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => {
     // console.log(event.target.value);
-    setKeyword(event.target.value);
+    setSearchKey(event.target.value);
   };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.code === "Enter") {
-      // console.log("Search key:", keyword);
-      dispatch(fetchProducts(keyword));
+      // console.log("Search key:", searchKey);
+      dispatch(fetchProducts(searchKey));
     }
   };
 
-  if (!isLoading && isSuccess && products.length > 0) {
-    // console.log("Products result:", products);
-    // router.push({
-    //   pathname: "/[search]",
-    //   query: {
-    //     search: "search",
-    //     keyword: keyword,
-    //   },
-    // });
-  }
-
-  // console.log("Out of useEffect..");
-
   useEffect(() => {
-    // console.log("In useEffect...");
+    console.log("In useEffect...");
+    if (keyword !== '') {
+      setSearchKey(keyword)
+    }
 
     return () => {
       // dispatch(clearProductState());
       // console.log("Unmounting the page");
     };
-  }, []);
+  }, [keyword]);
 
   return (
     <Toolbar>
@@ -92,7 +78,7 @@ const DesktopNav = ({}: IProps) => {
       <Box sx={{ flexGrow: 1 }} />
 
       <SearchProduct
-        keyword={keyword}
+        keyword={searchKey}
         handleSearchChange={handleSearchChange}
         handleKeyPress={handleKeyPress}
       />

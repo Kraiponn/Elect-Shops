@@ -9,6 +9,8 @@ const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const TestPage = (props: Props) => {
   const router = useRouter();
 
+  console.log('Test page...')
+
   return (
     <Box
       sx={{
@@ -80,9 +82,13 @@ const TestPage = (props: Props) => {
             zIndex: 99,
           }}
           onClick={() =>
+            // router.push({
+            //   pathname: "/[search]",
+            //   query: { search: "search", keyword: "nginx" },
+            // })
             router.push({
-              pathname: "/[search]",
-              query: { search: "search", keyword: "nginx" },
+              pathname: "/test",
+              // query: { search: "search", keyword: "nginx" },
             })
           }
         >

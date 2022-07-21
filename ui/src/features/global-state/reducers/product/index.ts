@@ -209,10 +209,15 @@ const productSlice = createSlice({
         return accumulate + totalPrice;
       }, 0);
     },
+    clearStateWithoutProducts: (state) => {
+      state.isLoading = false;
+      state.isSuccess = false;
+    },
     clearProductState: (state) => {
       state.isLoading = false;
       state.isSuccess = false;
       state.products = [];
+      state.keyword = ''
     },
   },
   extraReducers: (builder) => {
@@ -249,6 +254,7 @@ export const {
   decreaseProductFromCart,
   removeProductFromCart,
   clearProductState,
+  clearStateWithoutProducts,
 } = productSlice.actions;
 
 export default productSlice.reducer;

@@ -1,7 +1,5 @@
 import React, { useEffect } from "react";
-import Head from "next/head";
 import { useRouter } from "next/router";
-import Cookies from "js-cookie";
 
 // Global state
 import {
@@ -11,15 +9,14 @@ import {
 import {
   fetchProducts,
   clearProductState,
+  clearStateWithoutProducts,
 } from "@/features/global-state/reducers/product";
-import { setAuthSuccess } from "@/features/global-state/reducers/auth";
 import { ParsedUrlQuery } from "querystring";
 
 // Components
+import { Box, Container, Toolbar, Typography } from "@mui/material";
 import Footer from "@/components/shares/footer";
-import TopNavigation from "@/components/shares/navigates/top-navigation";
 import DefautLayout from "@/components/shares/layouts/defaut-layout";
-import { Box, Toolbar } from "@mui/material";
 
 interface IParseQuery extends ParsedUrlQuery {
   keyword: string;
@@ -29,42 +26,40 @@ interface IParseQuery extends ParsedUrlQuery {
  *                  MAIN FUNCTION
  ***************************************************/
 const Keyword = () => {
-  const { query } = useRouter();
+  const { query, push } = useRouter();
   const dispatch = useAppDispatch();
-  const { isLoading, isSuccess, isError, products } = useAppSelector(
+  const { isLoading, isSuccess, isError, products, keyword } = useAppSelector(
     (state) => state.product
   );
-
-  const { keyword } = query as IParseQuery;
+  const { keyword: searchKey } = query as IParseQuery;
 
   console.log("Keyword: ", query);
 
-  if (!isLoading && isSuccess && products) {
-    // setTimeout(() => {
-    //   dispatch(fetchProducts(keyword));
-    // }, 1000);
-    // console.log("run...");
+  if (!isLoading && isSuccess && products.length > 0) {
+    // query.keyword = keyword;
+    push({
+      pathname: "/search",
+      query: {
+        search: "search",
+        keyword: 'hello',
+      },
+    });
   }
 
   useEffect(() => {
-    // let isSet = true;
-    // if (isSet) {
-    //   console.log('Hello keyword..')
-    // }
 
     return () => {
-      // isSet = false;
-      console.log("Unmounting..");
-      dispatch(clearProductState());
+      console.log("Search page unmounting..");
+      dispatch(clearStateWithoutProducts());
     };
   }, [dispatch]);
 
   return (
     <DefautLayout title="home" description="welcome to shoping">
-      {/* <TopNavigation /> */}
-
       <Toolbar />
-      <h1>keyword</h1>
+      <Container>
+        <Typography>{`${products.length} Results for ${searchKey}`}</Typography>
+      </Container>
     </DefautLayout>
   );
 };
