@@ -1,17 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import type { GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import { AxiosError } from "axios";
 
 // Material design
-import { Box, Toolbar, useMediaQuery } from "@mui/material";
+import { Box, Toolbar } from "@mui/material";
 
 // Services & Global state
 import {
   useAppDispatch,
   useAppSelector,
 } from "@/features/hooks/use-global-state";
-import { fetchProducts, clearProductState, clearStateWithoutProducts } from "@/features/global-state/reducers/product";
+import {
+  clearStateWithoutProducts,
+} from "@/features/global-state/reducers/product";
 import { http, getHttpErrorObject } from "@/features/services";
 import {
   IProduct,
@@ -19,18 +21,14 @@ import {
   IErorrResponseData,
 } from "@/features/types";
 import { dummyBanner } from "@/features/services/dummy-data";
-import { hotNavigationData } from "@/components/home/home-dummy-data";
+// import { hotNavigationData } from "@/components/home/home-dummy-data";
 
 // Components
 import DefautLayout from "@/components/shares/layouts/defaut-layout";
 import BannerSlider from "@/components/home/banner-slider";
 import Content from "@/components/home/content";
-import HotNavigation from "@/components/home/hot-navigation";
+// import HotNavigation from "@/components/home/hot-navigation";
 import ErrorShow from "@/components/errors";
-import MyDialog from "@/components/shares/loader/my-dialog";
-import SearchBox from "@/components/shares/ui/search-box";
-import SearchProduct from "@/components/shares/ui/search-product";
-import TopNavigation from "@/components/shares/navigates/top-navigation";
 
 interface IProps {
   electrics: IProduct[];
@@ -44,8 +42,7 @@ interface IProps {
 const Home = ({ electrics, books, errObj }: IProps) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const matches = useMediaQuery("(min-width:845px)");
-  const { isLoading, isSuccess, isError, products, keyword } = useAppSelector(
+  const { isLoading, isSuccess, isError, pagination, keyword } = useAppSelector(
     (state) => state.product
   );
 
@@ -54,13 +51,13 @@ const Home = ({ electrics, books, errObj }: IProps) => {
   };
 
   useEffect(() => {
-    console.log('Hello home page');
+    console.log("Hello home page");
 
     return () => {
-      console.log('Home page unmount..')
-      dispatch(clearStateWithoutProducts())
-    }
-  }, [dispatch])
+      console.log("Home page unmount..");
+      dispatch(clearStateWithoutProducts());
+    };
+  }, [dispatch]);
 
   if (errObj) {
     return (
@@ -68,7 +65,7 @@ const Home = ({ electrics, books, errObj }: IProps) => {
     );
   }
 
-  if (!isLoading && isSuccess && products.length > 0) {
+  if (!isLoading && isSuccess && pagination.products.length > 0) {
     router.push({
       pathname: "/search",
       query: {
@@ -80,10 +77,9 @@ const Home = ({ electrics, books, errObj }: IProps) => {
   return (
     <DefautLayout title="home" description="welcome to shoping">
       <Toolbar />
-      {/* <SearchProduct /> */}
 
       {dummyBanner ? <BannerSlider dummyBanner={dummyBanner} /> : <div></div>}
-      {matches && <HotNavigation categories={hotNavigationData} />}
+      {/* {matches && <HotNavigation categories={hotNavigationData} />} */}
 
       <Box
         sx={{
@@ -107,10 +103,12 @@ export const getStaticProps: GetStaticProps = async () => {
 
   try {
     const electricsData = await http.get(
-      `/products?page=1&limit=12&categoryId=6`,
-      { signal: controller.signal }
+      `/products?page=1&limit=12&categoryId=2`,
+      {
+        signal: controller.signal,
+      }
     );
-    const booksData = await http.get(`/products?page=1&limit=12&categoryId=3`, {
+    const booksData = await http.get(`/products?page=2&limit=12&categoryId=3`, {
       signal: controller.signal,
     });
 

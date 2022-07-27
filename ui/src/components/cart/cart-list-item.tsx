@@ -67,7 +67,7 @@ const CartListItem = ({
               <Box sx={{}}>
                 <Typography
                   sx={{
-                    fontSize: "1.5rem",
+                    fontSize: "1.25rem",
                     fontFamily: "PromptMedium",
                     fontWeight: "700",
                   }}
@@ -162,7 +162,7 @@ const CartListItem = ({
 
             <Typography
               sx={{
-                fontSize: "1.5rem",
+                fontSize: "1.2rem",
                 fontWeight: "bold",
                 color: clPrimaryDark,
               }}

@@ -97,7 +97,7 @@ export class ProductController {
   /********************************
    * desc      Get many products with pagination
    * route     Get /v2/api/products?page=[number]&limit=[number]&search=[string or char]
-   *               &categoryId=[number]
+   *               &categoryId=[number]&minPrice=[number]&maxPrice=[number]&rating=[number]
    * access    Public(Role) - ADMIN or USER
    */
   @Get()
@@ -106,12 +106,18 @@ export class ProductController {
     @Query('limit') limit: number,
     @Query('search') search: string,
     @Query('categoryId') categoryId: number,
+    @Query('minPrice') minPrice: number,
+    @Query('maxPrice') maxPrice: number,
+    @Query('rating') rating: number,
   ) {
     return this.productService.getProducts(
       Number(page),
       Number(limit),
       search,
       Number(categoryId),
+      Number(minPrice),
+      Number(maxPrice),
+      Number(rating),
     );
   }
 }

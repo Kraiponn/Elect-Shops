@@ -50,7 +50,6 @@ const DesktopNav = ({ }: IProps) => {
   };
 
   useEffect(() => {
-    console.log("In useEffect...");
     if (keyword !== '') {
       setSearchKey(keyword)
     }

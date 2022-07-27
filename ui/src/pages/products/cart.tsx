@@ -54,7 +54,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
   try {
     const productsData = await http.get(
-      `/products?page=1&limit=12&categoryId=6`,
+      `/products?page=1&limit=12&categoryId=2`,
       { signal: controller.signal }
     );
 

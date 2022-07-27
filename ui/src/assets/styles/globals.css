@@ -61,15 +61,6 @@ a {
   font-family: "RobotoRegular";
 }
 
-.multine-ellipsis {
-  -webkit-box-orient: vertical;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: normal;
-}
-
 .multine-ellipsis_1 {
   -webkit-box-orient: vertical;
   display: -webkit-box;
@@ -83,6 +74,40 @@ a {
   -webkit-box-orient: vertical;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  /* font-size: 1rem;
+  font-weight: 200;
+  font-family: PromptLight;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  height: 8rem;
+  width: 100%; */
+}
+
+.multine-ellipsis_3 {
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+.multine-ellipsis_4 {
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+.multine-ellipsis_5 {
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: normal;

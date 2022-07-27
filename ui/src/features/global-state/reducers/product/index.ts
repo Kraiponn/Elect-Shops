@@ -6,16 +6,30 @@ import {
   IResponseMessage,
   IInputCart,
   IProductSearchResponse,
+  IInputFilterProduct,
+  IProductResponse,
 } from "@/features/types";
 import { http } from "@/features/services/http";
 import { AxiosError } from "axios";
 import { getHttpErrorObject } from "@/features/services/errors";
-
 import Cookies from "js-cookie";
 
 const initialState: ICart = {
   products: [],
   totalPrice: 0,
+  pagination: {
+    total: 0,
+    current: 1,
+    products: [],
+    prev: {
+      page: 0,
+      limit: 10,
+    },
+    next: {
+      page: 0,
+      limit: 10,
+    },
+  },
   orders: [],
   quantity: 0,
   isLoading: false,
@@ -24,6 +38,9 @@ const initialState: ICart = {
   keyword: "",
 };
 
+/************************************************************
+ *               Get Products With Search Key               *
+************************************************************/
 export const fetchProducts = createAsyncThunk<
   IProductSearchResponse,
   string,
@@ -32,6 +49,7 @@ export const fetchProducts = createAsyncThunk<
   }
 >("products/fetchProducts", async (searchKey, { rejectWithValue }) => {
   const controller = new AbortController();
+  // console.log("Search product")
 
   try {
     const response = await http.get(
@@ -48,16 +66,57 @@ export const fetchProducts = createAsyncThunk<
     );
 
     // console.log(response.data);
-
     controller.abort();
-    const products = response.data["products"] as IProduct[];
+    const pagination = response.data as IProductResponse;
 
-    return { products, keyword: searchKey };
+    return { pagination, keyword: searchKey };
   } catch (error) {
+    // console.log("Error loop...");
     const errObj = getHttpErrorObject(error as AxiosError);
     return rejectWithValue(errObj as IErorrResponseData);
   }
 });
+
+/************************************************************
+ *               Get products with filters                  *
+************************************************************/
+export const fetchProductsWithFilter = createAsyncThunk<
+  IProductResponse,
+  IInputFilterProduct,
+  {
+    rejectValue: IErorrResponseData;
+  }
+>(
+  "products/fetchProductsWithFilter",
+  async (filterKeys, { rejectWithValue }) => {
+    const controller = new AbortController();
+    const { searchKey, page, limit, minPrice, maxPrice } = filterKeys;
+
+    try {
+      const response = await http.get(
+        searchKey
+          ? `/products?search=${searchKey}&page=${page}&limit=${limit}&minPrice=${minPrice}&maxPrice=${maxPrice}`
+          : `/products?page=${page}&limit=${limit}&minPrice=${minPrice}&maxPrice=${maxPrice}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          signal: controller.signal,
+          withCredentials: false,
+        }
+      );
+
+      console.log(response.data);
+      controller.abort();
+      // const products = response.data;
+
+      return response.data;
+    } catch (error) {
+      const errObj = getHttpErrorObject(error as AxiosError);
+      return rejectWithValue(errObj as IErorrResponseData);
+    }
+  }
+);
 
 /************************************************************
  *                  CREATE PRODUCT SLICE                    *
@@ -217,28 +276,71 @@ const productSlice = createSlice({
       state.isLoading = false;
       state.isSuccess = false;
       state.products = [];
-      state.keyword = ''
+      state.pagination = {
+        total: 0,
+        current: 1,
+        products: [],
+        prev: {
+          page: 0,
+          limit: 10,
+        },
+        next: {
+          page: 0,
+          limit: 10,
+        },
+      };
+      state.keyword = "";
     },
   },
   extraReducers: (builder) => {
-    /**********************************
-     *    Get product
-     */
+    /*************************************************************************
+     *                     Get Products With Search Key                      *
+     ************************************************************************/
     builder.addCase(fetchProducts.pending, (state, { payload }) => {
+      // console.log("Fetch product pending...");
       state.isLoading = true;
       state.isSuccess = false;
       state.isError = null;
     });
+
     builder.addCase(fetchProducts.fulfilled, (state, { payload }) => {
+      // console.log("Products...", payload);
+
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.products = [];
+      state.pagination = payload.pagination;
+      state.keyword = payload.keyword;
+    });
+
+    builder.addCase(fetchProducts.rejected, (state, action) => {
+      // console.log("Error on rejected", action.payload);
+
+      state.isLoading = false;
+      state.isSuccess = false;
+      state.isError = action.payload as IErorrResponseData;
+    });
+
+    /*************************************************************************
+     *                      Get Products With Filter                         *
+     ************************************************************************/
+    builder.addCase(fetchProductsWithFilter.pending, (state, { payload }) => {
+      state.isLoading = true;
+      state.isSuccess = false;
+      state.isError = null;
+    });
+
+    builder.addCase(fetchProductsWithFilter.fulfilled, (state, { payload }) => {
       // console.log("Products", payload);
 
       state.isLoading = false;
       state.isSuccess = true;
       state.products = [];
       state.products = payload.products;
-      state.keyword = payload.keyword;
+      state.pagination = payload;
     });
-    builder.addCase(fetchProducts.rejected, (state, action) => {
+
+    builder.addCase(fetchProductsWithFilter.rejected, (state, action) => {
       // console.log("Error on rejected", action.payload);
 
       state.isLoading = false;

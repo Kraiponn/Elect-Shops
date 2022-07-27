@@ -31,47 +31,48 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: "Itim",
-    // fontSize: 16,
+    // fontSize: "1rem",
     h1: {
+      fontFamily: "PromptBold",
       fontSize: "3.5rem",
-      fontWeight: 800,
     },
     h2: {
+      fontFamily: "PromptBold",
       fontSize: "2.5rem",
-      fontWeight: 700,
+      // fontWeight: 700,
     },
     h3: {
+      fontFamily: "PromptBold",
       fontSize: "2rem",
-      fontWeight: 500,
+      // fontWeight: 500,
     },
     h4: {
+      fontFamily: "PromptBold",
       fontSize: "1.75rem",
     },
     h5: {
-      fontSize: "1.25rem",
+      fontFamily: "PromptBold",
+      fontSize: "1.35rem",
     },
     h6: {
-      fontSize: "0.85rem",
+      fontFamily: "PromptBold",
+      fontSize: "1.2rem",
     },
     subtitle1: {
-      fontSize: "1.2rem",
-      fontWeight: "inherit",
-      fontFamily: "Itim",
-    },
-    subtitle2: {
-      fontSize: "0.5rem",
-      fontWeight: "inherit",
-      fontFamily: "Itim",
-    },
-    body1: {
-      fontSize: "1rem",
-      fontWeight: "inherit",
+      fontSize: "1.35rem",
       fontFamily: "PromptMedium",
     },
+    subtitle2: {
+      fontSize: "1.2rem",
+      fontFamily: "PromptMedium",
+    },
+    body1: {
+      fontFamily: "PromptRegular",
+      fontSize: "1rem",
+    },
     body2: {
-      fontSize: "0.8rem",
-      fontWeight: "inherit",
       fontFamily: "PromptLight",
+      fontSize: "1rem",
     },
     button: {
       fontFamily: "PromptRegular",
@@ -86,6 +87,15 @@ const theme = createTheme({
       defaultProps: {
         elevation: 2,
       },
+    },
+  },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 500,
+      md: 750,
+      lg: 950,
+      xl: 1536,
     },
   },
 });

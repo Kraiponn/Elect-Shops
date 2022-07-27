@@ -46,8 +46,8 @@ model Category {
 
 model Product {
   id           Int     @id @default(autoincrement())
-  product_name String  @db.VarChar(100)
-  description  String? @db.VarChar(255)
+  product_name String
+  description  String?
   in_stock     Int
   unit_price   Float
   image_id     String?
@@ -90,7 +90,6 @@ model OrderDetail {
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-
 
   @@map("order_details")
 }

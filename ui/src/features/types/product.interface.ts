@@ -13,11 +13,6 @@ export interface IProduct {
   category_id?: number;
 }
 
-export interface IProductSearchResponse {
-  products: IProduct[];
-  keyword: string;
-}
-
 export interface IProductResponse {
   current: number;
   next: {
@@ -30,6 +25,19 @@ export interface IProductResponse {
   };
   products: IProduct[];
   total: number;
+}
+
+export interface IProductSearchResponse {
+  pagination: IProductResponse;
+  keyword: string;
+}
+
+export interface IInputFilterProduct {
+  searchKey: string;
+  page: number;
+  limit: number;
+  minPrice: number;
+  maxPrice: number;
 }
 
 export interface IInputCart {
@@ -46,6 +54,7 @@ export interface IOrderProduct {
 export interface ICart {
   products: IProduct[];
   orders: IOrderProduct[];
+  pagination: IProductResponse;
   totalPrice: number;
   quantity: number;
   isLoading: boolean;

@@ -39,8 +39,8 @@ CREATE TABLE "categories" (
 -- CreateTable
 CREATE TABLE "products" (
     "id" SERIAL NOT NULL,
-    "product_name" VARCHAR(100) NOT NULL,
-    "description" VARCHAR(255),
+    "product_name" TEXT NOT NULL,
+    "description" TEXT,
     "in_stock" INTEGER NOT NULL,
     "unit_price" DOUBLE PRECISION NOT NULL,
     "image_id" TEXT,

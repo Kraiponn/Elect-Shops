@@ -1,7 +1,7 @@
-version: "3.9"
+version: '3.9'
 
 services:
-  electShopsDb:
+  shobshop_db:
     image: postgres:14.3
     restart: always
     ports:
@@ -9,16 +9,16 @@ services:
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: pgadmin
-      POSTGRES_DB: elect_shops
+      POSTGRES_DB: shobshop_db
     volumes:
-      - electShopsDbVol:/var/lib/postgresql/data
+      - shobShopVol:/var/lib/postgresql/data
     networks:
-      - electShopsNet
+      - shobShopNet
 
   pgadmin:
     image: dpage/pgadmin4
     depends_on:
-      - electShopsDb
+      - shobshop_db
     restart: always
     ports:
       - 80:80
@@ -26,13 +26,13 @@ services:
       PGADMIN_DEFAULT_EMAIL: pgadmin@gmail.com
       PGADMIN_DEFAULT_PASSWORD: pgadmin
     volumes:
-      - electShopsPgVol:/var/lib/pgadmin
+      - shobShopPgVol:/var/lib/pgadmin
     networks:
-      - electShopsNet
+      - shobShopNet
 
 volumes:
-  electShopsDbVol:
-  electShopsPgVol:
+  shobShopVol:
+  shobShopPgVol:
 
 networks:
-  electShopsNet:
+  shobShopNet:

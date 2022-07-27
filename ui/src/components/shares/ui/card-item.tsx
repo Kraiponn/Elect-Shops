@@ -11,6 +11,7 @@ import { IProduct } from "@/features/types";
 // Global state
 import { useAppDispatch } from "@/features/hooks/use-global-state";
 import { increaseProductToCart } from "@/features/global-state/reducers/product";
+import { ThaiCurrencyFormatWithBuildIn } from "@/features/services";
 
 interface ICardItem {
   product: IProduct;
@@ -40,8 +41,12 @@ const CardItem = ({ product }: ICardItem) => {
       sx={{
         padding: "1.5rem 2rem",
         position: "relative",
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-start",
+        alignItems: "flex-start",
         "&:hover": {
-          // border: "0.1rem inset rgb(255, 5, 5)",
           ".card-item_detail": {
             height: "100%",
             opacity: 1,
@@ -159,9 +164,9 @@ const CardItem = ({ product }: ICardItem) => {
       <Box
         sx={{
           width: "100%",
-          height: "10rem",
+          height: "12rem",
           position: "relative",
-          marginBottom: "0rem",
+          margin: 0,
           transition: "all 1s ease",
           "&:hover": {
             transform: "scale(1.1)",
@@ -179,34 +184,67 @@ const CardItem = ({ product }: ICardItem) => {
       </Box>
 
       {/***********  Text of card *************/}
-      <p
-        style={{
-          fontSize: "1.3rem",
+      <Typography
+        component="div"
+        sx={{
+          fontSize: "1.2rem",
           fontFamily: "PromptBold",
-          marginTop: "1rem",
-          marginBottom: 0,
+          marginTop: "0rem",
+          marginBottom: "1.5rem",
         }}
       >
         {product.product_name}
-      </p>
-      <p
-        className="multine-ellipsis"
-        style={{
-          fontSize: "0.75rem",
+      </Typography>
+
+      {/* <Box
+        className="multine-multine-ellipsis_2"
+        component="div"
+        sx={{
+          fontSize: "1rem",
           fontWeight: 200,
           fontFamily: "PromptLight",
           marginTop: 0,
           marginBottom: "0.5rem",
+          height: "8rem",
+          width: "100%",
         }}
       >
         {product.description}
-      </p>
+      </Box> */}
 
-      <Rating name="product" defaultValue={4.5} precision={0.5} />
+      <Rating
+        sx={{ width: "100%", marginLeft: "0px", padding: "0px" }}
+        name="product"
+        defaultValue={4.5}
+        precision={0.5}
+        size="small"
+      />
 
-      <Typography sx={{ fontSize: "1.1rem", fontFamily: "PromptBold" }}>
-        ${product.unit_price}
-      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-start",
+          alignItems: "center",
+          marginTop: "0.15rem",
+        }}
+      >
+        <Typography
+          component="span"
+          sx={{ display: "inline-block" }}
+        >{`Price: `}</Typography>
+        <Typography
+          component="span"
+          sx={{
+            fontSize: "1rem",
+            fontFamily: "PromptMedium",
+            fontStyle: "normal",
+            color: "rgb(251, 9, 9)",
+            marginLeft: "0.35rem",
+          }}
+        >
+          {ThaiCurrencyFormatWithBuildIn(product.unit_price)}
+        </Typography>
+      </Box>
     </Box>
   );
 };

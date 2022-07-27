@@ -172,14 +172,179 @@ export class ProductService {
     limit: number,
     search: string,
     categoryId: number,
+    minPrice?: number,
+    maxPrice?: number,
+    rating?: number,
   ): Promise<IPaginate & { products: IProduct[] }> {
     const startIndex = (page - 1) * limit;
     const lastIndex = page * limit;
 
     // const total = await this.prismaService.product.count();
     let products: IProduct[];
+    let total: number;
 
-    if (search && categoryId) {
+    if (search && categoryId && minPrice && maxPrice && rating) {
+      total = await this.prismaService.product.count({
+        where: {
+          product_name: {
+            contains: search,
+            mode: 'insensitive',
+          },
+          category_id: categoryId,
+          AND: [
+            {
+              unit_price: { gte: minPrice },
+            },
+            {
+              unit_price: { lte: maxPrice },
+            },
+          ],
+        },
+      });
+
+      products = await this.prismaService.product.findMany({
+        where: {
+          product_name: {
+            contains: search,
+            mode: 'insensitive',
+          },
+          category_id: categoryId,
+          AND: [
+            {
+              unit_price: { gte: minPrice },
+            },
+            {
+              unit_price: { lte: maxPrice },
+            },
+          ],
+        },
+        take: limit,
+        skip: startIndex,
+        orderBy: {
+          created_at: 'asc',
+        },
+      });
+    } else if (search && categoryId && minPrice && maxPrice) {
+      total = await this.prismaService.product.count({
+        where: {
+          product_name: {
+            contains: search,
+            mode: 'insensitive',
+          },
+          category_id: categoryId,
+          AND: [
+            {
+              unit_price: { gte: minPrice },
+            },
+            {
+              unit_price: { lte: maxPrice },
+            },
+          ],
+        },
+      });
+
+      products = await this.prismaService.product.findMany({
+        where: {
+          product_name: {
+            contains: search,
+            mode: 'insensitive',
+          },
+          category_id: categoryId,
+          AND: [
+            {
+              unit_price: { gte: minPrice },
+            },
+            {
+              unit_price: { lte: maxPrice },
+            },
+          ],
+        },
+        take: limit,
+        skip: startIndex,
+        orderBy: {
+          created_at: 'asc',
+        },
+      });
+    } else if (search && minPrice && maxPrice) {
+      total = await this.prismaService.product.count({
+        where: {
+          product_name: {
+            contains: search,
+            mode: 'insensitive',
+          },
+          AND: [
+            {
+              unit_price: { gte: minPrice },
+            },
+            {
+              unit_price: { lte: maxPrice },
+            },
+          ],
+        },
+      });
+
+      products = await this.prismaService.product.findMany({
+        where: {
+          product_name: {
+            contains: search,
+            mode: 'insensitive',
+          },
+          AND: [
+            {
+              unit_price: { gte: minPrice },
+            },
+            {
+              unit_price: { lte: maxPrice },
+            },
+          ],
+        },
+        take: limit,
+        skip: startIndex,
+        orderBy: {
+          created_at: 'asc',
+        },
+      });
+    } else if (minPrice && maxPrice) {
+      total = await this.prismaService.product.count({
+        where: {
+          AND: [
+            {
+              unit_price: { gte: minPrice },
+            },
+            {
+              unit_price: { lte: maxPrice },
+            },
+          ],
+        },
+      });
+
+      products = await this.prismaService.product.findMany({
+        where: {
+          AND: [
+            {
+              unit_price: { gte: minPrice },
+            },
+            {
+              unit_price: { lte: maxPrice },
+            },
+          ],
+        },
+        take: limit,
+        skip: startIndex,
+        orderBy: {
+          created_at: 'asc',
+        },
+      });
+    } else if (search && categoryId) {
+      total = await this.prismaService.product.count({
+        where: {
+          product_name: {
+            contains: search,
+            mode: 'insensitive',
+          },
+          category_id: categoryId,
+        },
+      });
       products = await this.prismaService.product.findMany({
         where: {
           product_name: {
@@ -191,10 +356,19 @@ export class ProductService {
         take: limit,
         skip: startIndex,
         orderBy: {
-          id: 'asc',
+          created_at: 'asc',
         },
       });
     } else if (search) {
+      total = await this.prismaService.product.count({
+        where: {
+          product_name: {
+            contains: search,
+            mode: 'insensitive',
+          },
+        },
+      });
+
       products = await this.prismaService.product.findMany({
         where: {
           product_name: {
@@ -205,10 +379,16 @@ export class ProductService {
         take: limit,
         skip: startIndex,
         orderBy: {
-          id: 'asc',
+          created_at: 'asc',
         },
       });
     } else if (categoryId) {
+      total = await this.prismaService.product.count({
+        where: {
+          category_id: categoryId,
+        },
+      });
+
       products = await this.prismaService.product.findMany({
         where: {
           category_id: categoryId,
@@ -216,20 +396,19 @@ export class ProductService {
         take: limit,
         skip: startIndex,
         orderBy: {
-          id: 'asc',
+          created_at: 'asc',
         },
       });
     } else {
+      total = await this.prismaService.product.count({});
       products = await this.prismaService.product.findMany({
         take: limit,
         skip: startIndex,
         orderBy: {
-          id: 'asc',
+          created_at: 'asc',
         },
       });
     }
-
-    const total = products.length;
 
     const pagination: IPaginate = {
       total,
