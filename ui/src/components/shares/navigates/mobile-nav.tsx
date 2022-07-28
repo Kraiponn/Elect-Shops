@@ -1,36 +1,55 @@
-import React from "react";
-import { useRouter } from "next/router";
+import React, { useEffect } from "react";
+import { NextRouter } from "next/router";
 
 // Material design and Icons
-import { Badge, Box, IconButton, Toolbar } from "@mui/material";
+import { Badge, IconButton, Toolbar } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
-// Global state
-import {
-  useAppSelector,
-  useAppDispatch,
-} from "@/features/hooks/use-global-state";
-import { openMobileMenu } from "@/features/global-state/reducers/gui";
-
 // Components
 import MobileMenu from "@/components/shares/navigates/mobile";
-import SearchBox from "@/components/shares/ui/search-box";
+import SearchProductBox from "@/components/shares/ui/search-product-box";
 import { clSecondary } from "@/features/const/colors";
 
-interface IProps {}
+interface IProps {
+  router: NextRouter;
+  quantity: number;
+  keyword: string;
+  searchKey: string;
+  setSearchKey: React.Dispatch<React.SetStateAction<string>>;
+  handleSearchChange: (
+    event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => void;
+  handleKeyPress: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+  handleClickSearchBox: () => void;
+  handleOpenMobileMenu: () => void;
+}
 
-/***********************************************
- *                MAIN METHOD                  *
- **********************************************/
-const MobileNav = ({}: IProps) => {
-  const router = useRouter();
-  const { quantity } = useAppSelector((state) => state.product);
-  const dispatch = useAppDispatch();
+/***********************************************************************************
+ *                                MAIN FUNCTION                                    *
+ **********************************************************************************/
+const MobileNav = ({
+  router,
+  quantity,
+  keyword,
+  searchKey,
+  setSearchKey,
+  handleSearchChange,
+  handleKeyPress,
+  handleClickSearchBox,
+  handleOpenMobileMenu,
+}: IProps) => {
 
-  const handleOpenMobileMenu = () => {
-    dispatch(openMobileMenu());
-  };
+  useEffect(() => {
+    if (keyword !== "") {
+      setSearchKey(keyword);
+    }
+
+    return () => {
+      // dispatch(clearProductState());
+      // console.log("Unmounting the page");
+    };
+  }, [keyword, setSearchKey]);
 
   return (
     <>
@@ -51,9 +70,14 @@ const MobileNav = ({}: IProps) => {
           <MenuIcon fontSize="large" />
         </IconButton>
 
-        <Box sx={{ flexGrow: 1 }}></Box>
+        {/* <Box sx={{ flexGrow: 1 }}></Box> */}
 
-        <SearchBox />
+        <SearchProductBox
+          keyword={searchKey}
+          handleSearchChange={handleSearchChange}
+          handleKeyPress={handleKeyPress}
+          handleClickSearchBox={handleClickSearchBox}
+        />
 
         <IconButton
           color="inherit"

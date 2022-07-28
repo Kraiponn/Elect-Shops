@@ -11,9 +11,7 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "@/features/hooks/use-global-state";
-import {
-  clearStateWithoutProducts,
-} from "@/features/global-state/reducers/product";
+import { clearStateWithoutProducts } from "@/features/global-state/reducers/product";
 import { http, getHttpErrorObject } from "@/features/services";
 import {
   IProduct,
@@ -27,8 +25,8 @@ import { dummyBanner } from "@/features/services/dummy-data";
 import DefautLayout from "@/components/shares/layouts/defaut-layout";
 import BannerSlider from "@/components/home/banner-slider";
 import Content from "@/components/home/content";
-// import HotNavigation from "@/components/home/hot-navigation";
 import ErrorShow from "@/components/errors";
+// import HotNavigation from "@/components/home/hot-navigation";
 
 interface IProps {
   electrics: IProduct[];
@@ -36,9 +34,9 @@ interface IProps {
   errObj?: IErorrResponseData;
 }
 
-/***********************************************
- *                MAIN METHOD                  *
- **********************************************/
+/***********************************************************************************
+ *                         MAIN FUNCTION - CLIENT SIDE                             *
+ **********************************************************************************/
 const Home = ({ electrics, books, errObj }: IProps) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -51,10 +49,10 @@ const Home = ({ electrics, books, errObj }: IProps) => {
   };
 
   useEffect(() => {
-    console.log("Hello home page");
+    // console.log("Hello home page");
 
     return () => {
-      console.log("Home page unmount..");
+      // console.log("Home page unmount..");
       dispatch(clearStateWithoutProducts());
     };
   }, [dispatch]);
@@ -95,9 +93,9 @@ const Home = ({ electrics, books, errObj }: IProps) => {
   );
 };
 
-/*********************************************************
- *                     SERVER PART                       *
- ********************************************************/
+/***********************************************************************************
+ *                             SERVER SIDE PART                                    *
+ **********************************************************************************/
 export const getStaticProps: GetStaticProps = async () => {
   const controller = new AbortController();
 
