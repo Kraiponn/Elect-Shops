@@ -1,19 +1,15 @@
 import React, { useEffect } from "react";
-import { NextRouter } from "next/router";
 
 // Material design and Icons
-import { Badge, IconButton, Toolbar } from "@mui/material";
+import { IconButton, Toolbar } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 // Components
 import MobileMenu from "@/components/shares/navigates/mobile";
 import SearchProductBox from "@/components/shares/ui/search-product-box";
-import { clSecondary } from "@/features/const/colors";
+import CartMenu from "@/components/shares/navigates/desktop/cart";
 
 interface IProps {
-  router: NextRouter;
-  quantity: number;
   keyword: string;
   searchKey: string;
   setSearchKey: React.Dispatch<React.SetStateAction<string>>;
@@ -29,8 +25,6 @@ interface IProps {
  *                                MAIN FUNCTION                                    *
  **********************************************************************************/
 const MobileNav = ({
-  router,
-  quantity,
   keyword,
   searchKey,
   setSearchKey,
@@ -39,7 +33,6 @@ const MobileNav = ({
   handleClickSearchBox,
   handleOpenMobileMenu,
 }: IProps) => {
-
   useEffect(() => {
     if (keyword !== "") {
       setSearchKey(keyword);
@@ -79,23 +72,7 @@ const MobileNav = ({
           handleClickSearchBox={handleClickSearchBox}
         />
 
-        <IconButton
-          color="inherit"
-          sx={{ marginLeft: "1.2rem" }}
-          onClick={() => router.push("/products/cart")}
-        >
-          <Badge
-            badgeContent={quantity}
-            sx={{
-              "& .MuiBadge-badge": {
-                color: "white",
-                backgroundColor: clSecondary,
-              },
-            }}
-          >
-            <ShoppingCartIcon color="inherit" />
-          </Badge>
-        </IconButton>
+        <CartMenu />
       </Toolbar>
     </>
   );

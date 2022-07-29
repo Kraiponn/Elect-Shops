@@ -26,7 +26,7 @@ const TopNavigation = () => {
 
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
-  const { keyword, quantity } = useAppSelector((state) => state.product);
+  const { keyword } = useAppSelector((state) => state.product);
 
   const handleOpenMobileMenu = () => {
     dispatch(openMobileMenu());
@@ -66,9 +66,7 @@ const TopNavigation = () => {
           />
         ) : (
           <MobileNav
-            router={router}
             keyword={keyword}
-            quantity={quantity}
             searchKey={searchKey}
             setSearchKey={setSearchKey}
             handleSearchChange={handleSearchChange}

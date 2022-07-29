@@ -49,9 +49,9 @@ const schema = yup
   })
   .required();
 
-/****************************************************
- *                  MAIN FUNCTION
- */
+/***********************************************************************************
+ *                          ---   MAIN FUNCTION   ---                              *
+ **********************************************************************************/
 const AuthForm = ({ authType, handleAuth, isLoading }: IProps) => {
   const router = useRouter();
   const [values, setValues] = useState<IInputBox>({
@@ -207,10 +207,9 @@ const AuthForm = ({ authType, handleAuth, isLoading }: IProps) => {
             sx={{
               cursor: "pointer",
               color: "red",
-              textDecoration: "underline",
-              fontFamily: "PromptBold",
-              fontStyle: "italic",
-              fontSize: ".89rem",
+              fontFamily: "PromptMedium",
+              fontStyle: "normal",
+              fontSize: "1rem",
             }}
             onClick={goToAuthPage}
           >

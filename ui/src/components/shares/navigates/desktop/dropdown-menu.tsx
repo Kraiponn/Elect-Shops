@@ -10,9 +10,9 @@ interface IProps {
   children: React.ReactNode;
 }
 
-/***********************************************
- *              MAIN METHOD
- */
+/***********************************************************************************
+ *                          ---   MAIN FUNCTION   ---                              *
+ **********************************************************************************/
 const DropdownMenu = ({ top, right, leftOfTopArrow, children }: IProps) => {
   return (
     <>

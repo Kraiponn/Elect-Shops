@@ -1,32 +1,31 @@
 // Material design
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
-// Services & Global state
+// Global types & Global state
 import { useAppSelector } from "@/features/hooks/use-global-state";
+import { IProduct } from "@/features/types";
 
 // Components
 import EmptyCart from "@/components/cart/empty-cart";
 import ProductCart from "@/components/cart/product-cart";
-import ProductSlider from "@/components/shares/ui/product-list-slider";
-import { IProduct } from "@/features/types";
 import RecommendProduct from "./recommend-products";
 
 interface IProps {
   products: IProduct[];
 }
 
-/***********************************************
- *                MAIN METHOD                  *
- **********************************************/
+/***********************************************************************************
+ *                          ---  MAIN FUNCTION   ---                               *
+ **********************************************************************************/
 const Content = ({ products }: IProps) => {
   const { orders, quantity, totalPrice } = useAppSelector(
     (state) => state.product
   );
 
   return (
-    <Container
+    <Box
       className="cart-container"
-      sx={{ minHeight: "100vh", width: "100%", paddingY: "2rem" }}
+      sx={{ minHeight: "100vh", width: "100%", padding: "2rem" }}
     >
       <Typography
         variant="h1"
@@ -61,7 +60,7 @@ const Content = ({ products }: IProps) => {
       <Box sx={{ marginTop: "5rem" }}>
         <RecommendProduct products={products} />
       </Box>
-    </Container>
+    </Box>
   );
 };
 

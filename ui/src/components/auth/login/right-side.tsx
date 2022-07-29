@@ -1,20 +1,11 @@
 import React from "react";
-import { useRouter } from "next/router";
 
 // Materials components
 import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 
-// Global state
-import {
-  useAppSelector,
-  useAppDispatch,
-} from "@/features/hooks/use-global-state";
-import {
-  asyncAuth,
-  clearErrorAndLoadingState,
-} from "@/features/global-state/reducers/auth";
-import { IAuthForm, IAuthInput } from "@/features/types";
+// Global Types
+import { IAuthForm } from "@/features/types";
 
 // Animate effects
 import { motion } from "framer-motion";
@@ -29,9 +20,9 @@ interface IProps {
   navigateToHomePage: () => void;
 }
 
-/****************************************************
- *                  MAIN FUNCTION
- ***************************************************/
+/***********************************************************************************
+ *                          ---   MAIN FUNCTION   ---                              *
+ **********************************************************************************/
 const RightSide = ({
   isLoading,
   isSuccess,
@@ -47,7 +38,7 @@ const RightSide = ({
         p: 2,
       }}
     >
-      <Tooltip title={`home page`} placement="bottom" arrow>
+      <Tooltip title={`Home page`} placement="bottom" arrow>
         <IconButton
           sx={{
             position: "absolute",
@@ -55,7 +46,6 @@ const RightSide = ({
             top: 0,
             padding: "2rem",
           }}
-          // size="small"
           color="inherit"
           onClick={navigateToHomePage}
         >

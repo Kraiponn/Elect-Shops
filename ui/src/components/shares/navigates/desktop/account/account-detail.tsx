@@ -13,9 +13,9 @@ interface Props {
   image_url?: string;
 }
 
-/***********************************************
- *                MAIN METHOD                  *
- **********************************************/
+/***********************************************************************************
+ *                          ---   MAIN FUNCTION   ---                              *
+ **********************************************************************************/
 const AccountDetail = ({ user_name, email, image_url }: Props) => {
   return (
     <Box
@@ -44,10 +44,10 @@ const AccountDetail = ({ user_name, email, image_url }: Props) => {
       </Box>
       <div>
         <Typography
-          sx={{
-            fontSize: "1rem",
-          }}
-          variant="subtitle1"
+          // sx={{
+          //   fontSize: "1rem",
+          // }}
+          variant="h6"
         >
           {user_name ? user_name : ""}
         </Typography>

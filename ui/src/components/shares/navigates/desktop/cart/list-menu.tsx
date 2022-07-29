@@ -11,9 +11,9 @@ import { useAppSelector } from "@/features/hooks/use-global-state";
 import TotalOrder from "@/components/shares/navigates/desktop/cart/total-order";
 import ProductItem from "@/components/shares/navigates/desktop/cart/item-menu";
 
-/***********************************************
- *                MAIN METHOD                  *
- **********************************************/
+/***********************************************************************************
+ *                          ---   MAIN FUNCTION   ---                              *
+ **********************************************************************************/
 const ListMenu = () => {
   const { quantity, totalPrice, orders } = useAppSelector(
     (state) => state.product

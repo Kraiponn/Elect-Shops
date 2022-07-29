@@ -8,11 +8,12 @@ import { motion } from "framer-motion";
 // Color system
 import { clWhite, clYellowMain } from "@/features/const/colors";
 
+// Components
 import Logo from "@/assets/images/little-pug-dog.webp";
 
-/****************************************************
- *  MAIN FUNCTION
- */
+/***********************************************************************************
+ *                          ---   MAIN FUNCTION   ---                              *
+ **********************************************************************************/
 const LeftSide = () => {
   return (
     <Box
@@ -85,7 +86,7 @@ const LeftSide = () => {
               cursor: "pointer",
             },
           }}
-          variant="h5"
+          variant="body1"
           component={motion.div}
           initial={{ x: 0, opacity: 0 }}
           animate={{ x: [-50, 50, 0], opacity: 1 }}

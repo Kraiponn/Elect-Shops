@@ -19,23 +19,18 @@ interface IProps {
   image_url: string;
 }
 
-/***********************************************
- *                MAIN METHOD                  *
- **********************************************/
+/***********************************************************************************
+ *                          ---   MAIN FUNCTION   ---                              *
+ **********************************************************************************/
 const ItemMenu = ({
   id,
   product_name,
-  description,
   unit_price,
   image_url,
 }: IProps) => {
   const router = useRouter();
 
   const handleShowProductDetail = (productId: number) => {
-    // router.push({
-    //   pathname: `/products/${productId}`,
-    //   query: { productId },
-    // });
     router.push(`/products/${productId}`);
   };
 
@@ -44,7 +39,7 @@ const ItemMenu = ({
       component="div"
       onClick={() => handleShowProductDetail(id)}
       sx={{
-        borderBottom: ".1rem solid black",
+        borderBottom: "0.01rem solid rgba(1, 1, 1, 0.1)",
         paddingY: "0.5rem",
         paddingX: "0.75rem",
         width: "100%",
@@ -66,7 +61,7 @@ const ItemMenu = ({
               src={image_url ? image_url : DefaultProductImage}
               alt="product-image"
               layout="fill"
-              objectFit="cover"
+              objectFit="contain"
             />
           </Box>
         </Grid>
@@ -89,20 +84,9 @@ const ItemMenu = ({
               {product_name}
             </Typography>
 
-            {/* <Typography
-                className="multine-ellipsis_2"
-                sx={{
-                  fontSize: "0.75rem",
-                  fontFamily: "PromptThin",
-                  fontWeight: 700,
-                }}
-              >
-                {description}
-              </Typography> */}
-
             <Typography
               sx={{
-                fontSize: "1rem",
+                fontSize: "0.9rem",
                 fontFamily: "PromptMedium",
                 fontWeight: 200,
                 fontStyle: "italic",

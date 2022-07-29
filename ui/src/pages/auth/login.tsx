@@ -1,6 +1,5 @@
 import React from "react";
 import { useRouter } from "next/router";
-import { NextPage } from "next";
 
 // Materials
 import { Box, Grid, useMediaQuery } from "@mui/material";
@@ -22,11 +21,11 @@ import MyDialog from "@/components/shares/loader/my-dialog";
 import LeftSide from "@/components/auth/login/left-side";
 import RightSide from "@/components/auth/login/right-side";
 
-/****************************************************
- *                  MAIN FUNCTION
- ***************************************************/
+/***********************************************************************************
+ *                          ---   MAIN FUNCTION   ---                              *
+ **********************************************************************************/
 const Login = () => {
-  const isDesktop = useMediaQuery("(min-width: 900px)");
+  const isDesktop = useMediaQuery("(min-width: 750px)");
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { isLoading, isSuccess, error } = useAppSelector((state) => state.auth);

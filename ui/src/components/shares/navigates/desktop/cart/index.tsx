@@ -18,9 +18,9 @@ import { clSecondary } from "@/features/const/colors";
 
 interface IProps {}
 
-/***********************************************
- *                MAIN METHOD                  *
- **********************************************/
+/***********************************************************************************
+ *                          ---   MAIN FUNCTION   ---                              *
+ **********************************************************************************/
 const CartMenu = ({}: IProps) => {
   const router = useRouter();
   const { quantity } = useAppSelector((state) => state.product);

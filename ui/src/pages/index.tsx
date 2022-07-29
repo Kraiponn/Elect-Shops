@@ -38,8 +38,8 @@ interface IProps {
  *                         MAIN FUNCTION - CLIENT SIDE                             *
  **********************************************************************************/
 const Home = ({ electrics, books, errObj }: IProps) => {
-  const dispatch = useAppDispatch();
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const { isLoading, isSuccess, isError, pagination, keyword } = useAppSelector(
     (state) => state.product
   );
@@ -94,7 +94,7 @@ const Home = ({ electrics, books, errObj }: IProps) => {
 };
 
 /***********************************************************************************
- *                             SERVER SIDE PART                                    *
+ *                       ---   SERVER SIDE PART   ---                              *
  **********************************************************************************/
 export const getStaticProps: GetStaticProps = async () => {
   const controller = new AbortController();

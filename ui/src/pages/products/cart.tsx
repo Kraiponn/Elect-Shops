@@ -1,6 +1,8 @@
-// Material design
+import { useEffect } from "react";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
+
+// Global service and Types
 import { getHttpErrorObject, http } from "@/features/services";
 import { AxiosError } from "axios";
 import {
@@ -9,6 +11,14 @@ import {
   IProductResponse,
 } from "@/features/types";
 
+// Global state and Global types
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "@/features/hooks/use-global-state";
+import { clearStateWithoutProducts } from "@/features/global-state/reducers/product";
+
+// Material design
 import { Toolbar } from "@mui/material";
 
 // Components
@@ -21,11 +31,27 @@ interface IProps {
   errObj?: IErorrResponseData;
 }
 
-/***********************************************
- *                MAIN METHOD                  *
- **********************************************/
+/***********************************************************************************
+ *                    ---   MAIN FUNCTION : CLIENT SIDE   ---                      *
+ **********************************************************************************/
 const Cart = ({ products, errObj }: IProps) => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const {
+    isLoading,
+    isSuccess,
+    pagination,
+    keyword: searchKey,
+  } = useAppSelector((state) => state.product);
+
+  useEffect(() => {
+    // console.log("Hello home page");
+
+    return () => {
+      // console.log("Home page unmount..");
+      dispatch(clearStateWithoutProducts());
+    };
+  }, [dispatch]);
 
   const handleRefreshPage = () => {
     router.reload();
@@ -37,6 +63,15 @@ const Cart = ({ products, errObj }: IProps) => {
     );
   }
 
+  if (!isLoading && isSuccess && pagination.products.length > 0) {
+    router.push({
+      pathname: "/search",
+      query: {
+        keyword: searchKey,
+      },
+    });
+  }
+
   return (
     <DefautLayout title="Cart" description="product on your cart">
       <Toolbar />
@@ -46,9 +81,9 @@ const Cart = ({ products, errObj }: IProps) => {
   );
 };
 
-/******************************************************************
- *                      SERVER SIDE PART                          *
- *****************************************************************/
+/***********************************************************************************
+ *                             SERVER SIDE PART                                    *
+ **********************************************************************************/
 export const getServerSideProps: GetServerSideProps = async () => {
   const controller = new AbortController();
 

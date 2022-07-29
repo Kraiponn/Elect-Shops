@@ -14,9 +14,9 @@ interface IProps {
   handleSelectedItem: (item: MenuType) => void;
 }
 
-/***********************************************
- *                MAIN METHOD                  *
- **********************************************/
+/***********************************************************************************
+ *                          ---   MAIN FUNCTION   ---                              *
+ **********************************************************************************/
 const ItemMenu = ({ menuType, title, Icon, handleSelectedItem }: IProps) => {
   const selectedItem = () => {
     handleSelectedItem(menuType);
@@ -40,7 +40,7 @@ const ItemMenu = ({ menuType, title, Icon, handleSelectedItem }: IProps) => {
       <Typography
         sx={{
           fontFamily: "PromptRegular",
-          fontSize: "0.89rem",
+          fontSize: "1rem",
           marginLeft: '0.15rem',
         }}
         onClick={selectedItem}

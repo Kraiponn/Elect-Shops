@@ -1,16 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { NextRouter, useRouter } from "next/router";
+import React, { useEffect } from "react";
+import { NextRouter } from "next/router";
 
-// Global state and Types
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "@/features/hooks/use-global-state";
-import { fetchProducts } from "@/features/global-state/reducers/product";
-import { IAuthPayload, ICart } from "@/features/types";
+// Global Types
+import { IAuthPayload } from "@/features/types";
 
 // Material Design & Components
-import { Box, Toolbar, Typography } from "@mui/material";
+import { Toolbar, Typography } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 
 import AccountMenu from "@/components/shares/navigates/desktop/account";
@@ -33,7 +28,7 @@ interface IProps {
 }
 
 /***********************************************************************************
- *                                MAIN FUNCTION                                    *
+ *                          ---   MAIN FUNCTION   ---                              *
  **********************************************************************************/
 const DesktopNav = ({
   router,
@@ -70,8 +65,6 @@ const DesktopNav = ({
       >
         {`Shob shop`}
       </Typography>
-
-      {/* <Box sx={{ flexGrow: 1 }} /> */}
 
       <SearchProductBox
         keyword={searchKey}

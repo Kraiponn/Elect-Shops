@@ -1,7 +1,8 @@
-export const clPrimary = "#304ffe";
-export const clPrimaryLight = "#3d5afe";
-export const clPrimaryDark = "#1a237e";
+export const clPrimary = "#00bfa5";
+export const clPrimaryLight = "#64ffda";
+export const clPrimaryDark = "#009688";
 export const clSecondary = "#f50057";
+export const clSecondaryLight = "#ff4081";
 export const clSecondaryDark = "#c51162";
 
 export const clRedMain = "#ff1744";

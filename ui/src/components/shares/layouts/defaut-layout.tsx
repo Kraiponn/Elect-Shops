@@ -9,11 +9,11 @@ import {
 } from "@/features/hooks/use-global-state";
 import { setAuthSuccess } from "@/features/global-state/reducers/auth";
 
-// Components
+// Components & Material design
+import { Box } from "@mui/material";
 import TopNavigation from "@/components/shares/navigates/top-navigation";
 import Footer from "@/components/shares/footer";
 import MyDialog from "@/components/shares/loader/my-dialog";
-import { Box } from "@mui/material";
 
 interface IProps {
   children: React.ReactNode;
@@ -24,7 +24,7 @@ interface IProps {
 const DefautLayout = ({ children, title, description }: IProps) => {
   const dispatch = useAppDispatch();
   const { user, access_token } = useAppSelector((state) => state.auth);
-  const { isLoading, isSuccess, isError } = useAppSelector(
+  const { isLoading } = useAppSelector(
     (state) => state.product
   );
 
@@ -43,8 +43,8 @@ const DefautLayout = ({ children, title, description }: IProps) => {
     <>
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
-        <title>{title}</title>
         <meta name={title} content={description ? description : ""} />
+        <title>{title}</title>
       </Head>
 
       <MyDialog

@@ -17,9 +17,9 @@ interface IProps {
   };
 }
 
-/***********************************************
- *                MAIN METHOD                  *
- **********************************************/
+/***********************************************************************************
+ *                          ---   MAIN FUNCTION   ---                              *
+ **********************************************************************************/
 const TotalOrder = ({ quantity, totalPrice, Icon }: IProps) => {
   const router = useRouter();
 
@@ -71,8 +71,9 @@ const TotalOrder = ({ quantity, totalPrice, Icon }: IProps) => {
       <Typography
         sx={{
           fontFamily: "PromptBold",
-          fontSize: "1.3rem",
+          fontSize: "1.1rem",
           marginLeft: "0.15rem",
+          marginBottom: "0.789rem",
         }}
       >
         {`Total: ${ThaiCurrencyFormatWithBuildIn(totalPrice)}`}

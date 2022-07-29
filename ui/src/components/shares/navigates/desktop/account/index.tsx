@@ -1,4 +1,5 @@
 import React from "react";
+import { NextPage } from "next";
 
 // Material design
 import { IconButton } from "@mui/material";
@@ -10,11 +11,11 @@ import { dropDownMenuAnimate } from "@/components/shares/navigates/desktop/anima
 // Components
 import DropdownMenu from "@/components/shares/navigates/desktop/dropdown-menu";
 import ListAccountMenu from "@/components/shares/navigates/desktop/account/list-menu";
-import { NextPage } from "next";
 
-/***********************************************
- *                MAIN METHOD                  *
- **********************************************/
+
+/***********************************************************************************
+ *                          ---   MAIN FUNCTION   ---                              *
+ **********************************************************************************/
 const AccountMenu: NextPage = () => {
   return (
     <IconButton

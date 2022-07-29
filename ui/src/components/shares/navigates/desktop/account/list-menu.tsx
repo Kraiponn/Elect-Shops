@@ -20,9 +20,9 @@ import AccountDetail from "@/components/shares/navigates/desktop/account/account
 import ItemMenu from "@/components/shares/navigates/desktop/account/item-menu";
 import { MenuType } from "@/components/shares/navigates/enum";
 
-/***********************************************
- *                MAIN METHOD                  *
- **********************************************/
+/***********************************************************************************
+ *                          ---   MAIN FUNCTION   ---                              *
+ **********************************************************************************/
 const MenuList = () => {
   const router = useRouter();
   const { user } = useAppSelector((state) => state.auth);
@@ -34,7 +34,7 @@ const MenuList = () => {
   };
 
   const handleItemSelectedType = (menuType: MenuType) => {
-    console.log(menuType);
+    // console.log(menuType);
 
     switch (menuType) {
       case MenuType.ACCOUNT_SETTING:

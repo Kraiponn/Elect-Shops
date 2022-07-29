@@ -4,12 +4,11 @@ import { GetServerSideProps, NextPage } from "next";
 import { ParsedUrlQuery } from "querystring";
 
 // Material design
-import { Container, Toolbar, Box } from "@mui/material";
+import {  Toolbar, Box } from "@mui/material";
 
 // Global state
 import {
   useAppSelector,
-  useAppDispatch,
 } from "@/features/hooks/use-global-state";
 
 import { getHttpErrorObject, http } from "@/features/services";
@@ -30,19 +29,19 @@ interface IParams extends ParsedUrlQuery {
   productId: string;
 }
 
-/*********************************************************
- *                     MAIN METHOD                       *
- ********************************************************/
+/***********************************************************************************
+ *                           MAIN FUNCTION - CLIENT SIDE                           *
+ **********************************************************************************/
 const ProductDetail: NextPage<IProps> = ({ product }) => {
-const router = useRouter();
-const {
-  isLoading,
-  isSuccess,
-  products,
-  keyword: searchKey,
-} = useAppSelector((state) => state.product);
+  const router = useRouter();
+  const {
+    isLoading,
+    isSuccess,
+    pagination,
+    keyword: searchKey,
+  } = useAppSelector((state) => state.product);
 
-  if (!isLoading && isSuccess && products.length > 0) {
+  if (!isLoading && isSuccess && pagination.products.length > 0) {
     router.push({
       pathname: "/search",
       query: {
@@ -55,13 +54,16 @@ const {
     <DefautLayout title="Cart" description="product on your cart">
       <Toolbar />
 
-      <Container>
-        <Box sx={{ width: "100%", minHeight: "100vh", marginBottom: "2rem" }}>
-          <TopBreadcrumbs currentBreadcrumb={product.product_name} />
-
-          <Content product={product} />
-        </Box>
-      </Container>
+      <Box
+        sx={{
+          width: "100%",
+          minHeight: "100vh",
+          padding: "0.5rem 2.5rem 2rem 2.5rem",
+        }}
+      >
+        <TopBreadcrumbs currentBreadcrumb={product.product_name} />
+        <Content product={product} />
+      </Box>
     </DefautLayout>
   );
 };

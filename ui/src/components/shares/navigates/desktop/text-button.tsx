@@ -17,7 +17,7 @@ const TextButton = ({ label, OnClick }: IProps) => {
   };
   return (
     <Typography
-      variant="h5"
+      variant="subtitle2"
       sx={{
         cursor: "pointer",
         ":hover": {
