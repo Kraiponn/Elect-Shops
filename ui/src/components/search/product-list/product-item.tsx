@@ -5,12 +5,9 @@ import { IProduct } from "@/features/types";
 import { ThaiCurrencyFormatWithBuildIn } from "@/features/services";
 
 // Components
-import {
-  Box,
-  Rating,
-  Typography,
-} from "@mui/material";
+import { Box, Rating, Typography } from "@mui/material";
 import ProductItemHover from "@/components/search/product-list/product-item-hover";
+import { clSecondary } from "@/features/const/colors";
 
 interface IProps {
   products: IProduct[];
@@ -20,9 +17,9 @@ interface IProps {
   handleNavigateToProductDetail: (product: IProduct) => void;
 }
 
-/***********************************************
- *               MAIN METHOD
- **********************************************/
+/***********************************************************************************
+ *                         -----   MAIN FUNCTION   -----                           *
+ **********************************************************************************/
 export default function ProductItem({
   products,
   favorite,
@@ -56,7 +53,7 @@ export default function ProductItem({
             },
           }}
         >
-          {/* Dialog card show when hover */}
+          {/************   Dialog card show when hover   ***********/}
           <ProductItemHover
             product={product}
             product_name={product.product_name}
@@ -67,7 +64,7 @@ export default function ProductItem({
             handleToggleProductFavorite={handleToggleProductFavorite}
           />
 
-          {/* Image  */}
+          {/************   Product Image Preview  ***********/}
           <Box
             className="card-image"
             onClick={() => handleNavigateToProductDetail(product)}
@@ -109,14 +106,21 @@ export default function ProductItem({
             <Box>
               <Typography variant="h5">{product.product_name}</Typography>
 
-              <Typography className="multine-ellipsis_2" variant="body1">
+              <Typography
+                className="multine-ellipsis_3"
+                variant="body2"
+                sx={{ textIndent: "1rem" }}
+              >
                 {product.description}
               </Typography>
             </Box>
 
             <Box>
               <Rating defaultValue={5} precision={0.5} />
-              <Typography variant="body1">{`${product.in_stock} pcs`}</Typography>
+              <Typography
+                variant="h6"
+                sx={{ color: clSecondary }}
+              >{`(${product.in_stock}) pcs`}</Typography>
             </Box>
           </Box>
 
@@ -124,17 +128,16 @@ export default function ProductItem({
           <Box
             sx={{
               flexGrow: 1,
-              // width: "20%",
               height: "12rem",
               paddingTop: "2rem",
               display: "flex",
               flexDirection: "column",
               justifyContent: "flex-start",
               alignItems: "flex-end",
-              color: "red",
+              color: clSecondary,
             }}
           >
-            <Typography variant="h6">
+            <Typography variant="h5">
               {ThaiCurrencyFormatWithBuildIn(product.unit_price)}
             </Typography>
           </Box>

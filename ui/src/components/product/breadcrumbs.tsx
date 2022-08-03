@@ -1,8 +1,5 @@
 import React from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { GetServerSideProps, NextPage } from "next";
-import { ParsedUrlQuery } from "querystring";
 
 // Material design
 import {
@@ -15,9 +12,9 @@ interface IProps {
   currentBreadcrumb: string;
 }
 
-/*********************************************************
- *                     MAIN METHOD                       *
- ********************************************************/
+/***********************************************************************************
+ *                          ---  MAIN FUNCTION   ---                               *
+ **********************************************************************************/
 const TopBreadcrumbs = ({ currentBreadcrumb }: IProps) => {
   function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     event.preventDefault();
@@ -31,35 +28,34 @@ const TopBreadcrumbs = ({ currentBreadcrumb }: IProps) => {
           <a>
             <Typography
               sx={{
-                fontFamily: "PromptRegular",
+                fontFamily: "Prompt",
                 fontSize: "1.2rem",
-                color: "rgb(1,1,1)",
+                fontWeight: 500,
               }}
             >{`Home`}</Typography>
           </a>
         </Link>
 
-        <Link href="/products" passHref>
+        <Link href="/search" passHref>
           <a>
             <Typography
               sx={{
-                fontFamily: "PromptRegular",
+                fontFamily: "Prompt",
                 fontSize: "1.2rem",
-                color: "rgb(1,1,1)",
+                fontWeight: 500,
               }}
             >
-              Products
+              {`Products`}
             </Typography>
           </a>
         </Link>
 
         <Typography
           sx={{
-            fontFamily: "PromptMedium",
+            fontFamily: "Prompt",
             fontSize: "1.2rem",
             fontWeight: "900",
             fontStyle: "italic",
-            color: "rgb(1,1,1)",
           }}
         >
           {currentBreadcrumb}

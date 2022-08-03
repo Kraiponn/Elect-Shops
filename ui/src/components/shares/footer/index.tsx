@@ -17,15 +17,17 @@ import {
   qrCode,
 } from "@/components/shares/footer/dummy-logo";
 
-/***********************************************
- *                MAIN METHOD                  *
- **********************************************/
+/***********************************************************************************
+ *                         MAIN FUNCTION - CLIENT SIDE                             *
+ **********************************************************************************/
 const Footer: NextPage = () => {
   return (
     <Box className="footer--container">
       <Grid container>
         <Grid item xs={12} sm={6} md={3}>
-          <Typography sx={{ fontSize: "1.2rem", mt: 3 }}>SERVICE</Typography>
+          <Typography variant="h6" sx={{ fontSize: "1.1rem", mt: 3 }}>
+            SERVICE
+          </Typography>
           <ul className="footer__service">
             <li>
               <Link href="#" passHref>
@@ -66,7 +68,9 @@ const Footer: NextPage = () => {
         </Grid>
 
         <Grid item xs={12} sm={6} md={3}>
-          <Typography sx={{ fontSize: "1.2rem", mt: 2 }}>ABOUT</Typography>
+          <Typography variant="h6" sx={{ fontSize: "1.1rem", mt: 2 }}>
+            ABOUT
+          </Typography>
           <ul className="footer__service">
             <li>
               <Link href="#" passHref>
@@ -97,7 +101,9 @@ const Footer: NextPage = () => {
         </Grid>
 
         <Grid item xs={12} sm={6} md={3}>
-          <Typography sx={{ fontSize: "1.2rem", mt: 2 }}>FOLLOW US</Typography>
+          <Typography variant="h6" sx={{ fontSize: "1.1rem", mt: 2 }}>
+            FOLLOW US
+          </Typography>
           <Box
             sx={{
               width: "100%",
@@ -110,10 +116,14 @@ const Footer: NextPage = () => {
           >
             <IconButton
               color="inherit"
-              sx={{ "&:hover": { color: "rgba(255, 255, 255, 0.534)" } }}
+              sx={{
+                "&:hover": { color: "rgba(255, 255, 255, 0.534)" },
+              }}
             >
               <GoogleIcon color="inherit" />
-              <Typography sx={{ marginLeft: "0.5rem" }}>Google</Typography>
+              <Typography sx={{ marginLeft: "0.5rem", fontSize: "1rem" }}>
+                Google
+              </Typography>
             </IconButton>
 
             <IconButton
@@ -121,7 +131,9 @@ const Footer: NextPage = () => {
               sx={{ "&:hover": { color: "rgba(255, 255, 255, 0.534)" } }}
             >
               <FacebookIcon color="inherit" />
-              <Typography sx={{ marginLeft: "0.5rem" }}>Facebook</Typography>
+              <Typography sx={{ marginLeft: "0.5rem", fontSize: "1rem" }}>
+                Facebook
+              </Typography>
             </IconButton>
 
             <IconButton
@@ -129,7 +141,9 @@ const Footer: NextPage = () => {
               sx={{ "&:hover": { color: "rgba(255, 255, 255, 0.534)" } }}
             >
               <InstagramIcon color="inherit" />
-              <Typography sx={{ marginLeft: "0.5rem" }}>Instagram</Typography>
+              <Typography sx={{ marginLeft: "0.5rem", fontSize: "1rem" }}>
+                Instagram
+              </Typography>
             </IconButton>
 
             <IconButton
@@ -137,13 +151,15 @@ const Footer: NextPage = () => {
               sx={{ "&:hover": { color: "rgba(255, 255, 255, 0.534)" } }}
             >
               <YouTubeIcon color="inherit" />
-              <Typography sx={{ marginLeft: "0.5rem" }}>Youtube</Typography>
+              <Typography sx={{ marginLeft: "0.5rem", fontSize: "1rem" }}>
+                Youtube
+              </Typography>
             </IconButton>
           </Box>
         </Grid>
 
         <Grid item xs={12} sm={6} md={3}>
-          <Typography sx={{ fontSize: "1.2rem", mt: 2 }}>
+          <Typography variant="h6" sx={{ fontSize: "1.1rem", mt: 2 }}>
             DOWNLOAD APP
           </Typography>
           <Box
@@ -179,7 +195,6 @@ const Footer: NextPage = () => {
                   justifyContent: "flex-start",
                   alignItems: "center",
                   padding: 0,
-                  // marginLeft: "1rem",
                   color: "white",
                   "&:hover": {
                     color: "rgba(255, 255, 255, 0.534)",
@@ -197,7 +212,13 @@ const Footer: NextPage = () => {
                     objectFit="cover"
                   />
                 </Box>
-                <Typography sx={{ marginLeft: "0.5rem" }}>
+                <Typography
+                  sx={{
+                    marginLeft: "0.5rem",
+                    fontSize: "1rem",
+                    fontWeight: 500,
+                  }}
+                >
                   Apple Store
                 </Typography>
               </Box>
@@ -227,7 +248,13 @@ const Footer: NextPage = () => {
                     objectFit="cover"
                   />
                 </Box>
-                <Typography sx={{ marginLeft: "0.5rem" }}>
+                <Typography
+                  sx={{
+                    marginLeft: "0.5rem",
+                    fontSize: "1rem",
+                    fontWeight: 500,
+                  }}
+                >
                   Play Store
                 </Typography>
               </Box>
@@ -248,15 +275,16 @@ const Footer: NextPage = () => {
         <Typography
           component="span"
           sx={{
-            fontWeight: 100,
-            fontFamily: "PromptRegular",
+            fontWeight: 400,
+            fontFamily: "Roboto",
+            fontSize: "1rem",
           }}
         >
           © 2022 Shob shop. All Rights Reserved.
         </Typography>
 
         <IconButton color="inherit">
-          <LanguageIcon sx={{fontSize: '2.5rem'}} />
+          <LanguageIcon sx={{ fontSize: "2.5rem" }} />
         </IconButton>
       </Box>
     </Box>

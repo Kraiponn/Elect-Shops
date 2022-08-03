@@ -32,7 +32,7 @@ interface IProps {
 }
 
 /***********************************************************************************
- *                    ---   MAIN FUNCTION : CLIENT SIDE   ---                      *
+ *                   -----   MAIN FUNCTION - CLIENT SIDE   -----                   *
  **********************************************************************************/
 const Cart = ({ products, errObj }: IProps) => {
   const router = useRouter();
@@ -82,7 +82,7 @@ const Cart = ({ products, errObj }: IProps) => {
 };
 
 /***********************************************************************************
- *                             SERVER SIDE PART                                    *
+ *                       ---   SERVER SIDE PART   ---                              *
  **********************************************************************************/
 export const getServerSideProps: GetServerSideProps = async () => {
   const controller = new AbortController();

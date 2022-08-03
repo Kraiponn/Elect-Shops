@@ -9,7 +9,7 @@ import { ThaiCurrencyFormatWithBuildIn } from "@/features/services";
 import { IProduct, IOrderProduct } from "@/features/types";
 
 // Components
-import { clPrimaryDark } from "@/features/const/colors";
+import { clPrimaryDark, clSecondary } from "@/features/const/colors";
 
 interface IProps {
   orders: IOrderProduct[];
@@ -18,9 +18,9 @@ interface IProps {
   removeProductFromCart: (product: IProduct) => void;
 }
 
-/***********************************************
- *                MAIN METHOD                  *
- **********************************************/
+/***********************************************************************************
+ *                          ---  MAIN FUNCTION   ---                               *
+ **********************************************************************************/
 const CartListItem = ({
   orders,
   increaseProductToCart,
@@ -35,7 +35,7 @@ const CartListItem = ({
           sx={{
             border: "1px solid #f0f4f6",
             width: "100%",
-            height: "13.5rem",
+            height: "14rem",
             padding: "0.789rem 1rem",
             display: "flex",
             justifyContent: "space-between",
@@ -64,20 +64,22 @@ const CartListItem = ({
                 height: "100%",
               }}
             >
-              <Box sx={{}}>
+              <Box>
                 <Typography
                   sx={{
-                    fontSize: "1.25rem",
-                    fontFamily: "PromptMedium",
+                    fontFamily: "Itim",
+                    fontSize: "1.45rem",
                     fontWeight: "700",
+                    mb: 1,
                   }}
                 >{`${order.product.product_name}`}</Typography>
 
                 <Typography
-                  className="multine-ellipsis_1"
+                  className="multine-ellipsis_2"
                   sx={{
+                    fontFamily: "Prompt",
+                    fontWeight: 400,
                     fontSize: "1rem",
-                    fontFamily: "PromptLight",
                     paddingLeft: "1rem",
                   }}
                 >{`${order.product.description}`}</Typography>
@@ -85,20 +87,19 @@ const CartListItem = ({
                 <Box sx={{ marginTop: "0.5rem" }}>
                   <Typography
                     sx={{
-                      fontSize: "1.2rem",
-                      fontFamily: "PromptMedium",
-                      fontStyle: "italic",
+                      fontFamily: 'Prompt',
+                      fontWeight: 400,
                       paddingLeft: "1rem",
-                      color: "#767373",
                     }}
                     component="span"
                   >{`Unit price:`}</Typography>
                   <Typography
                     sx={{
-                      fontSize: "1.2rem",
-                      fontFamily: "PromptMedium",
+                      fontFamily: "Prompt",
+                      fontSize: "1rem",
+                      fontWeight: 700,
                       paddingLeft: "1rem",
-                      color: "red",
+                      color: clSecondary,
                     }}
                     component="span"
                   >{`${ThaiCurrencyFormatWithBuildIn(

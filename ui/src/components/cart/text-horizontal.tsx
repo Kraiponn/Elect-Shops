@@ -10,9 +10,9 @@ interface IProps {
   marginTop: string;
 }
 
-/***********************************************
- *                MAIN METHOD                  *
- **********************************************/
+/***********************************************************************************
+ *                          ---  MAIN FUNCTION   ---                               *
+ **********************************************************************************/
 const TextHorizontal = ({
   title,
   value,
@@ -32,8 +32,9 @@ const TextHorizontal = ({
     >
       <Typography
         sx={{
+          fontFamily: "Prompt",
+          fontWeight: 400,
           fontSize: "1.2rem",
-          fontFamily: "PromptMedium",
         }}
       >
         {title}
@@ -42,7 +43,7 @@ const TextHorizontal = ({
       <Typography
         sx={{
           fontSize: fontSize ? fontSize : "1.2rem",
-          fontFamily: "PromptMedium",
+          fontFamily: "Prompt",
           fontWeight: fontWeight,
         }}
       >

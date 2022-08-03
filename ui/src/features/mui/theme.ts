@@ -30,63 +30,69 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: "Itim",
-    // fontSize: "1rem",
+    fontFamily: "Roboto",
     h1: {
-      fontFamily: "PromptBold",
-      fontSize: "3.5rem",
+      // fontFamily: "PromptBold",
+      fontSize: "3rem",
+      fontWeight: 900,
     },
     h2: {
-      fontFamily: "PromptBold",
+      // fontFamily: "PromptBold",
       fontSize: "2.5rem",
-      // fontWeight: 700,
+      fontWeight: 900,
     },
     h3: {
-      fontFamily: "PromptBold",
+      // fontFamily: "PromptBold",
       fontSize: "2rem",
-      // fontWeight: 500,
+      fontWeight: 900,
     },
     h4: {
-      fontFamily: "PromptBold",
-      fontSize: "1.75rem",
+      // fontFamily: "PromptBold",
+      fontSize: "1.5rem",
+      fontWeight: 900,
     },
     h5: {
-      fontFamily: "PromptBold",
-      fontSize: "1.35rem",
+      // fontFamily: "PromptBold",
+      fontSize: "1.2rem",
+      fontWeight: 900,
     },
     h6: {
-      fontFamily: "PromptBold",
-      fontSize: "1.2rem",
+      // fontFamily: "PromptBold",
+      fontSize: "1rem",
+      fontWeight: 900,
     },
     subtitle1: {
-      fontSize: "1.35rem",
-      fontFamily: "PromptMedium",
+      fontSize: "1.2rem",
+      fontWeight: 700,
     },
     subtitle2: {
-      fontSize: "1.2rem",
-      fontFamily: "PromptMedium",
+      fontSize: "1rem",
+      fontWeight: 700,
     },
     body1: {
-      fontFamily: "PromptRegular",
-      fontSize: "1rem",
+      fontWeight: 300,
+      fontSize: "1.2rem",
     },
     body2: {
-      fontFamily: "PromptLight",
+      fontWeight: 300,
       fontSize: "1rem",
     },
     button: {
-      fontFamily: "PromptRegular",
+      fontFamily: "Itim",
       textTransform: "capitalize",
     },
     caption: {
-      fontFamily: "PromptRegular",
+      fontFamily: "Prompt",
     },
   },
   components: {
     MuiAppBar: {
       defaultProps: {
-        elevation: 2,
+        elevation: 1,
       },
+    },
+    MuiTextField: {
+      defaultProps: {},
     },
   },
   breakpoints: {

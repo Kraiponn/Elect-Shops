@@ -9,8 +9,8 @@ export enum UserType {
 export interface IAuthPayload {
   sub: number;
   email: string;
-  user_name?: string;
-  image_url?: string;
+  user_name: string;
+  image_url: string;
   role: UserType;
 }
 

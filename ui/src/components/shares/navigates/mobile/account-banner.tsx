@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 
 // Material design
-import { Box, Typography } from "@mui/material";
+import { Avatar, Box, Typography } from "@mui/material";
 
 // Components
 import defaultProfileImage from "@/assets/images/little-pug-dog.webp";
@@ -15,45 +15,70 @@ interface IProps {
   imageUrl?: string;
 }
 
-/***********************************************
- *                MAIN METHOD                  *
- **********************************************/
-const AccountBanner = ({userName, email, imageUrl}: IProps) => {
+/***********************************************************************************
+ *                                MAIN FUNCTION                                    *
+ **********************************************************************************/
+const AccountBanner = ({ userName, email, imageUrl }: IProps) => {
   return (
     <Box
       sx={{
         width: "100%",
         background: `${clPrimaryDark}`,
-        p: 1,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        color: "inherit",
+        py: 3,
       }}
     >
-      <Box
+      <Avatar
         sx={{
           position: "relative",
-          width: "5rem",
-          height: "5rem",
-          borderRadius: "50%",
-          textAlign: "center",
-          margin: "1rem auto",
+          width: "7rem",
+          height: "7rem",
         }}
-        component="div"
       >
         <Image
-          className={styled["account-logo"]}
+          // className={styled["account-logo"]}
           src={imageUrl ? imageUrl : defaultProfileImage}
           alt="image profile"
           layout="fill"
           objectFit="fill"
         />
-      </Box>
+      </Avatar>
 
-      <Box
+      <Typography
+        sx={{
+          fontFamily: "Prompt",
+          fontSize: "1.2rem",
+          fontWeight: 700,
+          color: "rgb(255, 251, 4)",
+          mt: 2,
+        }}
+      >
+        {userName ? userName : "Welcome Back"}
+      </Typography>
+
+      <Typography
+        sx={{
+          fontFamily: "Prompt",
+          fontSize: "1rem",
+          fontWeight: 500,
+          fontStyle: "italic",
+          color: "rgba(255, 251, 4, 0.901)",
+        }}
+      >
+        {email ? email : ""}
+      </Typography>
+
+      {/* <Box
         sx={{
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
           color: "white",
+          mt: 2,
         }}
       >
         <Typography
@@ -73,9 +98,9 @@ const AccountBanner = ({userName, email, imageUrl}: IProps) => {
         >
           {email ? email : ""}
         </Typography>
-      </Box>
+      </Box> */}
     </Box>
-  )
-}
+  );
+};
 
-export default AccountBanner
+export default AccountBanner;

@@ -16,12 +16,10 @@ import DropdownMenu from "@/components/shares/navigates/desktop/dropdown-menu";
 import ListMenu from "@/components/shares/navigates/desktop/cart/list-menu";
 import { clSecondary } from "@/features/const/colors";
 
-interface IProps {}
-
 /***********************************************************************************
  *                          ---   MAIN FUNCTION   ---                              *
  **********************************************************************************/
-const CartMenu = ({}: IProps) => {
+const CartMenu = () => {
   const router = useRouter();
   const { quantity } = useAppSelector((state) => state.product);
 

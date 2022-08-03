@@ -17,11 +17,13 @@ const TextButton = ({ label, OnClick }: IProps) => {
   };
   return (
     <Typography
-      variant="subtitle2"
+      variant="h5"
       sx={{
         cursor: "pointer",
         ":hover": {
-          color: `rgba(255, 255, 255, 0.531)`,
+          // color: `rgba(255, 255, 255, 0.531)`,
+          textShadow: '2px 2px 3px rgb(1,1,1)',
+          transform: 'scale(1.1)'
         },
       }}
       onClick={handleClick}

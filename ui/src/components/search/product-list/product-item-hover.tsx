@@ -1,6 +1,6 @@
 import React from "react";
 
-//
+// Types and Services
 import { IProduct } from "@/features/types";
 import { clSecondary } from "@/features/const/colors";
 import { ThaiCurrencyFormatWithBuildIn } from "@/features/services";
@@ -20,9 +20,9 @@ interface IProps {
   handleIncreaseProductToCart: (product: IProduct) => void;
 }
 
-/***********************************************
- *               MAIN METHOD
- **********************************************/
+/***********************************************************************************
+ *                         -----   MAIN FUNCTION   -----                           *
+ **********************************************************************************/
 export default function ProductItemHover({
   product,
   product_name,
@@ -74,11 +74,19 @@ export default function ProductItemHover({
       component="div"
     >
       <Typography variant="h5">{product_name}</Typography>
-      <Typography className="multine-ellipsis_4" variant="body2">
+      <Typography
+        className="multine-ellipsis_4"
+        variant="body2"
+        sx={{
+          textIndent: "1rem",
+          mt: 1,
+        }}
+      >
         {description}
       </Typography>
+
       <Typography
-        variant="h6"
+        variant="h5"
         sx={{ color: clSecondary, marginY: "1rem" }}
       >{`Price: ${ThaiCurrencyFormatWithBuildIn(unit_price)}`}</Typography>
 
@@ -92,9 +100,9 @@ export default function ProductItemHover({
           sx={{
             color: "rgb(255, 255, 255)",
             background: "rgb(64, 179, 7)",
-            padding: "0.5rem 3rem",
-            fontFamily: "Itim",
-            fontSize: "1rem",
+            padding: "0.35rem 3rem",
+            fontFamily: "Prompt",
+            fontSize: "1.2rem",
             fontWeight: "900",
             flexGrow: 1,
             transition: "all 0.5s ease",

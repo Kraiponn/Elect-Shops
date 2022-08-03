@@ -39,9 +39,10 @@ const ItemMenu = ({ menuType, title, Icon, handleSelectedItem }: IProps) => {
       <Icon color="inherit" />
       <Typography
         sx={{
-          fontFamily: "PromptRegular",
-          fontSize: "1rem",
           marginLeft: '0.15rem',
+          fontFamily: 'Prompt',
+          fontSize: '1.1rem',
+          fontWeight: 400,
         }}
         onClick={selectedItem}
       >

@@ -1,37 +1,12 @@
-import React, {
-  ChangeEvent,
-  FormEvent,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
-import { useRouter } from "next/router";
-import Image from "next/image";
-
-// Global state
-import {
-  useAppSelector,
-  useAppDispatch,
-} from "@/features/hooks/use-global-state";
-import product, {
-  increaseProductToCart,
-  fetchProductsWithFilter,
-} from "@/features/global-state/reducers/product";
-import { IInputFilterProduct, IProduct } from "@/features/types";
-import { clPrimary, clSecondary } from "@/features/const/colors";
-import { ThaiCurrencyFormatWithBuildIn } from "@/features/services";
+import React, { ChangeEvent, FormEvent } from "react";
 
 // Components
 import {
   Box,
   Button,
-  Checkbox,
   Divider,
   FormControlLabel,
   Grid,
-  IconButton,
-  Pagination,
-  PaginationItem,
   Radio,
   RadioGroup,
   Rating,
@@ -39,14 +14,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import FilterListIcon from "@mui/icons-material/FilterList";
-import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
-import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
-
-import ProductNotFoundLogo from "@/assets/images/product-not-found.png";
-import LoadingImage from "@/assets/images/loading.gif";
 
 interface IProps {
   minPrice: number;
@@ -55,9 +22,9 @@ interface IProps {
   handleInputMinMaxPriceChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-/***********************************************
- *               MAIN METHOD
- **********************************************/
+/***********************************************************************************
+ *                         -----   MAIN FUNCTION   -----                           *
+ **********************************************************************************/
 export default function FilterProduct({
   minPrice,
   maxPrice,
@@ -160,7 +127,9 @@ export default function FilterProduct({
               value={4.5}
               precision={0.5}
             />
-            <Typography variant="body1">4.5 & Up</Typography>
+            <Typography sx={{ fontWeight: 400, fontSize: "1rem" }}>
+              4.5 & Up
+            </Typography>
           </Box>
 
           <Box
@@ -182,7 +151,9 @@ export default function FilterProduct({
               value={4}
               precision={0.5}
             />
-            <Typography variant="body1">4 & Up</Typography>
+            <Typography sx={{ fontWeight: 400, fontSize: "1rem" }}>
+              4 & Up
+            </Typography>
           </Box>
 
           <Box
@@ -204,7 +175,9 @@ export default function FilterProduct({
               value={3.5}
               precision={0.5}
             />
-            <Typography variant="body1">3.5 & Up</Typography>
+            <Typography sx={{ fontWeight: 400, fontSize: "1rem" }}>
+              3.5 & Up
+            </Typography>
           </Box>
 
           <Box
@@ -226,7 +199,9 @@ export default function FilterProduct({
               value={3}
               precision={0.5}
             />
-            <Typography variant="body1">3 & Up</Typography>
+            <Typography sx={{ fontWeight: 400, fontSize: "1rem" }}>
+              3 & Up
+            </Typography>
           </Box>
         </RadioGroup>
       </Box>

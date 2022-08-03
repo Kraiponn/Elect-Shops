@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 
 // Material design
-import { Box, Typography } from "@mui/material";
+import { Avatar, Box, Typography } from "@mui/material";
 
 import defaultProfileImage from "@/assets/images/little-pug-dog.webp";
 import styled from "@/assets/styles/AccountMenu.module.css";
@@ -23,41 +23,29 @@ const AccountDetail = ({ user_name, email, image_url }: Props) => {
         display: "flex",
         justifyContent: "flex-start",
         alignItems: "center",
+        padding: "0.5rem",
       }}
     >
-      <Box
-        component="div"
+      <Avatar
         sx={{
           position: "relative",
-          width: "2.5rem",
-          height: "2.5rem",
+          width: "3.89rem",
+          height: "3.89rem",
           marginRight: "0.55rem",
         }}
       >
         <Image
-          className={styled["account-logo"]}
+          // className={styled["account-logo"]}
           src={image_url ? image_url : defaultProfileImage}
-          alt="image profile"
+          alt="profile image"
           layout="fill"
           objectFit="fill"
         />
-      </Box>
+      </Avatar>
       <div>
-        <Typography
-          // sx={{
-          //   fontSize: "1rem",
-          // }}
-          variant="h6"
-        >
-          {user_name ? user_name : ""}
-        </Typography>
-        <Typography
-          sx={{
-            fontWeight: "100",
-            fontFamily: "PromptThin",
-            fontSize: "0.89rem",
-          }}
-        >
+        <Typography variant="h5">{user_name ? user_name : ""}</Typography>
+
+        <Typography variant="body2" sx={{ mt: "5px" }}>
           {email ? email : ""}
         </Typography>
       </div>

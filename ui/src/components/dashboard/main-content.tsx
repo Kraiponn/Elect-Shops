@@ -63,7 +63,7 @@ export default function MainContent({ open }: IProps) {
           </Box>
         </Link>
 
-        <Link href="/cart" passHref>
+        <Link href="/products/cart" passHref>
           <Typography
             variant="subtitle2"
             sx={{ "&:hover": { cursor: "pointer", color: "red" } }}

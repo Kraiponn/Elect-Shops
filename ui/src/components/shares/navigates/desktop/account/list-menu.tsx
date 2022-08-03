@@ -99,9 +99,8 @@ const MenuList = () => {
         <LogoutIcon color="inherit" />
         <Typography
           onClick={handleSystemLogout}
+          variant="h5"
           sx={{
-            fontFamily: "PromptMedium",
-            fontSize: "1rem",
             ml: 1,
           }}
         >

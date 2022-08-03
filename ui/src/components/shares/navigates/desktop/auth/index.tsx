@@ -28,9 +28,9 @@ const AuthMenu = () => {
         variant="h5"
         sx={{
           p: 1,
-          color: "rgba(255, 255, 255, 0.898)",
-          fontWeight: "100",
-          fontFamily: "PromptLight",
+          // color: "rgba(255, 255, 255, 0.898)",
+          // fontWeight: "100",
+          // fontFamily: "PromptLight",
         }}
       >
         |

@@ -43,9 +43,9 @@ const ItemMenu = ({
       {isTitle && (
         <Typography
           sx={{
-            fontFamily: "PromptRegular",
-            fontSize: "0.75rem",
-            fontWeight: 500,
+            fontWeight: 400,
+            fontSize: "0.9rem",
+            fontStyle: "italic",
             mt: 1,
             px: 2,
           }}
@@ -70,9 +70,9 @@ const ItemMenu = ({
       >
         <Typography
           sx={{
-            fontFamily: "PromptLight",
-            fontSize: "0.9rem",
             marginLeft: "0.5rem",
+            fontFamily: "Prompt",
+            fontWeight: 400,
           }}
           onClick={selectedItem}
         >

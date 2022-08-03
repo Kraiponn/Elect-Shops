@@ -24,9 +24,9 @@ interface IProps {
   handleAddProductToCart: (product: IProduct) => void;
 }
 
-/*********************************************************
- *                     MAIN METHOD                       *
- ********************************************************/
+/***********************************************************************************
+ *                          ---  MAIN FUNCTION   ---                               *
+ **********************************************************************************/
 const ProductDescription = ({
   product,
   productQuantity,
@@ -36,21 +36,13 @@ const ProductDescription = ({
 }: IProps) => {
   return (
     <Grid item xs={12} md={7} sx={{ paddingLeft: "2rem" }}>
-      <Typography
-        sx={{
-          fontFamily: "PromptMedium",
-          fontWeight: "800",
-          fontSize: "2rem",
-        }}
-      >
-        {product.product_name}
-      </Typography>
+      <Typography variant="h3">{product.product_name}</Typography>
 
       <Typography
+        variant="body1"
         sx={{
-          fontFamily: "PromptLight",
-          // fontWeight: "800",
-          fontSize: "1rem",
+          textIndent: "1.5rem",
+          mt: "1rem",
           "&::first-letter": {
             textIndent: "2rem",
           },
@@ -71,9 +63,8 @@ const ProductDescription = ({
         }}
       >
         <Typography
+          variant="h2"
           sx={{
-            fontFamily: "PromptMedium",
-            fontSize: "2rem",
             color: "#fa0505",
           }}
         >
@@ -93,24 +84,10 @@ const ProductDescription = ({
         <Rating name="favorite" defaultValue={4.5} precision={0.5} />
         <Box sx={{ marginX: "1rem" }}>{"|"}</Box>
 
-        <Typography
-          sx={{
-            fontFamily: "PromptRegular",
-            fontSize: "1rem",
-          }}
-        >
-          {`9k Ratings`}
-        </Typography>
+        <Typography variant="body2">{`9k Ratings`}</Typography>
 
         <Box sx={{ marginX: "1rem" }}>{"|"}</Box>
-        <Typography
-          sx={{
-            fontFamily: "PromptRegular",
-            fontSize: "1rem",
-          }}
-        >
-          {`5k Sold`}
-        </Typography>
+        <Typography variant="body2">{`5k Sold`}</Typography>
       </Box>
 
       {/************* Increase and Decrease product qantity ************/}
@@ -124,9 +101,8 @@ const ProductDescription = ({
       >
         <Typography
           sx={{
-            fontFamily: "PromptLight",
-            fontSize: "1.2rem",
-            color: "rgb(1, 1, 1)",
+            fontFamily: "Prompt",
+            fontWeight: 400,
           }}
         >
           {`Quantity`}
@@ -147,11 +123,9 @@ const ProductDescription = ({
           </IconButton>
 
           <Typography
+          variant="h4"
             sx={{
-              fontSize: "1.3rem",
-              fontWeight: "500",
               marginX: "1rem",
-              color: "inherit",
             }}
           >
             {productQuantity}
@@ -164,13 +138,12 @@ const ProductDescription = ({
 
         <Typography
           sx={{
-            fontFamily: "PromptLight",
-            fontSize: "1.2rem",
-            color: "rgb(1, 1, 1)",
+            fontFamily: "Prompt",
+            fontWeight: 400,
             marginLeft: "1.2rem",
           }}
         >
-          {`${product.in_stock} pieces available`}
+          {`(${product.in_stock}) pieces`}
         </Typography>
       </Box>
 

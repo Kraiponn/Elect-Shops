@@ -8,9 +8,9 @@ interface IProps {
   handleSystemLogout: () => void;
 }
 
-/***********************************************
- *                MAIN METHOD                  *
- **********************************************/
+/***********************************************************************************
+ *                                MAIN FUNCTION                                    *
+ **********************************************************************************/
 const LogoutMenu = ({ handleSystemLogout }: IProps) => {
   const handleLogout = () => {
     handleSystemLogout();
@@ -22,7 +22,7 @@ const LogoutMenu = ({ handleSystemLogout }: IProps) => {
         display: "flex",
         alignItems: "center",
         fontWeight: 500,
-        mb: 1,
+        mb: 3,
         mx: 2,
         "&:hover": {
           color: "red",

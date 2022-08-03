@@ -9,9 +9,9 @@ import EmptyCartImage from "@/assets/images/empty-shopping-cart-v2.jpg";
 
 interface IProps {}
 
-/***********************************************
- *                MAIN METHOD                  *
- **********************************************/
+/***********************************************************************************
+ *                          ---  MAIN FUNCTION   ---                               *
+ **********************************************************************************/
 const EmptyCart = ({}: IProps) => {
   const router = useRouter();
 
@@ -43,9 +43,9 @@ const EmptyCart = ({}: IProps) => {
 
       <Typography
         sx={{
+          fontFamily: "Prompt",
           fontSize: "1.2rem",
-          fontWeight: 500,
-          fontFamily: "PromptRegular",
+          fontWeight: 400,
         }}
       >
         {`Your cart is empty. Keep shopping to find a course!`}
@@ -54,8 +54,8 @@ const EmptyCart = ({}: IProps) => {
       <Button
         variant="contained"
         sx={{
-          marginTop: "1.2rem",
-          fontSize: "1rem",
+          marginTop: "1.3rem",
+          fontSize: "1.1rem",
         }}
         onClick={handleKeepShopping}
       >

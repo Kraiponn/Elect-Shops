@@ -52,7 +52,7 @@ const TopNavigation = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" sx={{ background: "rgba(0, 0, 0, 0.851)" }}>
+      <AppBar position="fixed" >
         {isDesktop ? (
           <DesktopNav
             router={router}

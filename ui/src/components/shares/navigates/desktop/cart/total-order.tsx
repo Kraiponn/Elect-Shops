@@ -34,17 +34,11 @@ const TotalOrder = ({ quantity, totalPrice, Icon }: IProps) => {
         paddingY: "1rem",
       }}
     >
-      <Icon color="inherit" fontSize="large" />
+      <Icon color="inherit" sx={{ fontSize: "3.5rem" }} />
 
+      <Typography variant="h5">{`Your cart is empty`}</Typography>
       <Typography
-        sx={{
-          fontFamily: "PromptThin",
-          fontWeight: "200",
-        }}
-      >
-        {`Your cart is empty`}
-      </Typography>
-      <Typography
+        variant="h6"
         sx={{
           fontSize: "1.2rem",
           color: clPrimaryDark,
@@ -69,9 +63,8 @@ const TotalOrder = ({ quantity, totalPrice, Icon }: IProps) => {
       }}
     >
       <Typography
+        variant="h5"
         sx={{
-          fontFamily: "PromptBold",
-          fontSize: "1.1rem",
           marginLeft: "0.15rem",
           marginBottom: "0.789rem",
         }}
@@ -87,7 +80,6 @@ const TotalOrder = ({ quantity, totalPrice, Icon }: IProps) => {
           fontSize: "1rem",
           fontWeight: 700,
           "&:hover": {
-            color: "red",
             cursor: "pointer",
           },
         }}

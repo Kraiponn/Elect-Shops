@@ -35,12 +35,12 @@ interface IProps {
 }
 
 /***********************************************************************************
- *                         MAIN FUNCTION - CLIENT SIDE                             *
+ *                   -----   MAIN FUNCTION - CLIENT SIDE   -----                   *
  **********************************************************************************/
 const Home = ({ electrics, books, errObj }: IProps) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { isLoading, isSuccess, isError, pagination, keyword } = useAppSelector(
+  const { isLoading, isSuccess, pagination, keyword } = useAppSelector(
     (state) => state.product
   );
 

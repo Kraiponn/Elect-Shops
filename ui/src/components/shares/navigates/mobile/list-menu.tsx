@@ -46,7 +46,7 @@ const MobileListMenu = ({ }: IProps) => {
         router.push("/auth/login");
         break;
       case MenuType.ACCOUNT_SETTING:
-        router.push("/auth/profile/settings");
+        router.push("/account/dashboard");
         break;
       default:
         router.push("/");

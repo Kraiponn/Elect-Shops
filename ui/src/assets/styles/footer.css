@@ -2,7 +2,7 @@
   padding: 2rem;
   background: rgba(0, 0, 0, 0.969);
   color: rgba(240, 235, 235, 0.722);
-  font-family: "PromptLight";
+  font-family: "Prompt";
 }
 
 .footer__service {
@@ -12,10 +12,14 @@
 }
 
 .footer__service li {
-  font-size: 0.99rem;
+  font-size: 0.9rem;
   margin-bottom: 0.55rem;
 }
 
 .footer__service li:hover {
   color: rgba(240, 235, 235, 0.917);
+}
+
+.social-size {
+  font-size: 0.9rem;
 }

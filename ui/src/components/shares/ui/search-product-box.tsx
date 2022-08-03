@@ -41,6 +41,7 @@ const SearchProductBox = ({
           sx={{
             border: "none",
             width: "12rem",
+            fontFamily: 'Itim',
             background: "rgba(255, 253, 253, 0.506)",
             opacity: "0.75",
             transition: "all .5s ease",

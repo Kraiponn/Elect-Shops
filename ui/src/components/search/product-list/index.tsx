@@ -4,9 +4,7 @@ import React, { ChangeEvent } from "react";
 import { IProduct } from "@/features/types";
 
 // Components
-import {
-  Grid,
-} from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import TopPagination from "@/components/search/product-list/top-navigation";
 import ProductItem from "@/components/search/product-list/product-item";
 import BottomPagination from "@/components/search/product-list/bottom-navigation";
@@ -22,9 +20,9 @@ interface IProps {
   handleNavigateToProductDetail: (product: IProduct) => void;
 }
 
-/***********************************************
- *               MAIN METHOD
- **********************************************/
+/***********************************************************************************
+ *                         -----   MAIN FUNCTION   -----                           *
+ **********************************************************************************/
 export default function ProductList({
   products,
   total,
@@ -37,6 +35,11 @@ export default function ProductList({
 }: IProps) {
   return (
     <Grid item xs={12} md={12} lg={9}>
+      <Typography
+        variant="h6"
+        sx={{ textAlign: "right" }}
+      >{`${total} results`}</Typography>
+
       {/************* Top Pagination *************/}
       <TopPagination
         total={total}

@@ -18,12 +18,13 @@ interface IProps {
   product: IProduct;
 }
 
-/*********************************************************
- *                     MAIN METHOD                       *
- ********************************************************/
+/***********************************************************************************
+ *                          ---  MAIN FUNCTION   ---                               *
+ **********************************************************************************/
 const ImagePreview = ({ product }: IProps) => {
   return (
     <Grid item xs={12} md={5}>
+      {/*************   Product Image   *************/}
       <Box
         sx={{
           position: "relative",
@@ -48,7 +49,7 @@ const ImagePreview = ({ product }: IProps) => {
           alignItems: "center",
         }}
       >
-        {/* Shares on social application */}
+        {/*************   Social Network   *************/}
         <Box sx={{ display: "flex" }}>
           <Box
             sx={{
@@ -122,7 +123,7 @@ const ImagePreview = ({ product }: IProps) => {
             <FavoriteBorderIcon color="secondary" fontSize="large" />
           </IconButton>
 
-          <Typography sx={{}}>Favorite (9.9k)</Typography>
+          <Typography variant="subtitle1">Favorite (9.9k)</Typography>
         </Box>
       </Box>
     </Grid>

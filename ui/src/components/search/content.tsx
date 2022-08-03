@@ -29,9 +29,9 @@ interface IPagination {
   maxPrice: number;
 }
 
-/***********************************************
- *               MAIN METHOD
- **********************************************/
+/***********************************************************************************
+ *                                MAIN FUNCTION                                    *
+ **********************************************************************************/
 const Content = () => {
   const [favorite, setFavorite] = useState<boolean>(false);
   const [filter, setFilter] = useState<boolean>(true);

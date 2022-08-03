@@ -2,6 +2,8 @@ import React from "react";
 
 // Material design
 import { Typography, Box } from "@mui/material";
+import EastIcon from "@mui/icons-material/East";
+import ShopIcon from "@mui/icons-material/Shop";
 
 // Styles
 import Slider from "react-slick";
@@ -15,6 +17,7 @@ import {
   PreviousButton,
 } from "@/components/home/custom-arrow-slider";
 import CardItem from "@/components/shares/ui/card-item";
+import { clSecondary } from "@/features/const/colors";
 
 interface IProps {
   title?: string;
@@ -22,25 +25,80 @@ interface IProps {
   products: IProduct[];
 }
 
-/********************************************************
- *                     MAIN METHOD                      *
- *******************************************************/
+/***********************************************************************************
+ *                        -----   MAIN FUNCTION   -----                            *
+ **********************************************************************************/
 const ProductListItem = ({ title, titleFontSize, products }: IProps) => {
   return (
-    <Box sx={{ margin: "1rem" }}>
+    <Box
+      sx={{
+        margin: "1rem",
+        padding: "1rem 0.5rem",
+        my: "5rem",
+        boxShadow: "0 0 .5rem rgba(0, 0, 0, 0.252)",
+        borderRadius: "0.5rem",
+      }}
+    >
+      {/*****************   Product Title  *****************/}
       {title && (
-        <Typography
+        <Box
           sx={{
-            my: 5,
-            ml: titleFontSize ? "0rem" : "2rem",
+            display: "flex",
+            alignItems: "center",
+            ml: titleFontSize ? "1rem" : "2rem",
             mb: 0,
-            fontSize: titleFontSize ? titleFontSize : "2rem",
-            fontFamily: titleFontSize ? "PromptRegular" : "PromptBold",
           }}
-          component="h2"
         >
-          {title}
-        </Typography>
+          {/*****************   Title  *****************/}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <ShopIcon sx={{ fontSize: titleFontSize ? "2rem" : "2.7rem" }} />
+            <Typography
+              sx={{
+                fontSize: titleFontSize ? titleFontSize : "2.5rem",
+                fontFamily: "Prompt",
+                fontWeight: titleFontSize ? 400 : 900,
+                ml: 1,
+              }}
+              component="h2"
+            >
+              {title}
+            </Typography>
+          </Box>
+
+          <Box sx={{ flexGrow: 1 }} />
+
+          {/*****************   More Product Menu   *****************/}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              mr: 2,
+              "&:hover": {
+                transform: "scale(1.1)",
+                cursor: "pointer",
+              },
+            }}
+          >
+            <Typography
+              sx={{
+                fontFamily: "Prompt",
+                fontSize: "1.3rem",
+                fontWeight: 900,
+                color: clSecondary,
+                ml: 3,
+              }}
+              component="h5"
+            >
+              {`More`}
+            </Typography>
+            <EastIcon sx={{ fontSize: "1.3rem", ml: 1, color: clSecondary }} />
+          </Box>
+        </Box>
       )}
 
       <Slider

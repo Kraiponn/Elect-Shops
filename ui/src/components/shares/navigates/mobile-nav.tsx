@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
+import { useRouter } from "next/router";
 
 // Material design and Icons
 import { IconButton, Toolbar } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import HomeIcon from "@mui/icons-material/Home";
 
 // Components
 import MobileMenu from "@/components/shares/navigates/mobile";
@@ -33,6 +35,8 @@ const MobileNav = ({
   handleClickSearchBox,
   handleOpenMobileMenu,
 }: IProps) => {
+  const router = useRouter();
+
   useEffect(() => {
     if (keyword !== "") {
       setSearchKey(keyword);
@@ -40,7 +44,6 @@ const MobileNav = ({
 
     return () => {
       // dispatch(clearProductState());
-      // console.log("Unmounting the page");
     };
   }, [keyword, setSearchKey]);
 
@@ -63,8 +66,6 @@ const MobileNav = ({
           <MenuIcon fontSize="large" />
         </IconButton>
 
-        {/* <Box sx={{ flexGrow: 1 }}></Box> */}
-
         <SearchProductBox
           keyword={searchKey}
           handleSearchChange={handleSearchChange}
@@ -73,6 +74,16 @@ const MobileNav = ({
         />
 
         <CartMenu />
+
+        <IconButton
+          size="large"
+          edge="end"
+          color="inherit"
+          aria-label="home"
+          onClick={() => router.push("/")}
+        >
+          <HomeIcon fontSize="large" />
+        </IconButton>
       </Toolbar>
     </>
   );

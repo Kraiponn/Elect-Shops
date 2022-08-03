@@ -28,18 +28,20 @@ const Content = ({ products }: IProps) => {
       sx={{ minHeight: "100vh", width: "100%", padding: "2rem" }}
     >
       <Typography
-        variant="h1"
+        component="h2"
         sx={{
+          fontFamily: "Prompt",
           fontSize: { xs: "2rem", sm: "2.5rem", md: "3.2rem" },
+          fontWeight: 900,
         }}
       >
-        Shopping cart
+        {`Shopping Cart`}
       </Typography>
 
       <Typography
         sx={{
-          fontSize: "1.25rem",
-          fontFamily: "PromptLight",
+          fontFamily: 'Prompt',
+          fontWeight: 400,
           fontStyle: "italic",
           marginTop: "2.5rem",
         }}

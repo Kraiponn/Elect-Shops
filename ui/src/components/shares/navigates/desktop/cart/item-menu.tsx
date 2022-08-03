@@ -7,6 +7,7 @@ import { Box, Grid, Typography } from "@mui/material";
 
 // Converter
 import { ThaiCurrencyFormatWithBuildIn } from "@/features/services";
+import { clSecondary } from "@/features/const/colors";
 
 // Components
 import DefaultProductImage from "@/assets/images/little-pug-dog.webp";
@@ -76,21 +77,16 @@ const ItemMenu = ({
           >
             <Typography
               className="multine-ellipsis_2"
-              sx={{
-                fontSize: "1.1rem",
-                fontFamily: "PromptBold",
-              }}
+              variant="h5"
             >
               {product_name}
             </Typography>
 
             <Typography
+              variant="h6"
               sx={{
-                fontSize: "0.9rem",
-                fontFamily: "PromptMedium",
-                fontWeight: 200,
                 fontStyle: "italic",
-                color: "red",
+                color: clSecondary,
               }}
             >{`${ThaiCurrencyFormatWithBuildIn(unit_price)}`}</Typography>
           </Box>

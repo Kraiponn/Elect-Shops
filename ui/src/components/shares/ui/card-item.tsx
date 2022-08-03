@@ -17,9 +17,9 @@ interface ICardItem {
   product: IProduct;
 }
 
-/***********************************************
- *                MAIN METHOD                  *
- **********************************************/
+/***********************************************************************************
+ *                        -----   MAIN FUNCTION   -----                            *
+ **********************************************************************************/
 const CardItem = ({ product }: ICardItem) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -56,10 +56,6 @@ const CardItem = ({ product }: ICardItem) => {
             opacity: 1,
             visibility: "visible",
           },
-          // ".card-hover": {
-          //   opacity: 1,
-          //   top: 0,
-          // },
         },
       }}
     >
@@ -186,9 +182,8 @@ const CardItem = ({ product }: ICardItem) => {
       {/***********  Text of card *************/}
       <Typography
         component="div"
+        variant="h5"
         sx={{
-          fontSize: "1.2rem",
-          fontFamily: "PromptBold",
           marginTop: "0rem",
           marginBottom: "1.5rem",
         }}
@@ -197,12 +192,12 @@ const CardItem = ({ product }: ICardItem) => {
       </Typography>
 
       {/* <Box
-        className="multine-multine-ellipsis_2"
-        component="div"
+        className="multine-multine-ellipsis_3"
+        // component="div"
         sx={{
           fontSize: "1rem",
           fontWeight: 200,
-          fontFamily: "PromptLight",
+          fontFamily: "Prompt",
           marginTop: 0,
           marginBottom: "0.5rem",
           height: "8rem",
@@ -215,7 +210,7 @@ const CardItem = ({ product }: ICardItem) => {
       <Rating
         sx={{ width: "100%", marginLeft: "0px", padding: "0px" }}
         name="product"
-        defaultValue={4.5}
+        defaultValue={5}
         precision={0.5}
         size="small"
       />
@@ -225,19 +220,20 @@ const CardItem = ({ product }: ICardItem) => {
           display: "flex",
           justifyContent: "flex-start",
           alignItems: "center",
-          marginTop: "0.15rem",
+          marginTop: "0.7rem",
         }}
       >
         <Typography
           component="span"
+          variant="h5"
           sx={{ display: "inline-block" }}
         >{`Price: `}</Typography>
+
         <Typography
           component="span"
+          variant="h5"
           sx={{
-            fontSize: "1rem",
-            fontFamily: "PromptMedium",
-            fontStyle: "normal",
+            fontStyle: "italic",
             color: "rgb(251, 9, 9)",
             marginLeft: "0.35rem",
           }}

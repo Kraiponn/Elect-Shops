@@ -20,9 +20,9 @@ interface IProps {
   handleShopingMoreProduct: () => void;
 }
 
-/***********************************************
- *                MAIN METHOD                  *
- **********************************************/
+/***********************************************************************************
+ *                          ---  MAIN FUNCTION   ---                               *
+ **********************************************************************************/
 const CartSummary = ({
   quantity,
   totalPrice,
@@ -46,8 +46,9 @@ const CartSummary = ({
       >
         <Typography
           sx={{
+            fontFamily: "Prompt",
+            fontWeight: 400,
             fontSize: "1.2rem",
-            fontFamily: "PromptMedium",
             marginTop: "0rem",
           }}
         >
@@ -61,8 +62,8 @@ const CartSummary = ({
           <Typography
             sx={{
               fontSize: "1rem",
-              fontFamily: "PromptMedium",
-              fontWeight: 500,
+              fontFamily: "Prompt",
+              fontWeight: 600,
               color: "rgb(108, 105, 105)",
               marginY: "1rem",
             }}
@@ -70,11 +71,12 @@ const CartSummary = ({
             {`WESHOBSHOP`}
           </Typography>
           &nbsp;&nbsp;
+
           <Typography
             sx={{
               fontSize: "1rem",
-              fontFamily: "PromptRegular",
-              fontWeight: 200,
+              fontFamily: "Prompt",
+              fontWeight: 400,
               color: "rgb(108, 105, 105)",
               marginY: "1rem",
             }}
@@ -85,7 +87,7 @@ const CartSummary = ({
 
         <Box sx={{ display: "flex", width: "100%", mt: 0 }}>
           <TextField size="small" fullWidth placeholder="Enter Coupon" />
-          <Button variant="contained">{`Applied`}</Button>
+          <Button variant="contained">{`APPLY`}</Button>
         </Box>
 
         {/************ quantity Order *************/}
@@ -119,7 +121,7 @@ const CartSummary = ({
           title={`Total`}
           value={DELIVERY_CHARGE + totalPrice}
           fontWeight={700}
-          fontSize={`1.5rem`}
+          fontSize={`1.4rem`}
           marginTop="0rem"
         />
 
@@ -135,7 +137,7 @@ const CartSummary = ({
           }}
           // onClick={handleKeepShopping}
         >
-          {`Checkout`}
+          {`CHECK OUT`}
         </Button>
 
         <Button
@@ -150,7 +152,7 @@ const CartSummary = ({
           }}
           onClick={gotoShopingMoreProduct}
         >
-          {`Add more Product`}
+          {`Add More Product`}
         </Button>
       </Box>
     </Grid>

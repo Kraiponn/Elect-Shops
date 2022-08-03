@@ -20,9 +20,9 @@ const DropdownMenu = ({ top, right, leftOfTopArrow, children }: IProps) => {
         className="dropdown--list-menu"
         component="div"
         sx={{
-          boxShadow: "0 0rem .7rem rgb(0, 0, 0)",
+          boxShadow: "0 0rem .7rem rgba(0, 0, 0, 0.413)",
           background: "rgba(255, 255, 255, 1)",
-          color: "black",
+          color: "rgb(72, 71, 71)",
           fontSize: ".89rem",
           borderRadius: ".2rem",
           padding: ".3rem",
@@ -32,8 +32,8 @@ const DropdownMenu = ({ top, right, leftOfTopArrow, children }: IProps) => {
           top: top,
           right: right,
           zIndex: 1502,
-          width: "18rem",
-          marginLeft: "-9rem",
+          width: "22rem",
+          marginLeft: "-11rem",
 
           opacity: 0,
           visibility: "hidden",
