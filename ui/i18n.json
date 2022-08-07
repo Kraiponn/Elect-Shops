@@ -1,0 +1,18 @@
+{
+  "locales": ["en-US", "th"],
+  "defaultLocale": "en-US",
+  "pages": {
+    "*": ["common"],
+    "/": ["home"],
+    "/account/dashboard": ["dashboard"],
+    "/auth/login": ["login"],
+    "/auth/forgot-password": ["forgot-password"],
+    "/auth/signup": ["signup"],
+    "/products/[productId]": ["product-detail"],
+    "/products/cart": ["cart"],
+    "/products": ["product"],
+    "/search": ["search"],
+    "/content/[slug]": ["content"],
+    "rgx:^/account": ["account"]
+  }
+}

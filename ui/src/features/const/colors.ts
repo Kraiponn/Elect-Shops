@@ -18,12 +18,20 @@ export const clLemonDark = "#00695c";
 export const clGray50 = "#fafafa";
 export const clGray100 = "#f5f5f5";
 
+export const clDarkLight = "#454444";
+export const clDarkMedium = "#1a1e28";
+export const clDarkHard = "#090a17";
+export const clDarkPrimary = "#121212";
+export const clBlack = "#000000";
+
+export const clWhite = "#ffffff";
+export const clWhiteGray = "#f5f5f5";
+
 export const clBlueGray500 = "#607d8b";
 export const clBlueGray700 = "#455a64";
 export const clBlueGray800 = "#37474f";
 export const clBlueGray900 = "#263238";
 
-export const clWhite = "#ffffff";
 export const clYellow = "#FFFF00";
 export const clYellowMain = "#FFEA00";
 export const clYellowDark = "#FFD600";

@@ -1,2 +1,39 @@
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsImVtYWlsIjoic2FyYUBnbWFpbC5jb20iLCJpYXQiOjE2NTM3ODgxODIsImV4cCI6MTY1Mzc4OTA4Mn0.FA27N8YLCr68nGg8fk2T_U65cMbNIPJ5zIIJOjIMumw
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsImVtYWlsIjoic2FyYUBnbWFpbC5jb20iLCJpYXQiOjE2NTM3ODgyNTUsImV4cCI6MTY1Mzc4OTE1NX0.eI0I38eYAhRzbXElBIBHj6dMP9QbBbuzzzuhXSAQw5k
+ const handleSubmitForm: SubmitHandler<IAuthForm> = (value) => {
+    // console.log(value);
+
+    const formData = new FormData();
+    formData.append('username', value.username);
+    formData.append('email', value.email);
+    formData.append('role', value.role);
+    formData.append('sex', value.sex);
+    formData.append('mobile', value.mobile);
+    formData.append('age', value.age as unknown as string);
+    formData.append('address', value.address);
+
+    if (selectedImage) {
+      formData.append('avatar', selectedImage as Blob, selectedImage?.name);
+    }
+
+    // editProfile(formData, user?.id as string, token as string);
+    const mUpdatedFields: IFormAccount = {
+      form: formData,
+      token: token as string,
+      userId: user?.id as string,
+    };
+
+    dispatch(editedUser(mUpdatedFields));
+  };
+
+
+
+  ///////////////////////////////////////////////////////api await axios.put(
+  `${process.env.NEXT_PUBLIC_API_URL}/users/updateduser/${formValue.userId}`,
+    formValue.form,
+    {
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        Authorization: `Bearer ${formValue.token}`,
+      },
+      cancelToken: source.token,
+    }
+  );

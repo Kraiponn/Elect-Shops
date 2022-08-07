@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 
 // Material Design
@@ -7,7 +7,7 @@ import { Avatar, Box, Divider, Typography } from "@mui/material";
 // Components
 import ProfileImage from "@/assets/images/little-pug-dog.webp";
 
-import { clBlueGray900 } from "@/features/const/colors";
+import { clDarkMedium, clGray100 } from "@/features/const/colors";
 
 interface IProps {
   userName: string;
@@ -23,11 +23,11 @@ export default function SidebarHeaderMenu({ userName, imageUrl }: IProps) {
       <Box
         sx={{
           width: "100%",
-          minHeight: "13rem",
-          height: "auto",
+          // minHeight: "13rem",
           paddingY: "1.5rem",
-          background: clBlueGray900,
-          color: "rgb(229, 227, 227)",
+          background: clDarkMedium,
+          color: clGray100,
+          border: "none",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -39,7 +39,6 @@ export default function SidebarHeaderMenu({ userName, imageUrl }: IProps) {
             position: "relative",
             width: "75px",
             height: "75px",
-            background: "rgb(255, 255, 255)",
           }}
         >
           <Image
@@ -54,7 +53,16 @@ export default function SidebarHeaderMenu({ userName, imageUrl }: IProps) {
           {userName ? userName : ""}
         </Typography>
       </Box>
-      <Divider />
+
+      {/***********  Divider - Sidebar Header Profile   ************/}
+      <Box
+        sx={{
+          width: "80%",
+          height: "0.01rem",
+          margin: "0 auto",
+          background: "rgba(255, 255, 255, 0.2)",
+        }}
+      />
     </>
   );
 }

@@ -1,6 +1,8 @@
 export enum NavMenuType {
   ACCOUNT = "dashboard/ACCOUNT",
   PROFILE = "dashboard/PROFILE",
+  BANK_CARD = "dashboard/BANK_CARD",
+  BILLING = "dashboard/BILLING",
   CHANGE_PASSWORD = "dashboard/CHANGE_PASSWORD",
   SECURITY = "dashboard/SECURITY",
   TEAM = "dashboard/TEAM",
@@ -22,9 +24,11 @@ export enum AccountMenuType {
   TEAM,
 }
 
-export interface ISidebarMenuState {
+export interface ISidebarMenu {
   account: boolean;
   profile: boolean;
+  bankCard: boolean;
+  billing: boolean;
   changePassword: boolean;
   security: boolean;
   team: boolean;

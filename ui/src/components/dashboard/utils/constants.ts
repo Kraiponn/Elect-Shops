@@ -1,3 +1,3 @@
-const DRAWER_WIDTH = 270;
+const DRAWER_WIDTH = 290;
 
 export { DRAWER_WIDTH };

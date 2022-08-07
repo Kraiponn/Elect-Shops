@@ -1,16 +1,19 @@
 import * as React from "react";
 import Document, { Html, Head, Main, NextScript } from "next/document";
 import createEmotionServer from "@emotion/server/create-instance";
-import theme from "@/features/mui/theme";
+// import theme from "@/features/mui/theme";
+// import {useTheme} from "@/features/mui/useTheme";
 import createEmotionCache from "@/features/mui/createEmotionCache";
 
 export default class MyDocument extends Document {
+  // export default function MyDocument() {
+
   render() {
     return (
       <Html lang="en">
         <Head>
           {/* PWA primary color */}
-          <meta name="theme-color" content={theme.palette.primary.main} />
+          {/* <meta name="theme-color" content={theme.theme.palette.primary.main} /> */}
           <link rel="shortcut icon" href="/static/favicon.ico" />
           {/* <link
             rel="stylesheet"

@@ -1,6 +1,10 @@
 import React from "react";
 import Head from "next/head";
 
+// Global State
+// import { useAppDispatch } from "@/features/hooks/use-global-state";
+// import { closeAccountMenu } from "@/features/global-state/reducers/gui";
+
 // Components & Material design
 import MyDialog from "@/components/shares/loader/my-dialog";
 
@@ -15,7 +19,6 @@ interface IProps {
  *                          ---   MAIN FUNCTION   ---                              *
  **********************************************************************************/
 const BlankLayout = ({ children, title, description, isLoading }: IProps) => {
-
   return (
     <>
       <Head>

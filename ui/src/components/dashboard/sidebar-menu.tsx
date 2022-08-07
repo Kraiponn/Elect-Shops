@@ -7,6 +7,9 @@ import { Drawer, IconButton, Theme } from "@mui/material";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 
+// Global State
+import { useAppSelector } from "@/features/hooks/use-global-state";
+
 // Components
 import GeneralListMenu from "@/components/dashboard/navigations/general-list-menu";
 import MangeListMenu from "@/components/dashboard/navigations/manage-list-menu";
@@ -16,11 +19,9 @@ import SidebarHeaderMenu from "@/components/dashboard/navigations/sidebar-header
  *                           Constant and Types                                *
  ******************************************************************************/
 import { DRAWER_WIDTH } from "@/components/dashboard/utils/constants";
-import {
-  NavMenuType,
-  ISidebarMenuState,
-} from "@/components/dashboard/utils/types";
+import { NavMenuType, ISidebarMenu } from "@/components/dashboard/utils/types";
 import { IAuthPayload } from "@/features/types";
+import { clDarkMedium, clGray100 } from "@/features/const/colors";
 
 // const DrawerHeader = styled("div")(({ theme }) => ({
 //   display: "flex",
@@ -31,9 +32,11 @@ import { IAuthPayload } from "@/features/types";
 //   justifyContent: "flex-end",
 // }));
 
-const initialMenuState: ISidebarMenuState = {
+const initialMenuState: ISidebarMenu = {
   account: false,
   profile: false,
+  bankCard: false,
+  billing: false,
   changePassword: false,
   security: false,
   team: false,
@@ -61,7 +64,8 @@ export default function SidebarMenu({
   user,
   handleDrawerClose,
 }: IProps) {
-  const [navState, setNavState] = useState<ISidebarMenuState>(initialMenuState);
+  const [navState, setNavState] = useState<ISidebarMenu>(initialMenuState);
+  const { darkMode } = useAppSelector((state) => state.gui);
 
   const handleSelectItemMenu = (item: NavMenuType) => {
     switch (item) {
@@ -80,19 +84,19 @@ export default function SidebarMenu({
         });
         break;
 
-      case NavMenuType.CHANGE_PASSWORD:
+      case NavMenuType.BANK_CARD:
         setNavState({
           ...initialMenuState,
           account: true,
-          changePassword: true,
+          bankCard: true,
         });
         break;
 
-      case NavMenuType.SECURITY:
+      case NavMenuType.BILLING:
         setNavState({
           ...initialMenuState,
           account: true,
-          security: true,
+          billing: true,
         });
         break;
 
@@ -163,7 +167,10 @@ export default function SidebarMenu({
         "& .MuiDrawer-paper": {
           width: DRAWER_WIDTH,
           boxSizing: "border-box",
+          background: clDarkMedium,
+          color: clGray100,
         },
+        overflowY: "-moz-hidden-unscrollable",
       }}
       variant="persistent"
       anchor="left"

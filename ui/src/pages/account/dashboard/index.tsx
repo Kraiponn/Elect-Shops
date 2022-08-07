@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import Cookies from "js-cookie";
+import { ToastContainer, toast } from "react-toastify";
 
 // Material Design
 import { Box, Skeleton, useTheme } from "@mui/material";
 
-// Global state
+// Global state and Types
 import {
   useAppDispatch,
   useAppSelector,
 } from "@/features/hooks/use-global-state";
 import { setAuthSuccess } from "@/features/global-state/reducers/auth";
+import { IAuthPayload } from "@/features/types";
 
 // Components
 import BlankLayout from "@/components/shares/layouts/blank-layout";
 import SidebarMenu from "@/components/dashboard/sidebar-menu";
 import TopNavigation from "@/components/dashboard/top-navigation";
 import MainContent from "@/components/dashboard/main-content";
-import Cookies from "js-cookie";
-import { IAuthPayload } from "@/features/types";
 
+//4.13
 /***********************************************************************************
  *                          ---   MAIN FUNCTION   ---                              *
  **********************************************************************************/
@@ -28,7 +30,7 @@ export default function Dashboard() {
   const [open, setOpen] = React.useState(true);
   const dispatch = useAppDispatch();
   const { user, access_token } = useAppSelector((state) => state.auth);
-  const { isLoading } = useAppSelector((state) => state.product);
+  const { currentLocale } = useAppSelector((state) => state.gui);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -56,7 +58,9 @@ export default function Dashboard() {
             })
           );
         } else {
-          return router.push("/auth/login");
+          return router.push("/auth/login", "/auth/login", {
+            locale: currentLocale,
+          });
         }
       }
     };
@@ -66,41 +70,43 @@ export default function Dashboard() {
     return () => {
       //
     };
-  }, [access_token, dispatch, router, user]);
+  }, [access_token, currentLocale, dispatch, router, user]);
 
-  const LoadingConponent = () => {
-    console.log("Loading component...");
-
-    return (
-      <Box sx={{ width: "100%", minHeight: "100vh" }}>
-        <Skeleton variant="text" />
-      </Box>
-    );
+  const handleShowToastify = () => {
+    toast.success("Process is successfull", {
+      position: toast.POSITION.TOP_RIGHT,
+      autoClose: 1000,
+      theme: "colored",
+    });
   };
 
   return (
-    <BlankLayout
-      title="Dashboard"
-      description="dashboard settings"
-      isLoading={false}
-    >
-      <Box sx={{ display: "flex" }}>
-        {/* <CssBaseline /> */}
-        <TopNavigation
-          open={open}
-          user={user}
-          handleDrawerOpen={handleDrawerOpen}
-        />
+    <>
+      <ToastContainer autoClose={1500} />
 
-        <SidebarMenu
-          open={open}
-          theme={theme}
-          user={user as IAuthPayload}
-          handleDrawerClose={handleDrawerClose}
-        />
+      <BlankLayout
+        title="Dashboard"
+        description="dashboard settings"
+        isLoading={false}
+      >
+        <Box sx={{ display: "flex" }}>
+          {/* <CssBaseline /> */}
+          <TopNavigation
+            open={open}
+            user={user}
+            handleDrawerOpen={handleDrawerOpen}
+          />
 
-        <MainContent open={open} />
-      </Box>
-    </BlankLayout>
+          <SidebarMenu
+            open={open}
+            theme={theme}
+            user={user as IAuthPayload}
+            handleDrawerClose={handleDrawerClose}
+          />
+
+          <MainContent open={open} />
+        </Box>
+      </BlankLayout>
+    </>
   );
 }

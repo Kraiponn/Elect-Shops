@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import useTranslation from "next-translate/useTranslation";
 
 // Material Design
 import {
@@ -9,31 +10,47 @@ import {
   Box,
   Divider,
   IconButton,
-  Skeleton,
   styled,
   Toolbar,
   Typography,
 } from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 
+// Material Icons
 import MenuIcon from "@mui/icons-material/Menu";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import SettingsIcon from "@mui/icons-material/Settings";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
-import ProfileImage from "@/assets/images/little-pug-dog.webp";
 
-// Components
-import ItemMenu from "@/components/dashboard/navigations/item-menu";
-import ThemeSwitch from "@/components/dashboard/navigations/theme-switch";
-
-/*******************************************************************************
- *                           Constant and Types                                *
- ******************************************************************************/
+// Constant & Types & Global state
 import { DRAWER_WIDTH } from "@/components/dashboard/utils/constants";
 import { NavMenuType } from "@/components/dashboard/utils/types";
 import { IAuthPayload } from "@/features/types";
+import {
+  useAppSelector,
+  useAppDispatch,
+} from "@/features/hooks/use-global-state";
+import {
+  changeLanguagesMode,
+  changeLocale,
+  changeThemeMode,
+  toggleOpenAccountMenu,
+} from "@/features/global-state/reducers/gui";
+import {
+  clDarkHard,
+  clDarkMedium,
+  clDarkPrimary,
+  clGray100,
+  clWhite,
+} from "@/features/const/colors";
+
+// Components
+import ProfileImage from "@/assets/images/little-pug-dog.webp";
+import ItemMenu from "@/components/dashboard/navigations/text-icon-item-menu";
+import ThemeItemMenu from "@/components/dashboard/navigations/theme-item-menu";
+import LangItemMenu from "@/components/dashboard/navigations/lang-item-menu";
 
 interface IProps {
   open: boolean;
@@ -71,8 +88,11 @@ export default function TopNavigation({
   handleDrawerOpen,
 }: IProps) {
   const router = useRouter();
-  const [darkMode, setDarkMode] = useState<boolean>(false);
-  const [accountMenu, setAccountMenu] = useState<boolean>(false);
+  const { t } = useTranslation("dashboard");
+  const { currentLocale, darkMode, OpenAccountMenu } = useAppSelector(
+    (state) => state.gui
+  );
+  const dispatch = useAppDispatch();
 
   const handleSelectItem = (item: NavMenuType) => {
     if (item === NavMenuType.PROFILE) {
@@ -83,18 +103,35 @@ export default function TopNavigation({
   };
 
   const handleSwitchThemeMode = () => {
-    setDarkMode(!darkMode);
+    dispatch(changeThemeMode());
   };
 
-  const handleOpenAccountSettingMenu = () => {
-    setAccountMenu(!accountMenu);
+  const handleSwitchLanguage = () => {
+    dispatch(changeLanguagesMode());
   };
+
+  const handleShowAccountMenu = () => {
+    dispatch(toggleOpenAccountMenu());
+  };
+
+  // console.log("Dashboard top nav...");
+
+  useEffect(() => {
+    router.push(router.asPath, router.asPath, {
+      locale: currentLocale,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentLocale]);
 
   return (
     <AppBar
       position="fixed"
       open={open}
-      sx={{ background: "rgb(255, 255, 255)" }}
+      elevation={0}
+      sx={{
+        background: darkMode ? clDarkMedium : clWhite,
+        boxShadow: "0 0.5px 5px rgba(1, 1, 1, 0.097)",
+      }}
     >
       <Toolbar>
         {/*************   Button Open Navigation Menu - Left Side   **************/}
@@ -105,53 +142,60 @@ export default function TopNavigation({
           edge="start"
           sx={{ mr: 2, ...(open && { display: "none" }) }}
         >
-          <MenuIcon sx={{ color: "rgb(0, 0, 0)", fontSize: "2rem" }} />
+          <MenuIcon
+            sx={{
+              color: darkMode ? "rgb(255, 255, 255)" : "rgb(0, 0, 0)",
+              fontSize: "2rem",
+            }}
+          />
         </IconButton>
 
         <Typography
-          variant="h4"
           noWrap
           component="div"
           sx={{
-            color: "rgb(250, 250, 7)",
-            textShadow: "0.2rem 0.2rem 0.2rem rgb(1,1,1)",
+            color: darkMode ? "rgb(250, 250, 7)" : "rgb(0, 0, 0)",
+            textShadow: darkMode
+              ? "0.2rem 0.2rem 0.2rem rgb(255, 0, 0)"
+              : "0.2rem 0.2rem 0.2rem rgba(85, 85, 83, 0.389)",
+            fontFamily: "Prompt",
+            fontWeight: 900,
+            fontSize: "1.789rem",
           }}
         >
-          Dashboard
+          {t("topNav.title")}
         </Typography>
 
         <Box sx={{ flexGrow: 1 }} />
 
-        {/*********************   Theme Switch - Top Navigatoin   *******************/}
-        <ThemeSwitch
+        {/*********************   App Language Menu - Top Navigatoin   *******************/}
+        <LangItemMenu
+          locale={currentLocale}
+          handleChangeMode={handleSwitchLanguage}
+        />
+
+        {/*********************   Switch theme mode - Top Navigatoin   *******************/}
+        <ThemeItemMenu
           darkMode={darkMode}
-          handleSwitchThemeMode={handleSwitchThemeMode}
+          handleChangeMode={handleSwitchThemeMode}
         />
 
         {/*********************   Notification Menu - Top Navigatoin   *******************/}
         <IconButton sx={{ mr: 2 }}>
           <Badge badgeContent={9} color="secondary">
-            <NotificationsActiveIcon fontSize="large" />
+            <NotificationsActiveIcon fontSize="medium" />
           </Badge>
         </IconButton>
 
         {/*********************   Account Button Menu - Top Navigatoin   *******************/}
-        <IconButton
+        <Box
           sx={{
             position: "relative",
-            // border: "10px solid red",
-            // "&:hover": {
-            //   ".account-settings-menu": {
-            //     visibility: "visible",
-            //     opacity: 1,
-            //     transform: "scale(1)",
-            //   },
-            // },
           }}
-          onClick={handleOpenAccountSettingMenu}
         >
           {/*************   Image Button Menu   **************/}
           <Avatar
+            onClick={handleShowAccountMenu}
             sx={{
               position: "relative",
               width: "40px",
@@ -176,22 +220,26 @@ export default function TopNavigation({
               position: "absolute",
               right: "1%",
               top: "100%",
-              zIndex: 20000,
+              zIndex: 2,
               width: "20rem",
               minHeight: "10rem",
-              background: "rgb(255, 255, 255)",
-              boxShadow: "0px 0px 7px 0 rgba(0, 0, 0, 0.29)",
+              background: darkMode ? "rgb(78, 78, 78)" : "rgb(255, 255, 255)",
+              boxShadow: darkMode
+                ? "0px 0px 7px 0 rgba(255, 255, 255, 0.914)"
+                : "0px 0px 7px 0 rgba(0, 0, 0, 0.29)",
+              color: darkMode ? clGray100 : clDarkMedium,
               borderRadius: "0.5rem",
               padding: "1rem 1rem",
               display: "flex",
               flexDirection: "column",
               justifyContent: "flex-start",
-              visibility: "visible",
+
               // opacity: 0,
               // transform: "scale(0.5)",
               // transition: "transform .2s ease-out",
-              opacity: accountMenu ? 1 : 0,
-              transform: accountMenu ? "scale(1)" : "scale(0.5)",
+              visibility: OpenAccountMenu ? "visible" : "hidden",
+              opacity: OpenAccountMenu ? 1 : 0,
+              transform: OpenAccountMenu ? "scale(1)" : "scale(0.5)",
               transition: "transform 0.2s ease-out",
             }}
           >
@@ -245,7 +293,7 @@ export default function TopNavigation({
 
             {/**************    Profile Menu   ***************/}
             <ItemMenu
-              text="Profile"
+              text={t("topNav.accountListItemMenu.profile")}
               menuType="title"
               Icon={ManageAccountsIcon}
               handleSelectItemMenu={handleSelectItem}
@@ -254,7 +302,7 @@ export default function TopNavigation({
 
             {/**************    Setting Menu   ***************/}
             <ItemMenu
-              text="Setting"
+              text={t("topNav.accountListItemMenu.setting")}
               menuType="title"
               Icon={SettingsIcon}
               handleSelectItemMenu={handleSelectItem}
@@ -263,7 +311,7 @@ export default function TopNavigation({
 
             {/**************    Analytics Menu   ***************/}
             <ItemMenu
-              text="Analytics"
+              text={t("topNav.accountListItemMenu.analytic")}
               menuType="title"
               Icon={TrendingUpIcon}
               handleSelectItemMenu={handleSelectItem}
@@ -273,14 +321,14 @@ export default function TopNavigation({
             {/**************    Signout Menu   ***************/}
             <Divider sx={{ mb: 2 }} />
             <ItemMenu
-              text="Log Out"
+              text={t("topNav.accountListItemMenu.logout")}
               menuType="title"
               Icon={ExitToAppIcon}
               handleSelectItemMenu={handleSelectItem}
               itemSelectType={NavMenuType.LOGOUT}
             />
           </Box>
-        </IconButton>
+        </Box>
       </Toolbar>
     </AppBar>
   );

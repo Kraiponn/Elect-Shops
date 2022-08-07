@@ -1,0 +1,63 @@
+{
+  "title": "แผงควบคุม",
+  "topNav": {
+    "title": "แผงควบคุม",
+    "accountListItemMenu": {
+      "profile": "ข้อมูลส่วนตัว",
+      "setting": "ตั้งค่าแอป",
+      "analytic": "วิเคราะห์ข้อมูล",
+      "logout": "ลงชื่อออก"
+    }
+  },
+  "leftSideNav": {
+    "general": "ทั่วไป",
+    "account": "บัญชี",
+    "profile": "ข้อมูลส่วนตัว",
+    "bankAndCard": "ธนาคารและบัตร",
+    "billing": "การเรียกเก็บเงิน",
+    "team": "กลุ่ม",
+    "purchase": "การซื้อของฉัน",
+    "notification": "แจ้งเตือน",
+    "manage": "การจัดการ",
+    "customer": "ลูกค้า",
+    "product": "สินค้า",
+    "order": "การสั่งซื้อ",
+    "invoice": "ใบสั่งของ"
+  },
+  "content": {
+    "breadcrumbs": {
+      "home": "หน้าหลัก",
+      "cart": "ตะกร้าสินค้า",
+      "dashboard": "แผงควบคุม"
+    },
+    "account": {
+      "title": "ตั่งค่าบัญชี",
+      "profile": {
+        "title": "ข้อมูลส่นตัว",
+        "selectImage": "เลือกรูปภาพ",
+        "fileSize": "ขนาดไฟล์สูงสุด 1.5Mb",
+        "fileSupport": "ไฟล์ที่รองรับ: (.jpg, .jpeg, .png)",
+        "firstName": "ชื่อ",
+        "lastName": "นาสกุล",
+        "phoneNo": "หมายเลขโทรศัพท์",
+        "address": "ที่อยู่",
+        "dateOfBirth": "เดือน/วัน/ปี",
+        "save": "บันทึก",
+        "deleteAccount": "ลบบัญชี",
+        "deleteAccountDescription": "ลบบัญชีของคุณ และลบข้อมูลส่วนตัวทั้งหมดออกจากระบบ จากนั้นคุณจะไม่สามารถใช้บัญชีนี้ได้อีก"
+      },
+      "security": {
+        "title": "ความปลอดภัย",
+        "changePassword": "เปลี่ยนระหัสผ่าน",
+        "currentPassword": "รหัสผ่านปัจจุบัน",
+        "newPassword": "รหัสผ่านใหม่",
+        "confirmPassword": "ยืนยันรหัสผ่าน",
+        "loginHistory": "ประวัติการเข้าใช้งาน",
+        "confirm": "CONFIRM"
+      },
+      "address": {
+        "title": "ที่อยู่"
+      }
+    }
+  }
+}

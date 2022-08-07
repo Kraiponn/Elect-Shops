@@ -1,18 +1,11 @@
 import React from "react";
-import { useRouter } from "next/router";
-import Image from "next/image";
 
 // Material Design
-import { FormControlLabel, IconButton, styled, Switch } from "@mui/material";
-import WbSunnyIcon from "@mui/icons-material/WbSunny";
+import { IconButton, styled, Switch } from "@mui/material";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 
 // Components
-import ItemMenu from "@/components/dashboard/navigations/item-menu";
-
-interface IProps {}
-
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
   height: 34,
@@ -62,26 +55,22 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 
 interface IProps {
   darkMode: boolean;
-  handleSwitchThemeMode: () => void;
+  handleChangeMode: () => void;
 }
 
 /***********************************************************************************
  *                          ---   MAIN FUNCTION   ---                              *
  **********************************************************************************/
-export default function ThemeSwitch({
+export default function ThemeItemMenu({
   darkMode,
-  handleSwitchThemeMode,
+  handleChangeMode,
 }: IProps) {
   return (
-    //  <FormControlLabel
-    //    control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked />}
-    //    label="MUI switch"
-    //  />
-    <IconButton onClick={handleSwitchThemeMode}>
+    <IconButton onClick={handleChangeMode}>
       {darkMode ? (
-        <DarkModeIcon fontSize="large" />
+        <DarkModeIcon fontSize="medium" />
       ) : (
-        <LightModeIcon fontSize="large" />
+        <LightModeIcon fontSize="medium" />
       )}
     </IconButton>
   );

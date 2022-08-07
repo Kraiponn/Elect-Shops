@@ -1,23 +1,62 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import useTranslation from "next-translate/useTranslation";
 
 // Material Design
-import { styled, Typography, Breadcrumbs, Box } from "@mui/material";
+import {
+  styled,
+  Typography,
+  Breadcrumbs,
+  Box,
+  Tabs,
+  Tab,
+  Grid,
+  Avatar,
+  IconButton,
+} from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
+
+// Global state
+import {
+  useAppSelector,
+  useAppDispatch,
+} from "@/features/hooks/use-global-state";
+import { closeAccountMenu } from "@/features/global-state/reducers/gui";
+
+// Components
+import TabPanel from "@/components/dashboard/content/profile/tab-panel";
+import Profile from "@/components/dashboard/content/profile";
+import Security from "@/components/dashboard/content/profile/security";
+import ProfileImage from "@/assets/images/little-pug-dog.webp";
 
 /*******************************************************************************
  *                           Constant and Types                                *
  ******************************************************************************/
 import { DRAWER_WIDTH } from "@/components/dashboard/utils/constants";
+import {
+  clBlack,
+  clDarkHard,
+  clDarkPrimary,
+  clGray50,
+  clWhiteGray,
+} from "@/features/const/colors";
 
 interface IProps {
   open: boolean;
 }
 
-const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
+interface IProfileMenu {
+  profileTabNo: number;
+}
+
+const Main = styled("main", {
+  shouldForwardProp: (prop) => prop !== "open" && prop !== "dark_mode",
+})<{
   open?: boolean;
-}>(({ theme, open }) => ({
+  dark_mode?: boolean;
+}>(({ theme, open, dark_mode }) => ({
   flexGrow: 1,
   padding: theme.spacing(3),
   transition: theme.transitions.create("margin", {
@@ -32,6 +71,9 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
     }),
     marginLeft: 0,
   }),
+  height: "100%",
+  background: dark_mode ? clDarkHard : "rgba(185, 215, 228, 0.091)",
+  color: dark_mode ? clWhiteGray : clDarkPrimary,
 }));
 
 const DrawerHeader = styled("div")(({ theme }) => ({
@@ -46,126 +88,131 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 /***********************************************************************************
  *                          ---   MAIN FUNCTION   ---                              *
  **********************************************************************************/
-export default function MainContent({ open }: IProps) {
+export default function Content({ open }: IProps) {
+  const dispatch = useAppDispatch();
+  const { t } = useTranslation("dashboard");
+  const { darkMode } = useAppSelector((state) => state.gui);
+  const [profileTabNo, setProfileTabNo] = useState<IProfileMenu>({
+    profileTabNo: 0,
+  });
+
+  const handleCloseAccountMenu = () => {
+    dispatch(closeAccountMenu());
+  };
+
+  const handleChange = (event: React.SyntheticEvent, index: number) => {
+    setProfileTabNo({ ...profileTabNo, profileTabNo: index });
+  };
+
   return (
-    <Main open={open}>
+    <Main open={open} dark_mode={darkMode} onClick={handleCloseAccountMenu}>
       <DrawerHeader />
-      <Breadcrumbs sx={{ fontWeight: 600, marginBottom: "1rem" }}>
+      <Breadcrumbs
+        sx={{
+          marginBottom: "1rem",
+          color: darkMode ? clWhiteGray : clBlack,
+        }}
+      >
         <Link href="/" passHref>
           <Box
             sx={{
               display: "flex",
-              "&:hover": { cursor: "pointer", color: "red" },
+              "&:hover": {
+                cursor: "pointer",
+                transform: "scale(1.1)",
+                color: "red",
+                ".home-icon": {
+                  color: "red",
+                },
+              },
             }}
           >
-            <HomeIcon fontSize="medium" />
-            <Typography variant="subtitle2">Home</Typography>
+            <HomeIcon
+              className="home-icon"
+              sx={{ fontSize: "1.35rem", color: "#333232b9" }}
+            />
+            <Typography variant="subtitle2" sx={{ fontWeight: 400, ml: "3px" }}>
+              {t("content.breadcrumbs.home")}
+            </Typography>
           </Box>
         </Link>
 
         <Link href="/products/cart" passHref>
           <Typography
             variant="subtitle2"
-            sx={{ "&:hover": { cursor: "pointer", color: "red" } }}
+            sx={{
+              fontWeight: 400,
+              "&:hover": {
+                cursor: "pointer",
+                color: "red",
+                transform: "scale(1.1)",
+              },
+            }}
           >
-            Cart
+            {t("content.breadcrumbs.cart")}
           </Typography>
         </Link>
 
-        <Typography variant="subtitle2" sx={{ fontWeight: "900" }}>
-          Dashboard
+        <Typography
+          variant="subtitle2"
+          sx={{ fontWeight: "900", fontStyle: "italic" }}
+        >
+          {t("content.breadcrumbs.dashboard")}
         </Typography>
       </Breadcrumbs>
 
-      <Typography paragraph>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus
-        non enim praesent elementum facilisis leo vel. Risus at ultrices mi
-        tempus imperdiet. Semper risus in hendrerit gravida rutrum quisque non
-        tellus. Convallis convallis tellus id interdum velit laoreet id donec
-        ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl
-        suscipit adipiscing bibendum est ultricies integer quis. Cursus euismod
-        quis viverra nibh cras. Metus vulputate eu scelerisque felis imperdiet
-        proin fermentum leo. Mauris commodo quis imperdiet massa tincidunt. Cras
-        tincidunt lobortis feugiat vivamus at augue. At augue eget arcu dictum
-        varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt.
-        Lorem donec massa sapien faucibus et molestie ac.
-      </Typography>
+      <Box sx={{ width: "100%", padding: "1rem" }}>
+        <Typography
+          variant="h4"
+          sx={{ color: darkMode ? clGray50 : "#010101a6" }}
+        >
+          {t("content.account.title")}
+        </Typography>
 
-      <Typography paragraph>
-        Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-        ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar elementum
-        integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi
-        lacus sed viverra tellus. Purus sit amet volutpat consequat mauris.
-        Elementum eu facilisis sed odio morbi. Euismod lacinia at quis risus sed
-        vulputate odio. Morbi tincidunt ornare massa eget egestas purus viverra
-        accumsan in. In hendrerit gravida rutrum quisque non tellus orci ac.
-        Pellentesque nec nam aliquam sem et tortor. Habitant morbi tristique
-        senectus et. Adipiscing elit duis tristique sollicitudin nibh sit.
-        Ornare aenean euismod elementum nisi quis eleifend. Commodo viverra
-        maecenas accumsan lacus vel facilisis. Nulla posuere sollicitudin
-        aliquam ultrices sagittis orci a.
-      </Typography>
+        <Tabs
+          value={profileTabNo.profileTabNo}
+          onChange={handleChange}
+          aria-label="profile tab menu"
+          sx={{
+            marginTop: "0.5rem",
+            ".profile-tab": {
+              fontFamily: "Prompt",
+              fontWeight: 500,
+              fontSize: "1.1rem",
+            },
+          }}
+        >
+          <Tab
+            className="profile-tab"
+            label={t("content.account.profile.title")}
+            id={`profile-tab-${0}`}
+          />
+          <Tab
+            className="profile-tab"
+            label={t("content.account.security.title")}
+            id={`profile-tab-${1}`}
+          />
+          <Tab
+            className="profile-tab"
+            label={t("content.account.address.title")}
+            id={`profile-tab-${2}`}
+          />
+        </Tabs>
 
-      <Typography paragraph>
-        Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-        ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar elementum
-        integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi
-        lacus sed viverra tellus. Purus sit amet volutpat consequat mauris.
-        Elementum eu facilisis sed odio morbi. Euismod lacinia at quis risus sed
-        vulputate odio. Morbi tincidunt ornare massa eget egestas purus viverra
-        accumsan in. In hendrerit gravida rutrum quisque non tellus orci ac.
-        Pellentesque nec nam aliquam sem et tortor. Habitant morbi tristique
-        senectus et. Adipiscing elit duis tristique sollicitudin nibh sit.
-        Ornare aenean euismod elementum nisi quis eleifend. Commodo viverra
-        maecenas accumsan lacus vel facilisis. Nulla posuere sollicitudin
-        aliquam ultrices sagittis orci a.
-      </Typography>
+        {/* <Box> */}
+        <TabPanel value={profileTabNo.profileTabNo} index={0}>
+          <Profile darkMode={darkMode} />
+        </TabPanel>
 
-      <Typography paragraph>
-        Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-        ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar elementum
-        integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi
-        lacus sed viverra tellus. Purus sit amet volutpat consequat mauris.
-        Elementum eu facilisis sed odio morbi. Euismod lacinia at quis risus sed
-        vulputate odio. Morbi tincidunt ornare massa eget egestas purus viverra
-        accumsan in. In hendrerit gravida rutrum quisque non tellus orci ac.
-        Pellentesque nec nam aliquam sem et tortor. Habitant morbi tristique
-        senectus et. Adipiscing elit duis tristique sollicitudin nibh sit.
-        Ornare aenean euismod elementum nisi quis eleifend. Commodo viverra
-        maecenas accumsan lacus vel facilisis. Nulla posuere sollicitudin
-        aliquam ultrices sagittis orci a.
-      </Typography>
+        <TabPanel value={profileTabNo.profileTabNo} index={1}>
+          <Security darkMode={darkMode} />
+        </TabPanel>
 
-      <Typography paragraph>
-        Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-        ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar elementum
-        integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi
-        lacus sed viverra tellus. Purus sit amet volutpat consequat mauris.
-        Elementum eu facilisis sed odio morbi. Euismod lacinia at quis risus sed
-        vulputate odio. Morbi tincidunt ornare massa eget egestas purus viverra
-        accumsan in. In hendrerit gravida rutrum quisque non tellus orci ac.
-        Pellentesque nec nam aliquam sem et tortor. Habitant morbi tristique
-        senectus et. Adipiscing elit duis tristique sollicitudin nibh sit.
-        Ornare aenean euismod elementum nisi quis eleifend. Commodo viverra
-        maecenas accumsan lacus vel facilisis. Nulla posuere sollicitudin
-        aliquam ultrices sagittis orci a.
-      </Typography>
-
-      <Typography paragraph>
-        Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-        ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar elementum
-        integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi
-        lacus sed viverra tellus. Purus sit amet volutpat consequat mauris.
-        Elementum eu facilisis sed odio morbi. Euismod lacinia at quis risus sed
-        vulputate odio. Morbi tincidunt ornare massa eget egestas purus viverra
-        accumsan in. In hendrerit gravida rutrum quisque non tellus orci ac.
-        Pellentesque nec nam aliquam sem et tortor. Habitant morbi tristique
-        senectus et. Adipiscing elit duis tristique sollicitudin nibh sit.
-        Ornare aenean euismod elementum nisi quis eleifend. Commodo viverra
-        maecenas accumsan lacus vel facilisis. Nulla posuere sollicitudin
-        aliquam ultrices sagittis orci a.
-      </Typography>
+        <TabPanel value={profileTabNo.profileTabNo} index={2}>
+          Item Three
+        </TabPanel>
+        {/* </Box> */}
+      </Box>
     </Main>
   );
 }

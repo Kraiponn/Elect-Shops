@@ -5,6 +5,9 @@ import { Box, SvgIconTypeMap, Typography } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { NavMenuType } from "@/components/dashboard/utils/types";
 
+// Global State
+import { useAppSelector } from "@/features/hooks/use-global-state";
+
 interface IProps {
   text: string;
   menuType: "title" | "subtitle";
@@ -21,7 +24,7 @@ interface IProps {
 /***********************************************************************************
  *                          ---   MAIN FUNCTION   ---                              *
  **********************************************************************************/
-export default function ItemMenu({
+export default function TextIconItemMenu({
   text,
   menuType,
   fontFamily,
@@ -31,34 +34,52 @@ export default function ItemMenu({
   itemSelectType,
   isActive,
 }: IProps) {
+  const { darkMode } = useAppSelector((state) => state.gui);
+
+  const getBackgroudState = () => {
+    if (isActive && darkMode) {
+      return "rgba(208, 205, 205, 0.144)";
+    } else if (isActive && !darkMode) {
+      return "rgba(131, 127, 127, 0.144)";
+    } else {
+      return "inherit";
+    }
+  };
+
   return (
     <Box
+      onClick={() => handleSelectItemMenu(itemSelectType)}
       sx={{
         width: "100%",
         display: "flex",
         justifyContent: "space-between",
-        marginBottom: "1rem",
+        // padding: "0.55rem 0.5rem",
+        padding: "0.55rem 0.5rem",
+        borderRadius: "0.5rem",
+        background: getBackgroudState(),
+        "&:hover": {
+          cursor: "pointer",
+          background: darkMode
+            ? "rgba(255, 255, 255, 0.181)"
+            : "rgba(208, 205, 205, 0.144)",
+          ".item-menu": {
+            color: "#14b67a",
+            transform: "scale(1.1)",
+          },
+        },
       }}
     >
       <Box
-        onClick={() => handleSelectItemMenu(itemSelectType)}
         sx={{
           display: "flex",
           alignItems: "center",
           ml: Icon ? 1 : 0,
-          color: isActive ? "red" : "inherit",
-          "&:hover": {
-            // color: "red",
-            transform: "scale(1.1)",
-            ".item-menu_icon": {
-              color: "red",
-            },
-          },
+          color: isActive ? "#14b67a" : "inherit",
         }}
       >
         {Icon ? (
           <Icon
-            className="item-menu_icon"
+            className="item-menu"
             sx={{
               fontSize: iconSize ? iconSize : "1.45rem",
             }}
@@ -66,6 +87,7 @@ export default function ItemMenu({
         ) : null}
 
         <Typography
+          className="item-menu"
           sx={{
             fontFamily: fontFamily ? fontFamily : "Prompt",
             fontWeight: menuType === "title" ? 500 : 400,

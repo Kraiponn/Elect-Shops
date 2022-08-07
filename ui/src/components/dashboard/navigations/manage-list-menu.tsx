@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import useTranslation from "next-translate/useTranslation";
 
 // Material Design
 import { Box, Divider, Typography } from "@mui/material";
@@ -10,7 +11,7 @@ import PeopleIcon from "@mui/icons-material/People";
 import DescriptionIcon from "@mui/icons-material/Description";
 
 // Components
-import ManageItemMenu from "@/components/dashboard/navigations/item-menu";
+import ManageItemMenu from "@/components/dashboard/navigations/text-icon-item-menu";
 
 // Types
 import {
@@ -30,6 +31,8 @@ export default function MangementListMenu({
   handleSelectItemMenu,
   currentItem,
 }: IProps) {
+  const { t } = useTranslation("dashboard");
+
   return (
     <>
       <Box
@@ -51,12 +54,12 @@ export default function MangementListMenu({
             my: 1,
           }}
         >
-          {`MANAGEMENT`}
+          {t("leftSideNav.manage")}
         </Typography>
 
         {/***************  Customers Item Menu  ***************/}
         <ManageItemMenu
-          text="Customers"
+          text={t("leftSideNav.customer")}
           menuType="title"
           Icon={PeopleIcon}
           handleSelectItemMenu={handleSelectItemMenu}
@@ -66,7 +69,7 @@ export default function MangementListMenu({
 
         {/***************  Product Item Menu  ***************/}
         <ManageItemMenu
-          text="Products"
+          text={t("leftSideNav.product")}
           menuType="title"
           Icon={ShoppingBasketIcon}
           handleSelectItemMenu={handleSelectItemMenu}
@@ -76,7 +79,7 @@ export default function MangementListMenu({
 
         {/***************  Order Item Menu  ***************/}
         <ManageItemMenu
-          text="Orders"
+          text={t("leftSideNav.order")}
           menuType="title"
           Icon={ShoppingCartIcon}
           handleSelectItemMenu={handleSelectItemMenu}
@@ -86,7 +89,7 @@ export default function MangementListMenu({
 
         {/***************  Invoice Item Menu  ***************/}
         <ManageItemMenu
-          text="Invoices"
+          text={t("leftSideNav.invoice")}
           menuType="title"
           Icon={DescriptionIcon}
           handleSelectItemMenu={handleSelectItemMenu}

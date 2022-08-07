@@ -1,21 +1,17 @@
 import { createTheme } from "@mui/material/styles";
 import { red } from "@mui/material/colors";
 import {
-  clOrange400,
-  clOrange500,
-  clOrange700,
+  clDark,
   clPrimary,
   clPrimaryDark,
   clPrimaryLight,
   clSecondary,
   clSecondaryDark,
-  clWhite,
 } from "@/features/const/colors";
 
-// Create a theme instance.
 const theme = createTheme({
   palette: {
-    // mode: "light",
+    mode: "light",
     primary: {
       main: clPrimary,
       light: clPrimaryLight,

@@ -1,0 +1,63 @@
+{
+  "title": "Dashboard",
+  "topNav": {
+    "title": "Dashboard",
+    "accountListItemMenu": {
+      "profile": "Profile",
+      "setting": "Settings",
+      "analytic": "Analytics",
+      "logout": "Log Out"
+    }
+  },
+  "leftSideNav": {
+    "general": "GENERAL",
+    "account": "Account",
+    "profile": "Profile",
+    "bankAndCard": "Banks & Cards",
+    "billing": "Billings",
+    "team": "Team",
+    "purchase": "Purchase",
+    "notification": "Notifications",
+    "manage": "MANAGEMENT",
+    "customer": "Customers",
+    "product": "Products",
+    "order": "Orders",
+    "invoice": "Invoices"
+  },
+  "content": {
+    "breadcrumbs": {
+      "home": "Home",
+      "cart": "Cart",
+      "dashboard": "Dashboard"
+    },
+    "account": {
+      "title": "Account setting",
+      "profile": {
+        "title": "Profile",
+        "selectImage": "Select Image",
+        "fileSize": "File size",
+        "fileSupport": "File extension: (.jpg, .jpeg, .png)",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "phoneNo": "Phone number",
+        "address": "Address",
+        "dateOfBirth": "mm/dd/yyyy",
+        "save": "SAVE",
+        "deleteAccount": "Delete Account",
+        "deleteAccountDescription": "Delete your account and all of your source data. This is irreversible."
+      },
+      "security": {
+        "title": "Security",
+        "changePassword": "Change Password",
+        "currentPassword": "Current password",
+        "newPassword": "New password",
+        "confirmPassword": "Confirm password",
+        "loginHistory": "Login History",
+        "confirm": "CONFIRM"
+      },
+      "address": {
+        "title": "Address"
+      }
+    }
+  }
+}
