@@ -1,7 +1,7 @@
 import React from "react";
 
 // Types and Services
-import { IProduct } from "@/features/types";
+import { IProduct } from "@/features/interfaces";
 import { clSecondary } from "@/features/const/colors";
 import { ThaiCurrencyFormatWithBuildIn } from "@/features/services";
 

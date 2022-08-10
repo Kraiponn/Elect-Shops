@@ -4,15 +4,13 @@ import { GetServerSideProps, NextPage } from "next";
 import { ParsedUrlQuery } from "querystring";
 
 // Material design
-import {  Toolbar, Box } from "@mui/material";
+import { Toolbar, Box } from "@mui/material";
 
 // Global state
-import {
-  useAppSelector,
-} from "@/features/hooks/use-global-state";
+import { useAppSelector } from "@/features/hooks/use-global-state";
 
 import { getHttpErrorObject, http } from "@/features/services";
-import { IProduct } from "@/features/types";
+import { IProduct } from "@/features/interfaces";
 import { AxiosError } from "axios";
 
 // Components

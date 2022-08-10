@@ -3,7 +3,7 @@ import Image from "next/image";
 
 // Material Design
 import { Box, IconButton } from "@mui/material";
-import {localeType} from '@/features/types'
+import { localeType } from "@/features/interfaces";
 
 // COMPONENTS
 import ThaiFlag from "@/assets/images/flag-thailand.png";
@@ -22,7 +22,7 @@ export default function LangItemMenu({ locale, handleChangeMode }: IProps) {
     <IconButton onClick={handleChangeMode}>
       <Box sx={{ position: "relative", width: "25px", height: "25px" }}>
         <Image
-          src={locale === 'en-US' ? UsaFlag : ThaiFlag}
+          src={locale === "en-US" ? UsaFlag : ThaiFlag}
           alt="app lang"
           layout="fill"
           objectFit="contain"

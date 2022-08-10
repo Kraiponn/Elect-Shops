@@ -11,7 +11,7 @@ import {
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 
 // Form validation & Types
-import { IChnagePwdForm } from "@/components/dashboard/interfaces";
+import { IChnagePwdForm } from "@/features/interfaces";
 import { Controller, FieldError, Control } from "react-hook-form";
 
 /***************************************************************************

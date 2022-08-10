@@ -1,22 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
-import Image from "next/image";
 import useTranslation from "next-translate/useTranslation";
 
 // Material Design
-import {
-  styled,
-  Typography,
-  Breadcrumbs,
-  Box,
-  Tabs,
-  Tab,
-  Grid,
-  Avatar,
-  IconButton,
-} from "@mui/material";
+import { styled, Typography, Breadcrumbs, Box } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
-import CameraAltIcon from "@mui/icons-material/CameraAlt";
 
 // Global state
 import {
@@ -26,29 +15,32 @@ import {
 import { closeAccountMenu } from "@/features/global-state/reducers/gui";
 
 // Components
-import TabPanel from "@/components/dashboard/content/profile/tab-panel";
-import Profile from "@/components/dashboard/content/profile";
-import Security from "@/components/dashboard/content/profile/security";
-import ProfileImage from "@/assets/images/little-pug-dog.webp";
+import AccountSetting from "@/components/dashboard/content/general/account-setting";
+import BankAndCard from "@/components/dashboard/content/general/account-setting/bank-card";
+import Billing from "@/components/dashboard/content/general/account-setting/billing";
+import Team from "@/components/dashboard/content/general/account-setting/team";
+import Purchase from "@/components/dashboard/content/general/purchase";
+import Notification from "@/components/dashboard/content/general/notification";
+import Customer from "@/components/dashboard/content/management/customers";
+import Product from "@/components/dashboard/content/management/products";
+import Order from "@/components/dashboard/content/management/orders";
+import Invoice from "@/components/dashboard/content/management/invoices";
 
 /*******************************************************************************
  *                           Constant and Types                                *
  ******************************************************************************/
 import { DRAWER_WIDTH } from "@/components/dashboard/utils/constants";
 import {
+  clBgLight,
   clBlack,
   clDarkHard,
   clDarkPrimary,
-  clGray50,
+  clGray100,
   clWhiteGray,
 } from "@/features/const/colors";
 
 interface IProps {
   open: boolean;
-}
-
-interface IProfileMenu {
-  profileTabNo: number;
 }
 
 const Main = styled("main", {
@@ -71,8 +63,7 @@ const Main = styled("main", {
     }),
     marginLeft: 0,
   }),
-  height: "100%",
-  background: dark_mode ? clDarkHard : "rgba(185, 215, 228, 0.091)",
+  // background: dark_mode ? clDarkHard : clBgLight,
   color: dark_mode ? clWhiteGray : clDarkPrimary,
 }));
 
@@ -85,27 +76,63 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
+// const TRANSLATE_KEY = "content.generalMenu.account";
+
 /***********************************************************************************
  *                          ---   MAIN FUNCTION   ---                              *
  **********************************************************************************/
 export default function Content({ open }: IProps) {
   const dispatch = useAppDispatch();
+  const { locale } = useRouter();
   const { t } = useTranslation("dashboard");
   const { darkMode } = useAppSelector((state) => state.gui);
-  const [profileTabNo, setProfileTabNo] = useState<IProfileMenu>({
-    profileTabNo: 0,
-  });
+  const { sidebarListItemMenu } = useAppSelector((state) => state.dashboard);
 
   const handleCloseAccountMenu = () => {
     dispatch(closeAccountMenu());
   };
 
-  const handleChange = (event: React.SyntheticEvent, index: number) => {
-    setProfileTabNo({ ...profileTabNo, profileTabNo: index });
+  const handleShowDashboardContent = () => {
+    if (
+      (sidebarListItemMenu.account && sidebarListItemMenu.accountSetting) ||
+      (!sidebarListItemMenu.account && sidebarListItemMenu.accountSetting)
+    )
+      return <AccountSetting darkMode={darkMode} />;
+    else if (
+      (sidebarListItemMenu.account && sidebarListItemMenu.bankCard) ||
+      (!sidebarListItemMenu.account && sidebarListItemMenu.bankCard)
+    )
+      return <BankAndCard darkMode={darkMode} />;
+    else if (
+      (sidebarListItemMenu.account && sidebarListItemMenu.billing) ||
+      (!sidebarListItemMenu.account && sidebarListItemMenu.billing)
+    )
+      return <Billing darkMode={darkMode} />;
+    else if (
+      (sidebarListItemMenu.account && sidebarListItemMenu.team) ||
+      (!sidebarListItemMenu.account && sidebarListItemMenu.team)
+    )
+      return <Team darkMode={darkMode} />;
+    else if (sidebarListItemMenu.purchase)
+      return <Purchase darkMode={darkMode} />;
+    else if (sidebarListItemMenu.notifications)
+      return <Notification darkMode={darkMode} />;
+    else if (sidebarListItemMenu.customers)
+      return <Customer darkMode={darkMode} />;
+    else if (sidebarListItemMenu.products)
+      return <Product darkMode={darkMode} />;
+    else if (sidebarListItemMenu.orders) return <Order darkMode={darkMode} />;
+    else if (sidebarListItemMenu.invoices)
+      return <Invoice darkMode={darkMode} />;
   };
 
   return (
-    <Main open={open} dark_mode={darkMode} onClick={handleCloseAccountMenu}>
+    <Main
+      className="main-content_container"
+      open={open}
+      dark_mode={darkMode}
+      onClick={handleCloseAccountMenu}
+    >
       <DrawerHeader />
       <Breadcrumbs
         sx={{
@@ -113,7 +140,7 @@ export default function Content({ open }: IProps) {
           color: darkMode ? clWhiteGray : clBlack,
         }}
       >
-        <Link href="/" passHref>
+        <Link href="/" passHref locale={locale}>
           <Box
             sx={{
               display: "flex",
@@ -129,15 +156,18 @@ export default function Content({ open }: IProps) {
           >
             <HomeIcon
               className="home-icon"
-              sx={{ fontSize: "1.35rem", color: "#333232b9" }}
+              sx={{
+                fontSize: "1.35rem",
+                color: darkMode ? clGray100 : "#333232b9",
+              }}
             />
             <Typography variant="subtitle2" sx={{ fontWeight: 400, ml: "3px" }}>
-              {t("content.breadcrumbs.home")}
+              {t(`content.breadcrumbs.home`)}
             </Typography>
           </Box>
         </Link>
 
-        <Link href="/products/cart" passHref>
+        <Link href="/products/cart" locale={locale} passHref>
           <Typography
             variant="subtitle2"
             sx={{
@@ -149,7 +179,7 @@ export default function Content({ open }: IProps) {
               },
             }}
           >
-            {t("content.breadcrumbs.cart")}
+            {t(`content.breadcrumbs.cart`)}
           </Typography>
         </Link>
 
@@ -157,62 +187,11 @@ export default function Content({ open }: IProps) {
           variant="subtitle2"
           sx={{ fontWeight: "900", fontStyle: "italic" }}
         >
-          {t("content.breadcrumbs.dashboard")}
+          {t(`content.breadcrumbs.dashboard`)}
         </Typography>
       </Breadcrumbs>
 
-      <Box sx={{ width: "100%", padding: "1rem" }}>
-        <Typography
-          variant="h4"
-          sx={{ color: darkMode ? clGray50 : "#010101a6" }}
-        >
-          {t("content.account.title")}
-        </Typography>
-
-        <Tabs
-          value={profileTabNo.profileTabNo}
-          onChange={handleChange}
-          aria-label="profile tab menu"
-          sx={{
-            marginTop: "0.5rem",
-            ".profile-tab": {
-              fontFamily: "Prompt",
-              fontWeight: 500,
-              fontSize: "1.1rem",
-            },
-          }}
-        >
-          <Tab
-            className="profile-tab"
-            label={t("content.account.profile.title")}
-            id={`profile-tab-${0}`}
-          />
-          <Tab
-            className="profile-tab"
-            label={t("content.account.security.title")}
-            id={`profile-tab-${1}`}
-          />
-          <Tab
-            className="profile-tab"
-            label={t("content.account.address.title")}
-            id={`profile-tab-${2}`}
-          />
-        </Tabs>
-
-        {/* <Box> */}
-        <TabPanel value={profileTabNo.profileTabNo} index={0}>
-          <Profile darkMode={darkMode} />
-        </TabPanel>
-
-        <TabPanel value={profileTabNo.profileTabNo} index={1}>
-          <Security darkMode={darkMode} />
-        </TabPanel>
-
-        <TabPanel value={profileTabNo.profileTabNo} index={2}>
-          Item Three
-        </TabPanel>
-        {/* </Box> */}
-      </Box>
+      {handleShowDashboardContent()}
     </Main>
   );
 }

@@ -3,12 +3,14 @@ import { createWrapper } from "next-redux-wrapper";
 
 import authReducer from "@/features/global-state/reducers/auth";
 import guiReducer from "@/features/global-state/reducers/gui";
+import dashboardReducer from "@/features/global-state/reducers/dashboard";
 import productReducer from "@/features/global-state/reducers/product";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     gui: guiReducer,
+    dashboard: dashboardReducer,
     product: productReducer,
   },
   devTools: true,

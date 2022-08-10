@@ -9,7 +9,7 @@ import {
   IErorrResponseData,
   IProduct,
   IProductResponse,
-} from "@/features/types";
+} from "@/features/interfaces";
 
 // Global state and Global types
 import {

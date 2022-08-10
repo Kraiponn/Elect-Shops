@@ -3,7 +3,7 @@ import { Box, Typography } from "@mui/material";
 
 // Global types & Global state
 import { useAppSelector } from "@/features/hooks/use-global-state";
-import { IProduct } from "@/features/types";
+import { IProduct } from "@/features/interfaces";
 
 // Components
 import EmptyCart from "@/components/cart/empty-cart";
@@ -40,7 +40,7 @@ const Content = ({ products }: IProps) => {
 
       <Typography
         sx={{
-          fontFamily: 'Prompt',
+          fontFamily: "Prompt",
           fontWeight: 400,
           fontStyle: "italic",
           marginTop: "2.5rem",

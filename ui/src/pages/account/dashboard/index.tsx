@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import { ToastContainer, toast } from "react-toastify";
 
 // Material Design
-import { Box, Skeleton, useTheme } from "@mui/material";
+import { Box, CssBaseline, Skeleton, useTheme } from "@mui/material";
 
 // Global state and Types
 import {
@@ -12,7 +12,7 @@ import {
   useAppSelector,
 } from "@/features/hooks/use-global-state";
 import { setAuthSuccess } from "@/features/global-state/reducers/auth";
-import { IAuthPayload } from "@/features/types";
+import { IAuthPayload } from "@/features/interfaces";
 
 // Components
 import BlankLayout from "@/components/shares/layouts/blank-layout";
@@ -81,16 +81,15 @@ export default function Dashboard() {
   };
 
   return (
-    <>
-      <ToastContainer autoClose={1500} />
-
-      <BlankLayout
-        title="Dashboard"
-        description="dashboard settings"
-        isLoading={false}
-      >
+    <BlankLayout
+      title="Dashboard"
+      description="dashboard settings"
+      isLoading={false}
+    >
+      <>
+        <ToastContainer autoClose={1500} />
         <Box sx={{ display: "flex" }}>
-          {/* <CssBaseline /> */}
+          <CssBaseline />
           <TopNavigation
             open={open}
             user={user}
@@ -106,7 +105,7 @@ export default function Dashboard() {
 
           <MainContent open={open} />
         </Box>
-      </BlankLayout>
-    </>
+      </>
+    </BlankLayout>
   );
 }

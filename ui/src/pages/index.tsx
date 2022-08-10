@@ -17,7 +17,7 @@ import {
   IProduct,
   IProductResponse,
   IErorrResponseData,
-} from "@/features/types";
+} from "@/features/interfaces";
 import { dummyBanner } from "@/features/services/dummy-data";
 // import { hotNavigationData } from "@/components/home/home-dummy-data";
 

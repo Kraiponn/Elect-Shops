@@ -6,7 +6,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 // Services & Global state
 import { ThaiCurrencyFormatWithBuildIn } from "@/features/services";
-import { IProduct, IOrderProduct } from "@/features/types";
+import { IProduct, IOrderProduct } from "@/features/interfaces";
 
 // Components
 import { clPrimaryDark, clSecondary } from "@/features/const/colors";
@@ -87,7 +87,7 @@ const CartListItem = ({
                 <Box sx={{ marginTop: "0.5rem" }}>
                   <Typography
                     sx={{
-                      fontFamily: 'Prompt',
+                      fontFamily: "Prompt",
                       fontWeight: 400,
                       paddingLeft: "1rem",
                     }}

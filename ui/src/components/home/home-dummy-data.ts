@@ -7,7 +7,7 @@ import primaryActivity5 from "@/assets/images/promotion/promotion-9.jpg";
 import secondaryActivity1 from "@/assets/images/promotion/promotion-3.jpg";
 import secondaryActivity2 from "@/assets/images/promotion/promotion-4.jpg";
 import { StaticImageData } from "next/image";
-import { ICategory } from "@/features/types";
+import { ICategory } from "@/features/interfaces";
 import { date } from "yup";
 
 export interface IActivity {

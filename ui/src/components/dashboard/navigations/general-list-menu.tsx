@@ -11,23 +11,17 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 
-// Global state & Types
-import { useAppSelector } from "@/features/hooks/use-global-state";
-
 // Components
 import AccountItemMenu from "@/components/dashboard/navigations/text-icon-item-menu";
 
-// Types
-import {
-  ISidebarMenuState,
-  NavMenuType,
-} from "@/components/dashboard/utils/types";
+// Global types and Colors system
+import { ISidebarMenu, NavMenuType } from "@/features/interfaces";
 import { clGray100 } from "@/features/const/colors";
 
 interface IProps {
   open: boolean;
   handleSelectItemMenu: (menuType: NavMenuType) => void;
-  currentItem: ISidebarMenuState;
+  currentItem: ISidebarMenu;
 }
 
 /***********************************************************************************
@@ -38,7 +32,6 @@ export default function GeneralListMenu({
   handleSelectItemMenu,
   currentItem,
 }: IProps) {
-  const { currentLocale } = useAppSelector((state) => state.gui);
   const { t } = useTranslation("dashboard");
 
   return (
@@ -116,11 +109,11 @@ export default function GeneralListMenu({
 
           <Collapse in={open} sx={{ pl: "3.5rem" }}>
             <AccountItemMenu
-              text={t("leftSideNav.profile")}
+              text={t("leftSideNav.settings")}
               menuType="subtitle"
               handleSelectItemMenu={handleSelectItemMenu}
-              itemSelectType={NavMenuType.PROFILE}
-              isActive={currentItem.profile ? true : false}
+              itemSelectType={NavMenuType.ACCOUNT_SETTING}
+              isActive={currentItem.accountSetting ? true : false}
             />
             <AccountItemMenu
               text={t("leftSideNav.bankAndCard")}

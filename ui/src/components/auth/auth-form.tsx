@@ -19,7 +19,7 @@ import * as yup from "yup";
 import { motion } from "framer-motion";
 
 // Components
-import { IAuthForm } from "@/features/types";
+import { IAuthForm } from "@/features/interfaces";
 import EmailInput from "@/components/shares/ui/email-input";
 import PasswordInput from "@/components/shares/ui/password-input";
 

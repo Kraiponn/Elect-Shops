@@ -1,6 +1,7 @@
 import { createTheme } from "@mui/material/styles";
 import { red } from "@mui/material/colors";
 import {
+  clBgLight,
   clDarkHard,
   clPrimary,
   clPrimaryDark,
@@ -31,8 +32,8 @@ export default function useTheme() {
         main: red.A400,
       },
       background: {
-        default: darkMode ? clDarkHard : clWhite,
-        paper: darkMode ? clDarkHard : clWhite,
+        default: darkMode ? clDarkHard : clBgLight,
+        paper: darkMode ? clDarkHard : clBgLight,
         // default: clDark,
         // paper: clDark,
       },
@@ -43,46 +44,41 @@ export default function useTheme() {
     typography: {
       fontFamily: "Prompt",
       h1: {
-        // fontFamily: "PromptBold",
-        fontSize: "3rem",
-        fontWeight: 900,
+        fontSize: "2rem",
+        fontWeight: 700,
       },
       h2: {
-        // fontFamily: "PromptBold",
-        fontSize: "2.5rem",
-        fontWeight: 900,
+        fontSize: "1.75rem",
+        fontWeight: 700,
       },
       h3: {
-        // fontFamily: "PromptBold",
-        fontSize: "2rem",
-        fontWeight: 900,
+        fontSize: "1.55rem",
+        fontWeight: 500,
       },
       h4: {
-        // fontFamily: "PromptBold",
-        fontSize: "1.5rem",
-        fontWeight: 900,
+        fontSize: "1.35rem",
+        fontWeight: 500,
       },
       h5: {
-        // fontFamily: "PromptBold",
         fontSize: "1.2rem",
-        fontWeight: 900,
+        fontWeight: 700,
       },
       h6: {
-        // fontFamily: "PromptBold",
         fontSize: "1rem",
-        fontWeight: 900,
+        fontWeight: 700,
       },
       subtitle1: {
         fontSize: "1.2rem",
-        fontWeight: 700,
+        fontWeight: 500,
       },
       subtitle2: {
         fontSize: "1rem",
-        fontWeight: 700,
+        fontWeight: 400,
+        opacity: 0.89,
       },
       body1: {
-        fontWeight: 300,
-        fontSize: "1.2rem",
+        fontWeight: 400,
+        fontSize: "1rem",
       },
       body2: {
         fontWeight: 300,
@@ -107,7 +103,7 @@ export default function useTheme() {
       },
       MuiOutlinedInput: {
         defaultProps: {
-          //
+          // /
         },
       },
     },

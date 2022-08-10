@@ -12,7 +12,7 @@
   "leftSideNav": {
     "general": "GENERAL",
     "account": "Account",
-    "profile": "Profile",
+    "settings": "Settings",
     "bankAndCard": "Banks & Cards",
     "billing": "Billings",
     "team": "Team",
@@ -30,33 +30,103 @@
       "cart": "Cart",
       "dashboard": "Dashboard"
     },
-    "account": {
-      "title": "Account setting",
-      "profile": {
-        "title": "Profile",
-        "selectImage": "Select Image",
-        "fileSize": "File size",
-        "fileSupport": "File extension: (.jpg, .jpeg, .png)",
-        "firstName": "First name",
-        "lastName": "Last name",
-        "phoneNo": "Phone number",
-        "address": "Address",
-        "dateOfBirth": "mm/dd/yyyy",
-        "save": "SAVE",
-        "deleteAccount": "Delete Account",
-        "deleteAccountDescription": "Delete your account and all of your source data. This is irreversible."
+    "generalMenu": {
+      "account": {
+        "title": "Account setting",
+        "profile": {
+          "title": "Profile",
+          "selectImage": "Select Image",
+          "fileSize": "File size",
+          "fileSupport": "File extension: (.jpg, .jpeg, .png)",
+          "firstName": "First name",
+          "lastName": "Last name",
+          "phoneNo": "Phone number",
+          "address": "Address",
+          "dateOfBirth": "mm/dd/yyyy",
+          "save": "SAVE",
+          "deleteAccount": "Delete Account",
+          "deleteAccountDescription": "Delete your account and all of your source data. This is irreversible.",
+          "errFirstNameBox": "First name is require",
+          "errLastNameBox": "Last name is require",
+          "errPhoneNoBox": "Phone number is require",
+          "errAddressBox": "Address is require",
+          "errDateOfBirthBox": "Date of birth is require"
+        },
+        "security": {
+          "title": "Security",
+          "changePassword": "Change Password",
+          "currentPassword": "Current password",
+          "newPassword": "New password",
+          "confirmPassword": "Confirm password",
+          "loginHistory": "Login History",
+          "confirm": "CONFIRM",
+          "errRequiredCurrentPwdBox": "Current password is require",
+          "errRequiredNewPwdBox": "New password is require",
+          "errRequiredConfirmPwdBox": "Confirm password is require",
+          "errMinPwdBox": "Password must be at least 5 characters",
+          "errNotMatchPwdBox": "Confirm password and current password does not match"
+        },
+        "address": {
+          "title": "Address"
+        },
+        "bankAndCard": {
+          "title": "Payment Method",
+          "addCreditDebitCardTitle": "Credit / Debit Card",
+          "buttonAddCard": "Add New Card",
+          "creditDebitCardNo1": "**** **** **** 6789",
+          "creditDebitCardNo2": "**** **** **** 6398",
+          "creditDebitCardNo1Expire": "Expires on 12/25",
+          "creditDebitCardNo2Expire": "Expires on 09/25",
+          "addBankAccountTitle": "Bank Accounts",
+          "bankAccountNo": "**** **** **** 4539"
+        },
+        "billing": {
+          "title": "Billings",
+          "billingDetailTitle": "Billing details",
+          "editTextButton": "Edit",
+          "billName": "Billing name",
+          "cardNumber": "Card number",
+          "country": "Country",
+          "zipPostalCode": "Zip/Postal code",
+          "remarkText": "We cannot refund once you purchased a product",
+          "cancelText": "Cancel",
+          "InvoiceHistoryTitle": "Invoice history",
+          "ivTbDate": "Date",
+          "ivTbTotal": "Tatal",
+          "evTbView": "View Invoice"
+        },
+        "team": {
+          "title": "Invite Friends",
+          "emailBoxPlaceholder": "Email address",
+          "buttonSendInvite": "Send Invite"
+        }
       },
-      "security": {
-        "title": "Security",
-        "changePassword": "Change Password",
-        "currentPassword": "Current password",
-        "newPassword": "New password",
-        "confirmPassword": "Confirm password",
-        "loginHistory": "Login History",
-        "confirm": "CONFIRM"
+      "purchase": {
+        "title": "Purchase",
+        "tap": {
+          "all": "ALL",
+          "toPay": "TO PAY",
+          "toShip": "TO SHIP",
+          "toReceive": "TO RECEIVE",
+          "completed": "COMPLETED",
+          "cancelled": "CANCELLED",
+          "noOrder": "No Orders Yet"
+        }
       },
-      "address": {
-        "title": "Address"
+      "notification": {
+        "title": "Notification",
+        "email": {
+          "title": "Email",
+          "subTitle1": "Product updates",
+          "description1": "News, announcements, and product updates.",
+          "subTitle2": "Security updates",
+          "description2": "Important notifications about your account security."
+        },
+        "phone": {
+          "title": "Phone notifications",
+          "subTitle": "Security updates",
+          "description": "Important notifications about your account security."
+        }
       }
     }
   }

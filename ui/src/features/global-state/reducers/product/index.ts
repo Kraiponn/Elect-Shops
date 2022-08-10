@@ -8,7 +8,7 @@ import {
   IProductSearchResponse,
   IInputFilterProduct,
   IProductResponse,
-} from "@/features/types";
+} from "@/features/interfaces";
 import { http } from "@/features/services/http";
 import { AxiosError } from "axios";
 import { getHttpErrorObject } from "@/features/services/errors";
@@ -40,7 +40,7 @@ const initialState: ICart = {
 
 /************************************************************
  *               Get Products With Search Key               *
-************************************************************/
+ ************************************************************/
 export const fetchProducts = createAsyncThunk<
   IProductSearchResponse,
   string,
@@ -79,7 +79,7 @@ export const fetchProducts = createAsyncThunk<
 
 /************************************************************
  *               Get products with filters                  *
-************************************************************/
+ ************************************************************/
 export const fetchProductsWithFilter = createAsyncThunk<
   IProductResponse,
   IInputFilterProduct,

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 // Material Design
 import { Drawer, IconButton, Theme } from "@mui/material";
@@ -7,21 +7,20 @@ import { Drawer, IconButton, Theme } from "@mui/material";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 
-// Global State
-import { useAppSelector } from "@/features/hooks/use-global-state";
+// Global state, Types and Colors system
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "@/features/hooks/use-global-state";
+import { navDrawerSelectItemChange } from "@/features/global-state/reducers/dashboard";
+import { DRAWER_WIDTH } from "@/components/dashboard/utils/constants";
+import { IAuthPayload, NavMenuType } from "@/features/interfaces";
+import { clDarkMedium, clGray100 } from "@/features/const/colors";
 
 // Components
 import GeneralListMenu from "@/components/dashboard/navigations/general-list-menu";
 import MangeListMenu from "@/components/dashboard/navigations/manage-list-menu";
 import SidebarHeaderMenu from "@/components/dashboard/navigations/sidebar-header-menu";
-
-/*******************************************************************************
- *                           Constant and Types                                *
- ******************************************************************************/
-import { DRAWER_WIDTH } from "@/components/dashboard/utils/constants";
-import { NavMenuType, ISidebarMenu } from "@/components/dashboard/utils/types";
-import { IAuthPayload } from "@/features/types";
-import { clDarkMedium, clGray100 } from "@/features/const/colors";
 
 // const DrawerHeader = styled("div")(({ theme }) => ({
 //   display: "flex",
@@ -31,22 +30,6 @@ import { clDarkMedium, clGray100 } from "@/features/const/colors";
 //   ...theme.mixins.toolbar,
 //   justifyContent: "flex-end",
 // }));
-
-const initialMenuState: ISidebarMenu = {
-  account: false,
-  profile: false,
-  bankCard: false,
-  billing: false,
-  changePassword: false,
-  security: false,
-  team: false,
-  purchase: false,
-  notifications: false,
-  customers: false,
-  products: false,
-  orders: false,
-  invoices: false,
-};
 
 interface IProps {
   open: boolean;
@@ -64,98 +47,11 @@ export default function SidebarMenu({
   user,
   handleDrawerClose,
 }: IProps) {
-  const [navState, setNavState] = useState<ISidebarMenu>(initialMenuState);
-  const { darkMode } = useAppSelector((state) => state.gui);
+  const { sidebarListItemMenu } = useAppSelector((state) => state.dashboard);
+  const dispatch = useAppDispatch();
 
   const handleSelectItemMenu = (item: NavMenuType) => {
-    switch (item) {
-      case NavMenuType.ACCOUNT:
-        setNavState({
-          ...navState,
-          account: !navState.account,
-        });
-        break;
-
-      case NavMenuType.PROFILE:
-        setNavState({
-          ...initialMenuState,
-          account: true,
-          profile: true,
-        });
-        break;
-
-      case NavMenuType.BANK_CARD:
-        setNavState({
-          ...initialMenuState,
-          account: true,
-          bankCard: true,
-        });
-        break;
-
-      case NavMenuType.BILLING:
-        setNavState({
-          ...initialMenuState,
-          account: true,
-          billing: true,
-        });
-        break;
-
-      case NavMenuType.TEAM:
-        setNavState({
-          ...initialMenuState,
-          account: true,
-          team: true,
-        });
-        break;
-
-      case NavMenuType.PURCHASE:
-        setNavState({
-          ...initialMenuState,
-          purchase: true,
-        });
-        break;
-
-      case NavMenuType.NOTIFICATION:
-        setNavState({
-          ...initialMenuState,
-          notifications: true,
-        });
-        break;
-
-      case NavMenuType.CUSTOMER:
-        setNavState({
-          ...initialMenuState,
-          customers: true,
-        });
-        break;
-
-      case NavMenuType.PRODUCT:
-        setNavState({
-          ...initialMenuState,
-          products: true,
-        });
-        break;
-
-      case NavMenuType.ORDER:
-        setNavState({
-          ...initialMenuState,
-          orders: true,
-        });
-        break;
-
-      case NavMenuType.INVOICE:
-        setNavState({
-          ...initialMenuState,
-          invoices: true,
-        });
-        break;
-
-      default:
-        setNavState({
-          ...navState,
-          account: !navState.account,
-        });
-    }
+    dispatch(navDrawerSelectItemChange(item));
   };
 
   return (
@@ -176,6 +72,7 @@ export default function SidebarMenu({
       anchor="left"
       open={open}
     >
+      {/**************   Hamburger Button For Close Drawer Menu   ***************/}
       <IconButton
         onClick={handleDrawerClose}
         sx={{
@@ -187,7 +84,6 @@ export default function SidebarMenu({
       >
         {theme.direction === "ltr" ? (
           <ArrowCircleLeftIcon
-            // fontSize="large"
             sx={{
               color: "rgba(255, 255, 255, 0.585)",
               fontSize: "3rem",
@@ -210,15 +106,15 @@ export default function SidebarMenu({
 
       {/***************  Account List Item Menu  ******************/}
       <GeneralListMenu
-        open={navState.account}
+        open={sidebarListItemMenu.account}
         handleSelectItemMenu={handleSelectItemMenu}
-        currentItem={navState}
+        currentItem={sidebarListItemMenu}
       />
 
       {/***************  Management List Item Menu  ***************/}
       <MangeListMenu
         handleSelectItemMenu={handleSelectItemMenu}
-        currentItem={navState}
+        currentItem={sidebarListItemMenu}
       />
     </Drawer>
   );

@@ -10,7 +10,7 @@ import {
   increaseProductToCart,
   fetchProductsWithFilter,
 } from "@/features/global-state/reducers/product";
-import { IInputFilterProduct, IProduct } from "@/features/types";
+import { IInputFilterProduct, IProduct } from "@/features/interfaces";
 
 // Material Design
 import { Box, Grid } from "@mui/material";

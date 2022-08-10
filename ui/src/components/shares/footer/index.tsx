@@ -1,7 +1,6 @@
 import { NextPage } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import logo from "@/assets/images/little-pug-dog.webp";
 
 // Material design
 import { Box, Grid, IconButton, Typography } from "@mui/material";

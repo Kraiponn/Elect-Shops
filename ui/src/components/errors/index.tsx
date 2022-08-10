@@ -3,7 +3,7 @@ import { Box, Button, Typography } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 
 // Types
-import { IErorrResponseData } from "@/features/types";
+import { IErorrResponseData } from "@/features/interfaces";
 
 interface IProps {
   errorObject: IErorrResponseData;

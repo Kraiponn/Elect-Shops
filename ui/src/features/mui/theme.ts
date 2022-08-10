@@ -1,7 +1,6 @@
 import { createTheme } from "@mui/material/styles";
 import { red } from "@mui/material/colors";
 import {
-  clDark,
   clPrimary,
   clPrimaryDark,
   clPrimaryLight,

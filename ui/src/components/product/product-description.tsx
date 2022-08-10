@@ -13,7 +13,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircleOutline";
 
 import { ThaiCurrencyFormatWithBuildIn } from "@/features/services";
-import { IProduct } from "@/features/types";
+import { IProduct } from "@/features/interfaces";
 
 // Type for method
 interface IProps {
@@ -123,7 +123,7 @@ const ProductDescription = ({
           </IconButton>
 
           <Typography
-          variant="h4"
+            variant="h4"
             sx={{
               marginX: "1rem",
             }}

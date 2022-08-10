@@ -9,7 +9,7 @@ import Slider from "react-slick";
 // import styled from "@/assets/styles/banner-slider.module.css";
 
 // Types
-import { IProduct } from "@/features/types";
+import { IProduct } from "@/features/interfaces";
 import { IDummyData } from "@/features/services";
 
 // Components

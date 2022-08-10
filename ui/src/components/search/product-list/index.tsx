@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from "react";
 
 // Global state
-import { IProduct } from "@/features/types";
+import { IProduct } from "@/features/interfaces";
 
 // Components
 import { Grid, Typography } from "@mui/material";

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IAuthForm, IAuthState } from "@/features/types";
+import { IAuthForm, IAuthState } from "@/features/interfaces";
 
 export const useAuth = () => {
   const [authState, setAuthState] = useState<IAuthState>({

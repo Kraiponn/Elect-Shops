@@ -13,7 +13,7 @@ import {
   asyncAuth,
   clearErrorAndLoadingState,
 } from "@/features/global-state/reducers/auth";
-import { IAuthForm, IAuthInput } from "@/features/types";
+import { IAuthForm, IAuthInput } from "@/features/interfaces";
 
 // Components
 import BlankLayout from "@/components/shares/layouts/blank-layout";

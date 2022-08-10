@@ -11,7 +11,7 @@ import {
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 
 // Form validation & Types
-import { IProfileBody, EditBoxType } from "@/components/dashboard/interfaces";
+import { IProfileBody, EditBoxType } from "@/features/interfaces";
 import { Controller, FieldError, Control } from "react-hook-form";
 
 // Components
@@ -110,10 +110,7 @@ export default function EditBox({
   };
 
   return (
-    <Box
-      className="edit-box_container"
-      sx={{  width: "100%", mb: 2, }}
-    >
+    <Box className="edit-box_container" sx={{ width: "100%", mb: 2 }}>
       <Controller
         name={name}
         control={control}
@@ -123,7 +120,7 @@ export default function EditBox({
             {...field}
             className="edit-box"
             size="small"
-            type={name === "date_of_birth" ? "date" : "text"}
+            type={name === "date_of_birth" ? "datetime-local" : "text"}
             placeholder={placeHolder}
             error={handleErrorState()}
             startAdornment={
@@ -136,7 +133,9 @@ export default function EditBox({
         )}
       />
       {errors && (
-        <Typography variant="h6" sx={{ color: "red" }}>{handleErrorMessage()}</Typography>
+        <Typography variant="h6" sx={{ color: "red" }}>
+          {handleErrorMessage()}
+        </Typography>
       )}
     </Box>
   );

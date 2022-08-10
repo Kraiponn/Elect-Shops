@@ -10,15 +10,15 @@
     }
   },
   "leftSideNav": {
-    "general": "ทั่วไป",
+    "general": "หมวดหมู่ทั่วไป",
     "account": "บัญชี",
-    "profile": "ข้อมูลส่วนตัว",
+    "settings": "การตั้งค่า",
     "bankAndCard": "ธนาคารและบัตร",
     "billing": "การเรียกเก็บเงิน",
     "team": "กลุ่ม",
     "purchase": "การซื้อของฉัน",
     "notification": "แจ้งเตือน",
-    "manage": "การจัดการ",
+    "manage": "หมวดหมู่การจัดการ",
     "customer": "ลูกค้า",
     "product": "สินค้า",
     "order": "การสั่งซื้อ",
@@ -30,33 +30,103 @@
       "cart": "ตะกร้าสินค้า",
       "dashboard": "แผงควบคุม"
     },
-    "account": {
-      "title": "ตั่งค่าบัญชี",
-      "profile": {
-        "title": "ข้อมูลส่นตัว",
-        "selectImage": "เลือกรูปภาพ",
-        "fileSize": "ขนาดไฟล์สูงสุด 1.5Mb",
-        "fileSupport": "ไฟล์ที่รองรับ: (.jpg, .jpeg, .png)",
-        "firstName": "ชื่อ",
-        "lastName": "นาสกุล",
-        "phoneNo": "หมายเลขโทรศัพท์",
-        "address": "ที่อยู่",
-        "dateOfBirth": "เดือน/วัน/ปี",
-        "save": "บันทึก",
-        "deleteAccount": "ลบบัญชี",
-        "deleteAccountDescription": "ลบบัญชีของคุณ และลบข้อมูลส่วนตัวทั้งหมดออกจากระบบ จากนั้นคุณจะไม่สามารถใช้บัญชีนี้ได้อีก"
+    "generalMenu": {
+      "account": {
+        "title": "ตั้งค่าบัญชี",
+        "profile": {
+          "title": "ข้อมูลส่วนตัว",
+          "selectImage": "เลือกรูปภาพ",
+          "fileSize": "ขนาดไฟล์สูงสุด 1.5Mb",
+          "fileSupport": "ไฟล์ที่รองรับ: (.jpg, .jpeg, .png)",
+          "firstName": "ชื่อ",
+          "lastName": "นาสกุล",
+          "phoneNo": "หมายเลขโทรศัพท์",
+          "address": "ที่อยู่",
+          "dateOfBirth": "เดือน/วัน/ปี",
+          "save": "บันทึก",
+          "deleteAccount": "ลบบัญชี",
+          "deleteAccountDescription": "ลบบัญชีของคุณ และลบข้อมูลส่วนตัวทั้งหมดออกจากระบบ จากนั้นคุณจะไม่สามารถใช้บัญชีนี้ได้อีก",
+          "errFirstNameBox": "กรุณากรอก - ชื่อ",
+          "errLastNameBox": "กรุณากรอก - นาสกุล",
+          "errPhoneNoBox": "กรุณากรอก - หมายเลขโทรศัพท์",
+          "errAddressBox": "กรุณากรอก - ที่อยู่ในการจัดส่ง",
+          "errDateOfBirthBox": "กรุณาเลือก วัน-เดือน-ปี เกิดของคุณ"
+        },
+        "security": {
+          "title": "ความปลอดภัย",
+          "changePassword": "เปลี่ยนรหัสผ่าน",
+          "currentPassword": "รหัสผ่านปัจจุบัน",
+          "newPassword": "รหัสผ่านใหม่",
+          "confirmPassword": "ยืนยันรหัสผ่าน",
+          "loginHistory": "ประวัติการเข้าใช้งาน",
+          "confirm": "ยืนยัน",
+          "errRequiredCurrentPwdBox": "กรุณากรอกรหัสผ่านปัจจุบัน",
+          "errRequiredNewPwdBox": "กรุณากรอกรหัสผ่านใหม่",
+          "errRequiredConfirmPwdBox": "กรุณายืนยันรหัสใหม่อีกครั้ง",
+          "errMinPwdBox": "ความยาวรหัสผ่านอย่างน้อยต้อง 5 ตัวอักษรขึ้นไป",
+          "errNotMatchPwdBox": "ยืนยันรหัสผ่านไม่ตรงกับรหัสผ่านใหม่"
+        },
+        "address": {
+          "title": "ที่อยู่"
+        },
+        "bankAndCard": {
+          "title": "วิธีการชำระเงิน",
+          "addCreditDebitCardTitle": "บัตร เครดิต / เดบิต",
+          "buttonAddCard": "เพิ่มบัตร",
+          "creditDebitCardNo1": "**** **** **** 6789",
+          "creditDebitCardNo2": "**** **** **** 6398",
+          "creditDebitCardNo1Expire": "บัตรหมดอายุ 12/25",
+          "creditDebitCardNo2Expire": "บัตรหมดอายุ 09/25",
+          "addBankAccountTitle": "บัญชีธนาคาร",
+          "bankAccountNo": "**** **** **** 4539"
+        },
+        "billing": {
+          "title": "การเรียกเก็บเงิน",
+          "billingDetailTitle": "รายละเอียด",
+          "editTextButton": "แก้ไข",
+          "billName": "ชื่อ - ใบเรียกเก็บ",
+          "cardNumber": "หมายเลขบัตร",
+          "country": "เมือง",
+          "zipPostalCode": "รหัสไปรษณีย์",
+          "remarkText": "ทางบริษัทเราไม่สามารถคืนเงินคุณลูกค้าได้ เมื่อกดยืนยันคำสั่งซื้อสินค้าไปแล้ว",
+          "cancelText": "ยกเลิก",
+          "InvoiceHistoryTitle": "ประวัติใบเรียกเก็บเงิน",
+          "ivTbDate": "วันที่",
+          "ivTbTotal": "ค่าใช้จ่าย",
+          "evTbView": "ดูรายละเอียด"
+        },
+        "team": {
+          "title": "เชิญเพื่อน",
+          "emailBoxPlaceholder": "ใส่อีเมลเพื่อเชิญเพื่อนคุณ",
+          "buttonSendInvite": "ส่งคำเชิญ"
+        }
       },
-      "security": {
-        "title": "ความปลอดภัย",
-        "changePassword": "เปลี่ยนระหัสผ่าน",
-        "currentPassword": "รหัสผ่านปัจจุบัน",
-        "newPassword": "รหัสผ่านใหม่",
-        "confirmPassword": "ยืนยันรหัสผ่าน",
-        "loginHistory": "ประวัติการเข้าใช้งาน",
-        "confirm": "CONFIRM"
+      "purchase": {
+        "title": "สถานะการสั่งซื้อ",
+        "tap": {
+          "all": "ทั้งหมด",
+          "toPay": "ที่ต้องชำระ",
+          "toShip": "ที่ต้องจัดส่ง",
+          "toReceive": "ที่ต้องได้รับ",
+          "completed": "สำเร็จแล้ว",
+          "cancelled": "ยกเลิกแล้ว",
+          "noOrder": "ยังไม่มีการสั่งซื้อ"
+        }
       },
-      "address": {
-        "title": "ที่อยู่"
+      "notification": {
+        "title": "แจ้งเตือน",
+        "email": {
+          "title": "อีเมล",
+          "subTitle1": "ความเคลื่อนไหวสินค้า",
+          "description1": "สินค้าใหม่, เปิดตัวสินค้าใหม่, และแก้ไขสินค้า โปรโมชั่นต่างๆ",
+          "subTitle2": "ปรับปรุงความปลอดภัย",
+          "description2": "แจ้งเตือนเรื่องสำคัญต่างๆ ที่เกี่ยวข้องกับความปลอดภัยของคุณ"
+        },
+        "phone": {
+          "title": "แจ้งเตือนทางโทรศัพท์",
+          "subTitle": "ปรับปรุงความปลอดภัย",
+          "description": "แจ้งเตือนเรื่องสำคัญต่างๆ ที่เกี่ยวข้องกับความปลอดภัยของคุณ"
+        }
       }
     }
   }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import useTranslation from "next-translate/useTranslation";
 
 // Material Design
@@ -14,14 +14,11 @@ import DescriptionIcon from "@mui/icons-material/Description";
 import ManageItemMenu from "@/components/dashboard/navigations/text-icon-item-menu";
 
 // Types
-import {
-  NavMenuType,
-  ISidebarMenuState,
-} from "@/components/dashboard/utils/types";
+import { NavMenuType, ISidebarMenu } from "@/features/interfaces";
 
 interface IProps {
   handleSelectItemMenu: (menuType: NavMenuType) => void;
-  currentItem: ISidebarMenuState;
+  currentItem: ISidebarMenu;
 }
 
 /***********************************************************************************

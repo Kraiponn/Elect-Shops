@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { IErorrResponseData } from "@/features/types";
+import { IErorrResponseData } from "@/features/interfaces";
 
 export const getHttpErrorObject = (error: AxiosError) => {
   if (error.code === "ERR_NETWORK" || error.code === "ECONNREFUSED") {

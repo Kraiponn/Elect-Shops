@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { NextRouter } from "next/router";
 
 // Global Types
-import { IAuthPayload } from "@/features/types";
+import { IAuthPayload } from "@/features/interfaces";
 
 // Material Design & Components
 import { Toolbar, Typography } from "@mui/material";
@@ -40,7 +40,6 @@ const DesktopNav = ({
   handleKeyPress,
   handleClickSearchBox,
 }: IProps) => {
-
   useEffect(() => {
     if (keyword !== "") {
       setSearchKey(keyword);

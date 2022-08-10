@@ -3,10 +3,10 @@ import React from "react";
 // Material Design
 import { Box, SvgIconTypeMap, Typography } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
-import { NavMenuType } from "@/components/dashboard/utils/types";
 
-// Global State
+// Global State and Types
 import { useAppSelector } from "@/features/hooks/use-global-state";
+import { NavMenuType } from "@/features/interfaces";
 
 interface IProps {
   text: string;

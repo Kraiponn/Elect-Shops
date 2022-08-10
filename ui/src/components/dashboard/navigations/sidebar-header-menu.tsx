@@ -2,12 +2,13 @@ import React from "react";
 import Image from "next/image";
 
 // Material Design
-import { Avatar, Box, Divider, Typography } from "@mui/material";
+import { Avatar, Box, Typography } from "@mui/material";
+
+// Colors System
+import { clDarkMedium, clGray100 } from "@/features/const/colors";
 
 // Components
 import ProfileImage from "@/assets/images/little-pug-dog.webp";
-
-import { clDarkMedium, clGray100 } from "@/features/const/colors";
 
 interface IProps {
   userName: string;

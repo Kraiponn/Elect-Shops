@@ -8,7 +8,7 @@ import * as yup from "yup";
 
 import { motion } from "framer-motion";
 import PasswordInput from "@/components/shares/ui/password-input";
-import { IAuthForm } from "@/features/types";
+import { IAuthForm } from "@/features/interfaces";
 
 // export interface IResetPWDForm {
 //   password: string;

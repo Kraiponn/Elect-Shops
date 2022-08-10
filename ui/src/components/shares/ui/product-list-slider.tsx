@@ -9,7 +9,7 @@ import ShopIcon from "@mui/icons-material/Shop";
 import Slider from "react-slick";
 
 // Types
-import { IProduct } from "@/features/types";
+import { IProduct } from "@/features/interfaces";
 
 // Components
 import {

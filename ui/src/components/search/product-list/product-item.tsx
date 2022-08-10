@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 
-import { IProduct } from "@/features/types";
+import { IProduct } from "@/features/interfaces";
 import { ThaiCurrencyFormatWithBuildIn } from "@/features/services";
 
 // Components

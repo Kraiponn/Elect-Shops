@@ -5,7 +5,7 @@ import {
   IAuthInput,
   IErorrResponseData,
   IResponseMessage,
-} from "@/features/types";
+} from "@/features/interfaces";
 import { http } from "@/features/services/http";
 import { AxiosError } from "axios";
 import { getHttpErrorObject } from "@/features/services/errors";

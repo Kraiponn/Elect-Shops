@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IGUI, localeType } from "@/features/types";
+import { IGUI, localeType } from "@/features/interfaces";
 
 const initialState: IGUI = {
   showMobileMenu: false,

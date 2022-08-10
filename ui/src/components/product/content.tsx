@@ -2,18 +2,12 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 
 // Material design
-import {
-  Grid,
-} from "@mui/material";
+import { Grid } from "@mui/material";
 
 // Services & Global state
-import {
-  useAppDispatch,
-} from "@/features/hooks/use-global-state";
-import {
-  increaseProductToCartWithSpecify,
-} from "@/features/global-state/reducers/product";
-import { IInputCart, IProduct } from "@/features/types";
+import { useAppDispatch } from "@/features/hooks/use-global-state";
+import { increaseProductToCartWithSpecify } from "@/features/global-state/reducers/product";
+import { IInputCart, IProduct } from "@/features/interfaces";
 
 // Components
 import ImagePreview from "@/components/product/image-preview";

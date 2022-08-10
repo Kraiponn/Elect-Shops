@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import useTranslation from "next-translate/useTranslation";
@@ -26,25 +26,17 @@ import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 
 // Constant & Types & Global state
 import { DRAWER_WIDTH } from "@/components/dashboard/utils/constants";
-import { NavMenuType } from "@/components/dashboard/utils/types";
-import { IAuthPayload } from "@/features/types";
+import { IAuthPayload, NavMenuType } from "@/features/interfaces";
 import {
   useAppSelector,
   useAppDispatch,
 } from "@/features/hooks/use-global-state";
 import {
   changeLanguagesMode,
-  changeLocale,
   changeThemeMode,
   toggleOpenAccountMenu,
 } from "@/features/global-state/reducers/gui";
-import {
-  clDarkHard,
-  clDarkMedium,
-  clDarkPrimary,
-  clGray100,
-  clWhite,
-} from "@/features/const/colors";
+import { clDarkMedium, clGray100, clWhite } from "@/features/const/colors";
 
 // Components
 import ProfileImage from "@/assets/images/little-pug-dog.webp";
@@ -113,8 +105,6 @@ export default function TopNavigation({
   const handleShowAccountMenu = () => {
     dispatch(toggleOpenAccountMenu());
   };
-
-  // console.log("Dashboard top nav...");
 
   useEffect(() => {
     router.push(router.asPath, router.asPath, {
@@ -234,9 +224,6 @@ export default function TopNavigation({
               flexDirection: "column",
               justifyContent: "flex-start",
 
-              // opacity: 0,
-              // transform: "scale(0.5)",
-              // transition: "transform .2s ease-out",
               visibility: OpenAccountMenu ? "visible" : "hidden",
               opacity: OpenAccountMenu ? 1 : 0,
               transform: OpenAccountMenu ? "scale(1)" : "scale(0.5)",

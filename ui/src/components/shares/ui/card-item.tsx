@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { Typography, Box, Rating, Button } from "@mui/material";
 
 // Types
-import { IProduct } from "@/features/types";
+import { IProduct } from "@/features/interfaces";
 
 // Global state
 import { useAppDispatch } from "@/features/hooks/use-global-state";

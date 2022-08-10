@@ -16,7 +16,7 @@ import {
   setAuthSuccess,
 } from "@/features/global-state/reducers/auth";
 import { clearStateWithoutProducts } from "@/features/global-state/reducers/product";
-import { IAuthForm, IAuthInput } from "@/features/types";
+import { IAuthForm, IAuthInput } from "@/features/interfaces";
 
 // Components
 import DefaultLayout from "@/components/shares/layouts/defaut-layout";

@@ -11,7 +11,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import LockIcon from "@mui/icons-material/Lock";
 
 import { Controller, FieldError, Control } from "react-hook-form";
-import { IAuthForm } from "@/features/types";
+import { IAuthForm } from "@/features/interfaces";
 
 type ErrorsInputType = {
   password?: FieldError | undefined;

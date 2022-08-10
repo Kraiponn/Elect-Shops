@@ -2,8 +2,11 @@
 import styled from "@/assets/styles/hot-navigation.module.css";
 
 // Services
-import { ICategory, IProduct } from "@/features/types";
-import {IHotCategoryNav, IHotProductNav} from '@/components/home/home-dummy-data'
+import { ICategory, IProduct } from "@/features/interfaces";
+import {
+  IHotCategoryNav,
+  IHotProductNav,
+} from "@/components/home/home-dummy-data";
 
 interface IProps {
   categories: IHotCategoryNav[];

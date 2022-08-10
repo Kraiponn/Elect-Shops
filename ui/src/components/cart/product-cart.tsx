@@ -5,7 +5,7 @@ import { Grid } from "@mui/material";
 
 // Services & Global state
 import { useAppDispatch } from "@/features/hooks/use-global-state";
-import { IProduct, IOrderProduct } from "@/features/types";
+import { IProduct, IOrderProduct } from "@/features/interfaces";
 import {
   increaseProductToCart,
   decreaseProductFromCart,

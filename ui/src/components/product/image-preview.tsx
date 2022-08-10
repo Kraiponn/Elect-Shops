@@ -6,7 +6,7 @@ import { Box, Typography, Grid, IconButton } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 // Services & Global state
-import { IProduct } from "@/features/types";
+import { IProduct } from "@/features/interfaces";
 
 // Components
 import FacebookIcon from "@/assets/images/icons/icon-facebook.png";

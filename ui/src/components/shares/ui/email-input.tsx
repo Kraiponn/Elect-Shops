@@ -5,7 +5,7 @@ import EmailIcon from "@mui/icons-material/Email";
 
 import { Controller, FieldError, Control } from "react-hook-form";
 // import { IAuthForm } from "@/components/auth/auth-form";
-import { IAuthForm, IResetPWDForm } from "@/features/types";
+import { IAuthForm, IResetPWDForm } from "@/features/interfaces";
 
 type ErrorsInputType = {
   email?: FieldError | undefined;

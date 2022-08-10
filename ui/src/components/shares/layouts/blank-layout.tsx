@@ -12,7 +12,7 @@ interface IProps {
   children: React.ReactNode;
   title: string;
   description?: string;
-  isLoading: boolean;
+  isLoading?: boolean;
 }
 
 /***********************************************************************************
@@ -29,7 +29,7 @@ const BlankLayout = ({ children, title, description, isLoading }: IProps) => {
 
       <MyDialog
         type="LOADING"
-        isShow={isLoading}
+        isShow={isLoading ? true : false}
         toggleDialogState={() => {}}
       />
 

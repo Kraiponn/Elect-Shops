@@ -4,7 +4,7 @@ import React from "react";
 import { Box } from "@mui/material";
 
 // Types
-import { IProduct } from "@/features/types";
+import { IProduct } from "@/features/interfaces";
 import ProductListSlider from "@/components/shares/ui/product-list-slider";
 import PromotionsContent from "@/components/home/promotion-content";
 

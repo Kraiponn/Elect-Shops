@@ -5,7 +5,7 @@ import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 
 // Global Types
-import { IAuthForm } from "@/features/types";
+import { IAuthForm } from "@/features/interfaces";
 
 // Animate effects
 import { motion } from "framer-motion";
