@@ -31,9 +31,7 @@ import Invoice from "@/components/dashboard/content/management/invoices";
  ******************************************************************************/
 import { DRAWER_WIDTH } from "@/components/dashboard/utils/constants";
 import {
-  clBgLight,
   clBlack,
-  clDarkHard,
   clDarkPrimary,
   clGray100,
   clWhiteGray,
@@ -75,8 +73,6 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   ...theme.mixins.toolbar,
   justifyContent: "flex-end",
 }));
-
-// const TRANSLATE_KEY = "content.generalMenu.account";
 
 /***********************************************************************************
  *                          ---   MAIN FUNCTION   ---                              *
@@ -167,7 +163,7 @@ export default function Content({ open }: IProps) {
           </Box>
         </Link>
 
-        <Link href="/products/cart" locale={locale} passHref>
+        <Link href="/search" as={`/search?keyword=`} locale={locale} passHref>
           <Typography
             variant="subtitle2"
             sx={{
@@ -179,7 +175,7 @@ export default function Content({ open }: IProps) {
               },
             }}
           >
-            {t(`content.breadcrumbs.cart`)}
+            {t(`content.breadcrumbs.product`)}
           </Typography>
         </Link>
 

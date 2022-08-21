@@ -1,3 +1,22 @@
 {
-  "title": "ตระกร้าสินค้า"
+  "title": "พบ {{quantity}} ผลลัพธ์สำหรับ ",
+  "subtitle": "'{{keyword}}'",
+  "emptyProduct": {
+    "title": "โอ๊ะโอ!!",
+    "subtitle": "ไม่พบสินค้า ตามที่คุณค้นหา"
+  },
+  "filterResult": {
+    "title": "กรองผลลัพธ์",
+    "category": "หมวดหมู่",
+    "priceRange": "ช่วงราคา",
+    "applyButton": "ยืนยัน",
+    "rating": "เรตติ้ง",
+    "up": "{{ratings}} ขึ้นไป"
+  },
+  "productList": {
+    "title": "{{quantity}} ผลลัพธ์",
+    "price": "ราคา",
+    "piece": "ชิ้น",
+    "addToCartButton": "เพิ่มลงตะกร้า"
+  }
 }

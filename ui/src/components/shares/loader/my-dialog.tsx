@@ -25,13 +25,13 @@ const MyDialog = ({
       sx={{
         width: "100%",
         height: "100%",
-        position: "absolute",
+        position: "fixed",
         left: 0,
         top: 0,
-        zIndex: 100,
-        background: "rgba(0, 0, 0, 0.79)",
+        zIndex: 100000,
+        background: "rgba(0, 0, 0, 0.94)",
       }}
-      onClick={() => toggleDialogState()}
+      onClick={toggleDialogState}
     >
       {type === "MODAL" ? (
         <MyModal type="ERROR" title={title} description={description} />

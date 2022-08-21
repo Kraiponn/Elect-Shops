@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
-import { ToastContainer, toast } from "react-toastify";
 
 // Material Design
-import { Box, CssBaseline, Skeleton, useTheme } from "@mui/material";
+import { Box, CssBaseline, useTheme } from "@mui/material";
 
 // Global state and Types
 import {
@@ -20,7 +19,6 @@ import SidebarMenu from "@/components/dashboard/sidebar-menu";
 import TopNavigation from "@/components/dashboard/top-navigation";
 import MainContent from "@/components/dashboard/main-content";
 
-//4.13
 /***********************************************************************************
  *                          ---   MAIN FUNCTION   ---                              *
  **********************************************************************************/
@@ -29,7 +27,7 @@ export default function Dashboard() {
   const router = useRouter();
   const [open, setOpen] = React.useState(true);
   const dispatch = useAppDispatch();
-  const { user, access_token } = useAppSelector((state) => state.auth);
+  const { user, access_token, profile } = useAppSelector((state) => state.auth);
   const { currentLocale } = useAppSelector((state) => state.gui);
 
   const handleDrawerOpen = () => {
@@ -72,22 +70,9 @@ export default function Dashboard() {
     };
   }, [access_token, currentLocale, dispatch, router, user]);
 
-  const handleShowToastify = () => {
-    toast.success("Process is successfull", {
-      position: toast.POSITION.TOP_RIGHT,
-      autoClose: 1000,
-      theme: "colored",
-    });
-  };
-
   return (
-    <BlankLayout
-      title="Dashboard"
-      description="dashboard settings"
-      isLoading={false}
-    >
+    <BlankLayout title="Dashboard" description="dashboard settings">
       <>
-        <ToastContainer autoClose={1500} />
         <Box sx={{ display: "flex" }}>
           <CssBaseline />
           <TopNavigation

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import useTranslation from "next-translate/useTranslation";
 
 // Materials
 import { Box, Typography } from "@mui/material";
@@ -23,6 +24,7 @@ import DefaultLayout from "@/components/shares/layouts/defaut-layout";
 import AuthForm from "@/components/auth/auth-form";
 import MyDialog from "@/components/shares/loader/my-dialog";
 import Cookies from "js-cookie";
+import { clDarkHard, clDarkMedium, clWhite } from "@/features/const/colors";
 
 /***********************************************************************************
  *                          ---   MAIN FUNCTION   ---                              *
@@ -31,20 +33,17 @@ const SignUp = () => {
   const [finish, setFinish] = useState<boolean>(false);
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const { t } = useTranslation("signup");
+  const { darkMode } = useAppSelector((state) => state.gui);
   const { isLoading, isSuccess, error, user, access_token } = useAppSelector(
     (state) => state.auth
   );
-  const {
-    isLoading: sLoading,
-    isSuccess: sSuccess,
-    isError,
-    pagination,
-    keyword,
-  } = useAppSelector((state) => state.product);
 
+  //#########################################
+  //           Life cycle method
+  //#########################################
   useEffect(() => {
     return () => {
-      // console.log("Home page unmount..");
       dispatch(clearStateWithoutProducts());
     };
   }, [dispatch]);
@@ -75,21 +74,13 @@ const SignUp = () => {
       );
     }
   } else if (isSuccess) {
-    return router.push("/auth/success");
-  }
-
-  // Search product successfull. Navigate to search page
-  if (!sLoading && sSuccess && pagination.products.length > 0) {
-    router.push({
-      pathname: "/search",
-      query: {
-        keyword: keyword,
-      },
+    return router.push("/auth/success", "/auth/success", {
+      locale: router.locale,
     });
   }
 
   return (
-    <DefaultLayout title="signup page" description="signup to join us">
+    <DefaultLayout title="content" description="signup page">
       <>
         <MyDialog
           isShow={error ? true : false}
@@ -119,7 +110,7 @@ const SignUp = () => {
               left: 0,
               width: "100%",
               height: "50%",
-              background: "rgb(26, 184, 171)",
+              background: darkMode ? clDarkHard : "rgb(26, 184, 171)",
               borderTopLeftRadius: "1rem",
               borderTopRightRadius: "1rem",
             }}
@@ -130,10 +121,10 @@ const SignUp = () => {
               position: "absolute",
               top: "50%",
               left: "50%",
-              zIndex: 10000,
+              // zIndex: 2,
               transform: "translate(-50%, -50%)",
-              width: { xs: "70%", md: "50%", lg: "35%" },
-              background: "rgb(255, 255, 255)",
+              width: { xs: "80%", md: "60%", lg: "45%" },
+              background: darkMode ? clDarkMedium : clWhite,
               borderRadius: "10px",
               boxShadow: "0 0 0.5rem rgba(0, 0, 0, 0.212)",
               padding: "2rem",
@@ -159,7 +150,7 @@ const SignUp = () => {
               }}
               onClick={() => setFinish(!finish)}
             >
-              {`Sign Up`}
+              {t("title")}
             </Typography>
 
             <AuthForm

@@ -3,6 +3,15 @@ import * as React from "react";
 // Material design
 import { Box } from "@mui/material";
 
+// Global state and system colors
+import { useAppSelector } from "@/features/hooks/use-global-state";
+import {
+  clDarkHard,
+  clDarkMedium,
+  clWhite,
+  clWhiteGray,
+} from "@/features/const/colors";
+
 interface IProps {
   top: string;
   right: string;
@@ -14,15 +23,19 @@ interface IProps {
  *                          ---   MAIN FUNCTION   ---                              *
  **********************************************************************************/
 const DropdownMenu = ({ top, right, leftOfTopArrow, children }: IProps) => {
+  const { darkMode } = useAppSelector((state) => state.gui);
+
   return (
     <>
       <Box
         className="dropdown--list-menu"
         component="div"
         sx={{
-          boxShadow: "0 0rem .7rem rgba(0, 0, 0, 0.413)",
-          background: "rgba(255, 255, 255, 1)",
-          color: "rgb(72, 71, 71)",
+          boxShadow: darkMode
+            ? "0 0rem .7rem rgba(3, 205, 255, 0.596)"
+            : "0 0rem .7rem rgba(0, 0, 0, 0.413)",
+          background: darkMode ? clDarkMedium : clWhite,
+          color: darkMode ? clWhiteGray : clDarkHard,
           fontSize: ".89rem",
           borderRadius: ".2rem",
           padding: ".3rem",
@@ -48,7 +61,9 @@ const DropdownMenu = ({ top, right, leftOfTopArrow, children }: IProps) => {
             marginLeft: "-0.89rem",
             borderWidth: "0.89rem",
             borderStyle: "solid",
-            borderColor: `transparent transparent white transparent`,
+            borderColor: `transparent transparent ${
+              darkMode ? clDarkMedium : clWhite
+            } transparent`,
           },
         }}
       >

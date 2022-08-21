@@ -1,10 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useTranslation from "next-translate/useTranslation";
 
 // Material Design
-import { Typography, Box, Tabs, Tab } from "@mui/material";
+import { Typography, Box, Tabs, Tab, Skeleton } from "@mui/material";
+
+// Global state
+import {
+  useAppSelector,
+  useAppDispatch,
+} from "@/features/hooks/use-global-state";
+import {
+  fetchProfileById,
+  clearErrorAndLoadingState,
+} from "@/features/global-state/reducers/auth";
 
 // Components
+import MyDialog from "@/components/shares/loader/my-dialog";
 import TabPanel from "@/components/dashboard/shares/tab-panel";
 import Profile from "@/components/dashboard/content/general/account-setting/profile";
 import Security from "@/components/dashboard/content/general/account-setting/seurity";
@@ -31,64 +42,146 @@ export default function AccountSetting({ darkMode }: IProps) {
   const [profileTabNo, setProfileTabNo] = useState<IProfileMenu>({
     profileTabNo: 0,
   });
+  const { user, profile, isLoading, isSuccess, error } = useAppSelector(
+    (state) => state.auth
+  );
   const { t } = useTranslation("dashboard");
+  const dispatch = useAppDispatch();
+
+  const ShowModalOrLoading = () => {
+    return (
+      <MyDialog
+        type="MODAL"
+        isShow={error ? true : false}
+        title={error ? error.error : ""}
+        description={error ? error.message.toString() : ""}
+        toggleDialogState={handleClearAlertState}
+      />
+    );
+
+    // if (isLoading) {
+    //   return (
+    //     <MyDialog
+    //       type="LOADING"
+    //       isShow={isLoading ? true : false}
+    //       toggleDialogState={handleClearAlertState}
+    //     />
+    //   );
+    // } else {
+    //   return (
+    //     <MyDialog
+    //       type="MODAL"
+    //       isShow={error ? true : false}
+    //       title={error ? error.error : ""}
+    //       description={error ? error.message.toString() : ""}
+    //       toggleDialogState={handleClearAlertState}
+    //     />
+    //   );
+    // }
+  };
 
   const handleChange = (_: React.SyntheticEvent, index: number) => {
     setProfileTabNo({ ...profileTabNo, profileTabNo: index });
   };
 
+  function handleClearAlertState() {
+    dispatch(clearErrorAndLoadingState());
+  }
+
+  //#####################################
+  //         LEFT CYCLE CONTROL
+  //#####################################
+  useEffect(() => {
+    dispatch(fetchProfileById());
+    // console.log("useEffect fetchProfile");
+  }, [dispatch]);
+
   return (
     <>
-      <Box sx={{ width: "100%", padding: "1rem" }}>
-        <Typography
-          variant="h4"
-          sx={{ color: darkMode ? clGray50 : "#010101a6" }}
-        >
-          {t(`${TRANSLATE_KEY}.title`)}
-        </Typography>
+      {ShowModalOrLoading()}
+      {!profile ? (
+        <Box sx={{ width: "90%", margin: "auto" }}>
+          <Skeleton
+            variant="circular"
+            sx={{
+              width: "9rem",
+              height: "9rem",
+              margin: "auto",
+            }}
+          />
 
-        <Tabs
-          value={profileTabNo.profileTabNo}
-          onChange={handleChange}
-          aria-label="profile tab menu"
-          sx={{
-            marginTop: "0.5rem",
-            ".profile-tab": {
-              fontFamily: "Prompt",
-              fontWeight: 500,
-              fontSize: "1.1rem",
-            },
-          }}
-        >
-          <Tab
-            className="profile-tab"
-            label={t(`${TRANSLATE_KEY}.profile.title`)}
-            id={`profile-tab-${0}`}
+          <Skeleton
+            variant="rectangular"
+            sx={{
+              width: "100%",
+              height: "2rem",
+              my: "1rem",
+            }}
           />
-          <Tab
-            className="profile-tab"
-            label={t(`${TRANSLATE_KEY}.security.title`)}
-            id={`profile-tab-${1}`}
+          <Skeleton
+            variant="rectangular"
+            sx={{
+              width: "100%",
+              height: "2rem",
+              my: "1rem",
+            }}
           />
-          {/* <Tab
+          <Skeleton
+            variant="rectangular"
+            sx={{
+              width: "100%",
+              height: "20rem",
+            }}
+          />
+        </Box>
+      ) : (
+        <Box sx={{ width: "100%", padding: "1rem" }}>
+          {/* <Typography
+            variant="h4"
+            sx={{ color: darkMode ? clGray50 : "#010101a6" }}
+          >
+            {t(`${TRANSLATE_KEY}.title`)}
+          </Typography> */}
+
+          <Tabs
+            value={profileTabNo.profileTabNo}
+            onChange={handleChange}
+            aria-label="profile tab menu"
+            sx={{
+              marginTop: "0.5rem",
+              ".profile-tab": {
+                fontFamily: "Prompt",
+                fontWeight: 500,
+                fontSize: "1.1rem",
+              },
+            }}
+          >
+            <Tab
+              className="profile-tab"
+              label={t(`${TRANSLATE_KEY}.profile.title`)}
+              id={`profile-tab-${0}`}
+            />
+            <Tab
+              className="profile-tab"
+              label={t(`${TRANSLATE_KEY}.security.title`)}
+              id={`profile-tab-${1}`}
+            />
+            {/* <Tab
             className="profile-tab"
             label={t(`${TRANSLATE_KEY}.address.title`)}
             id={`profile-tab-${2}`}
           /> */}
-        </Tabs>
+          </Tabs>
 
-        <TabPanel value={profileTabNo.profileTabNo} index={0}>
-          <Profile darkMode={darkMode} />
-        </TabPanel>
+          <TabPanel value={profileTabNo.profileTabNo} index={0}>
+            <Profile darkMode={darkMode} profile={profile} />
+          </TabPanel>
 
-        <TabPanel value={profileTabNo.profileTabNo} index={1}>
-          <Security darkMode={darkMode} />
-        </TabPanel>
-
-        {/* <TabPanel value={profileTabNo.profileTabNo} index={2}>
-          Item Three
-        </TabPanel> */}
-      </Box>
+          <TabPanel value={profileTabNo.profileTabNo} index={1}>
+            <Security darkMode={darkMode} />
+          </TabPanel>
+        </Box>
+      )}
     </>
   );
 }

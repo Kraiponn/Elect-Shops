@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Head from "next/head";
 import Cookies from "js-cookie";
+import { ToastContainer, toast } from "react-toastify";
 
 // Global state
 import {
@@ -8,6 +9,7 @@ import {
   useAppDispatch,
 } from "@/features/hooks/use-global-state";
 import { setAuthSuccess } from "@/features/global-state/reducers/auth";
+import { clearStateAddToCart } from "@/features/global-state/reducers/product";
 
 // Components & Material design
 import { Box } from "@mui/material";
@@ -24,9 +26,15 @@ interface IProps {
 const DefautLayout = ({ children, title, description }: IProps) => {
   const dispatch = useAppDispatch();
   const { user, access_token } = useAppSelector((state) => state.auth);
-  const { isLoading } = useAppSelector(
-    (state) => state.product
-  );
+  const { isAddToCart } = useAppSelector((state) => state.product);
+  const { isLoading } = useAppSelector((state) => state.product);
+
+  const onShowToastify = () => {
+    toast.success("Product added is successfully.", {
+      autoClose: 1500,
+      position: toast.POSITION.TOP_RIGHT,
+    });
+  };
 
   if (!user && !access_token) {
     const _user = Cookies.get("user");
@@ -39,6 +47,18 @@ const DefautLayout = ({ children, title, description }: IProps) => {
     }
   }
 
+  useEffect(() => {
+    if (isAddToCart) {
+      onShowToastify();
+      dispatch(clearStateAddToCart());
+    }
+
+    return () => {
+      dispatch(clearStateAddToCart());
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAddToCart]);
+
   return (
     <>
       <Head>
@@ -46,6 +66,8 @@ const DefautLayout = ({ children, title, description }: IProps) => {
         <meta name={title} content={description ? description : ""} />
         <title>{title}</title>
       </Head>
+
+      <ToastContainer />
 
       <MyDialog
         type="LOADING"

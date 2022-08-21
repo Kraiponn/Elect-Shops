@@ -1,4 +1,3 @@
-import React from "react";
 import Image from "next/image";
 
 // Material design
@@ -6,7 +5,6 @@ import { Avatar, Box, Typography } from "@mui/material";
 
 // Components
 import defaultProfileImage from "@/assets/images/little-pug-dog.webp";
-import styled from "@/assets/styles/AccountMenu.module.css";
 import { clPrimaryDark } from "@/features/const/colors";
 
 interface IProps {
@@ -39,8 +37,8 @@ const AccountBanner = ({ userName, email, imageUrl }: IProps) => {
         }}
       >
         <Image
-          // className={styled["account-logo"]}
           src={imageUrl ? imageUrl : defaultProfileImage}
+          priority
           alt="image profile"
           layout="fill"
           objectFit="fill"
@@ -70,35 +68,6 @@ const AccountBanner = ({ userName, email, imageUrl }: IProps) => {
       >
         {email ? email : ""}
       </Typography>
-
-      {/* <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          color: "white",
-          mt: 2,
-        }}
-      >
-        <Typography
-          sx={{
-            fontSize: "1rem",
-          }}
-          variant="subtitle1"
-        >
-          {userName ? userName : "Welcome Back"}
-        </Typography>
-        <Typography
-          sx={{
-            fontWeight: "100",
-            fontFamily: "PromptThin",
-            fontSize: "0.89rem",
-          }}
-        >
-          {email ? email : ""}
-        </Typography>
-      </Box> */}
     </Box>
   );
 };

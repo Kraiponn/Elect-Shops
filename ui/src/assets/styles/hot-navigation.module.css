@@ -8,7 +8,7 @@
   background: rgba(255, 255, 255, 0.593);
   color: inherit;
   font-weight: 600;
-  font-family: 'Itim';
+  font-family: "Prompt";
   font-size: 1.1rem;
 }
 
@@ -32,7 +32,7 @@
   border-style: solid;
   border-color: transparent transparent black transparent;
   visibility: hidden;
-  opacity: 0,
+  opacity: 0;
 }
 
 .list-menu li:hover::after {

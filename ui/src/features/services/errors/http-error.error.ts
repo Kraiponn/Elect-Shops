@@ -43,7 +43,7 @@ const errorResponseCase = (err: IErorrResponseData) => {
   switch (err.statusCode) {
     case 500:
       return "Internal server error";
-    case 409:
+    case 400:
       return "Bad request";
     case 404:
       return "Not found";

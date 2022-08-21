@@ -265,6 +265,43 @@ export class ProductService {
           created_at: 'asc',
         },
       });
+    } else if (categoryId && minPrice && maxPrice) {
+      total = await this.prismaService.product.count({
+        where: {
+          category_id: categoryId,
+          AND: [
+            {
+              unit_price: { gte: minPrice },
+            },
+            {
+              unit_price: { lte: maxPrice },
+            },
+          ],
+        },
+      });
+
+      products = await this.prismaService.product.findMany({
+        where: {
+          product_name: {
+            contains: search,
+            mode: 'insensitive',
+          },
+          category_id: categoryId,
+          AND: [
+            {
+              unit_price: { gte: minPrice },
+            },
+            {
+              unit_price: { lte: maxPrice },
+            },
+          ],
+        },
+        take: limit,
+        skip: startIndex,
+        orderBy: {
+          created_at: 'asc',
+        },
+      });
     } else if (search && minPrice && maxPrice) {
       total = await this.prismaService.product.count({
         where: {

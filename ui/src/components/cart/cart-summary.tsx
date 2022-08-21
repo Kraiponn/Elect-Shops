@@ -1,3 +1,6 @@
+import { useRouter } from "next/router";
+import useTranslation from "next-translate/useTranslation";
+
 // Material design
 import {
   Box,
@@ -10,6 +13,7 @@ import {
 import ClearIcon from "@mui/icons-material/Clear";
 
 import { DELIVERY_CHARGE } from "@/features/const/currency";
+import { clWhite } from "@/features/const/colors";
 
 // Components
 import TextHorizontal from "@/components/cart/text-horizontal";
@@ -17,19 +21,33 @@ import TextHorizontal from "@/components/cart/text-horizontal";
 interface IProps {
   quantity: number;
   totalPrice: number;
-  handleShopingMoreProduct: () => void;
+  darkMode: boolean;
 }
 
 /***********************************************************************************
  *                          ---  MAIN FUNCTION   ---                               *
  **********************************************************************************/
-const CartSummary = ({
-  quantity,
-  totalPrice,
-  handleShopingMoreProduct,
-}: IProps) => {
-  const gotoShopingMoreProduct = () => {
-    handleShopingMoreProduct();
+const CartSummary = ({ quantity, totalPrice, darkMode }: IProps) => {
+  const router = useRouter();
+  const { t } = useTranslation("cart");
+
+  const handleCheckoutProduct = () => {
+    router.push("/products/checkout", "/products/checkout", {
+      locale: router.locale,
+    });
+  };
+
+  const handleGoToSearchProduct = () => {
+    router.push(
+      "/search",
+      {
+        pathname: "/search",
+        query: { keyword: "" },
+      },
+      {
+        locale: router.locale,
+      }
+    );
   };
 
   return (
@@ -45,14 +63,12 @@ const CartSummary = ({
         }}
       >
         <Typography
+          variant="h5"
           sx={{
-            fontFamily: "Prompt",
-            fontWeight: 400,
-            fontSize: "1.2rem",
             marginTop: "0rem",
           }}
         >
-          {`Promotions`}
+          {t("summary.title")}
         </Typography>
 
         <Box sx={{ display: "flex", width: "100%", mb: 0 }}>
@@ -71,7 +87,6 @@ const CartSummary = ({
             {`WESHOBSHOP`}
           </Typography>
           &nbsp;&nbsp;
-
           <Typography
             sx={{
               fontSize: "1rem",
@@ -81,18 +96,23 @@ const CartSummary = ({
               marginY: "1rem",
             }}
           >
-            {`is applied`}
+            {t("summary.isApply")}
           </Typography>
         </Box>
 
         <Box sx={{ display: "flex", width: "100%", mt: 0 }}>
-          <TextField size="small" fullWidth placeholder="Enter Coupon" />
-          <Button variant="contained">{`APPLY`}</Button>
+          <TextField
+            size="small"
+            fullWidth
+            placeholder={t("summary.couponBox")}
+            sx={{ background: darkMode ? "inherit" : clWhite, border: "none" }}
+          />
+          <Button variant="contained">{t("summary.applyButton")}</Button>
         </Box>
 
         {/************ quantity Order *************/}
         <TextHorizontal
-          title={`${quantity} Items`}
+          title={t("summary.productItemCount", { quantity })}
           value={totalPrice}
           fontWeight={700}
           marginTop="1.5rem"
@@ -100,7 +120,7 @@ const CartSummary = ({
 
         {/************ Order Delivery Charge *************/}
         <TextHorizontal
-          title={`Delivery charge`}
+          title={t("summary.deliveryCharge")}
           value={DELIVERY_CHARGE}
           fontWeight={700}
           marginTop="0.5rem"
@@ -118,7 +138,7 @@ const CartSummary = ({
 
         {/************ Total Order *************/}
         <TextHorizontal
-          title={`Total`}
+          title={t("summary.total")}
           value={DELIVERY_CHARGE + totalPrice}
           fontWeight={700}
           fontSize={`1.4rem`}
@@ -135,9 +155,9 @@ const CartSummary = ({
             fontSize: "1.1rem",
             width: "100%",
           }}
-          // onClick={handleKeepShopping}
+          onClick={handleCheckoutProduct}
         >
-          {`CHECK OUT`}
+          {t("summary.checkoutButton")}
         </Button>
 
         <Button
@@ -150,9 +170,9 @@ const CartSummary = ({
             fontSize: "1.1rem",
             width: "100%",
           }}
-          onClick={gotoShopingMoreProduct}
+          onClick={handleGoToSearchProduct}
         >
-          {`Add More Product`}
+          {t("summary.addMoreButton")}
         </Button>
       </Box>
     </Grid>

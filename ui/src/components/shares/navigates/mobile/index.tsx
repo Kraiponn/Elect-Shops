@@ -1,5 +1,3 @@
-import React from "react";
-
 // Material design
 import { Box, IconButton } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -22,9 +20,9 @@ import {
   closeMobileButtonMenuStyle,
 } from "@/components/shares/navigates/mobile/styles/animate";
 
-/***********************************************
- *                MAIN METHOD                  *
- **********************************************/
+/***********************************************************************************
+ *                                MAIN FUNCTION                                    *
+ **********************************************************************************/
 const MobileMenu = () => {
   const { showMobileMenu, menuState } = useAppSelector((state) => state.gui);
   const dispatch = useAppDispatch();

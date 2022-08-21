@@ -45,13 +45,13 @@ const Login = () => {
   };
 
   const handleNavigateToHomePage = () => {
-    router.push("/");
+    router.push("/", "/", { locale: router.locale });
   };
 
   if (isSuccess) {
     dispatch(clearErrorAndLoadingState());
 
-    return router.push("/");
+    return router.push("/", "/", { locale: router.locale });
   }
 
   return (

@@ -1,12 +1,9 @@
 import React from "react";
 import Link from "next/link";
+import useTranslation from "next-translate/useTranslation";
 
 // Material design
-import {
-  Breadcrumbs,
-  Box,
-  Typography,
-} from "@mui/material";
+import { Breadcrumbs, Box, Typography } from "@mui/material";
 
 interface IProps {
   currentBreadcrumb: string;
@@ -16,6 +13,8 @@ interface IProps {
  *                          ---  MAIN FUNCTION   ---                               *
  **********************************************************************************/
 const TopBreadcrumbs = ({ currentBreadcrumb }: IProps) => {
+  const { t } = useTranslation("product-detail");
+
   function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     event.preventDefault();
     console.info("You clicked a breadcrumb.");
@@ -32,7 +31,9 @@ const TopBreadcrumbs = ({ currentBreadcrumb }: IProps) => {
                 fontSize: "1.2rem",
                 fontWeight: 500,
               }}
-            >{`Home`}</Typography>
+            >
+              {t("breadcrumb.home")}
+            </Typography>
           </a>
         </Link>
 
@@ -45,7 +46,7 @@ const TopBreadcrumbs = ({ currentBreadcrumb }: IProps) => {
                 fontWeight: 500,
               }}
             >
-              {`Products`}
+              {t("breadcrumb.product")}
             </Typography>
           </a>
         </Link>

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/router";
+import useTranslation from "next-translate/useTranslation";
 
 // Material design components
 import {
@@ -7,7 +9,6 @@ import {
   Button,
   CircularProgress,
   Divider,
-  IconButton,
   Typography,
 } from "@mui/material";
 
@@ -35,29 +36,31 @@ interface IInputBox {
   isRemember: boolean;
 }
 
-const schema = yup
-  .object({
-    email: yup.string().email().required(`Please enter an email`),
-    password: yup
-      .string()
-      .required(`Please enter a password`)
-      .min(5, `Password must be at least 5 characters`),
-    //  confirmPassword: yup
-    //    .string()
-    //    .required(`Please enter confirm password`)
-    //    .oneOf([yup.ref("password")], `Confirm password does not match`),
-  })
-  .required();
-
 /***********************************************************************************
  *                          ---   MAIN FUNCTION   ---                              *
  **********************************************************************************/
 const AuthForm = ({ authType, handleAuth, isLoading }: IProps) => {
   const router = useRouter();
+  const { t } = useTranslation("common");
   const [values, setValues] = useState<IInputBox>({
     showPassword: false,
     isRemember: false,
   });
+
+  const schema = yup
+    .object({
+      email: yup.string().email().required(t("auth.emailRequire")),
+      password: yup
+        .string()
+        .required(t("auth.pwdRequire"))
+        .min(5, t("auth.pwdMinChars"))
+        .max(16, t("auth.pwdMaxChars")),
+      //  confirmPassword: yup
+      //    .string()
+      //    .required(t("auth.confirmPwdRquire"))
+      //    .oneOf([yup.ref("password")], t("auth.confirmPwdMatch")),
+    })
+    .required();
 
   const {
     handleSubmit,
@@ -84,11 +87,6 @@ const AuthForm = ({ authType, handleAuth, isLoading }: IProps) => {
   // Form submit
   const onSubmit: SubmitHandler<IAuthForm> = (body) => {
     handleAuth(body);
-  };
-
-  const goToAuthPage = () => {
-    if (authType === "LOGIN") router.push("/auth/signup");
-    else router.push("/auth/login");
   };
 
   return (
@@ -154,7 +152,7 @@ const AuthForm = ({ authType, handleAuth, isLoading }: IProps) => {
             {isLoading ? (
               <CircularProgress size={"1.5rem"} color="inherit" />
             ) : (
-              `SUBMIT`
+              <div>{t("auth.submitButton")}</div>
             )}
           </Button>
         </Box>
@@ -174,47 +172,61 @@ const AuthForm = ({ authType, handleAuth, isLoading }: IProps) => {
           }}
         >
           {authType === "LOGIN" ? (
-            <IconButton
-              sx={{
-                width: "100%",
-                fontSize: "0.9rem",
-                fontFamily: "Itim",
-              }}
-              onClick={() => router.push("/auth/forgot-password")}
-            >
-              {`Or Forgot Password?`}
-            </IconButton>
+            <Box sx={{ textAlign: "center" }}>
+              <Link
+                href="/auth/forgot-password"
+                as="/auth/forgot-password"
+                locale={router.locale}
+                passHref
+              >
+                <a>
+                  <Typography sx={{ fontSize: "0.89rem" }}>
+                    {t("auth.login.forgotPwdTextButton")}
+                  </Typography>
+                </a>
+              </Link>
+            </Box>
           ) : null}
 
           <Divider />
 
           <Typography
-            component="h5"
+            component="h3"
+            variant="subtitle2"
             sx={{
               mt: 2,
-              fontFamily: "PromptRegular",
-              fontStyle: "italic",
-              fontSize: ".89rem",
+              fontSize: "0.89rem",
             }}
           >
             {authType === "LOGIN"
-              ? `Don\'t have an account?`
-              : `Already have an account?`}
+              ? t("auth.login.noAccountText")
+              : t("auth.signup.alreadyAccount")}
           </Typography>
 
-          <Typography
-            component="h5"
-            sx={{
-              cursor: "pointer",
-              color: "red",
-              fontFamily: "PromptMedium",
-              fontStyle: "normal",
-              fontSize: "1rem",
-            }}
-            onClick={goToAuthPage}
+          <Link
+            href={authType === "LOGIN" ? "/auth/signup" : "/auth/login"}
+            as={authType === "LOGIN" ? "/auth/signup" : "/auth/login"}
+            locale={router.locale}
+            passHref
           >
-            {authType === "LOGIN" ? `Signup Here` : `Signin Here`}
-          </Typography>
+            <a>
+              <Typography
+                component="h5"
+                variant="h6"
+                sx={{
+                  color: "red",
+                  "&:hover": {
+                    transform: "scaleY(1.1)",
+                    fontWeight: 700,
+                  },
+                }}
+              >
+                {authType === "LOGIN"
+                  ? t("auth.login.signupTextButton")
+                  : t("auth.signup.loginTextButton")}
+              </Typography>
+            </a>
+          </Link>
         </Box>
       </form>
     </>

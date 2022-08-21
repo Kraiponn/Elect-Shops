@@ -4,12 +4,16 @@ import AddCircleIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircleOutline";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-// Services & Global state
+// Global state, types and colors system
+import { useAppSelector } from "@/features/hooks/use-global-state";
 import { ThaiCurrencyFormatWithBuildIn } from "@/features/services";
 import { IProduct, IOrderProduct } from "@/features/interfaces";
-
-// Components
-import { clPrimaryDark, clSecondary } from "@/features/const/colors";
+import {
+  clDarkMedium,
+  clPrimaryDark,
+  clSecondary,
+  clWhite,
+} from "@/features/const/colors";
 
 interface IProps {
   orders: IOrderProduct[];
@@ -27,16 +31,23 @@ const CartListItem = ({
   decreaseProductFromCart,
   removeProductFromCart,
 }: IProps) => {
+  const { darkMode } = useAppSelector((state) => state.gui);
+
   return (
     <Grid item xs={12} md={8}>
       {orders.map((order, index) => (
         <Box
           key={index}
           sx={{
-            border: "1px solid #f0f4f6",
             width: "100%",
             height: "14rem",
             padding: "0.789rem 1rem",
+            mb: "0.5rem",
+            background: darkMode ? clDarkMedium : clWhite,
+            boxShadow: darkMode
+              ? "0 0 7px rgba(221, 219, 224, 0.302)"
+              : "0 0 7px rgba(1, 1, 1, 0.162)",
+            borderRadius: "5px",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
@@ -67,7 +78,7 @@ const CartListItem = ({
               <Box>
                 <Typography
                   sx={{
-                    fontFamily: "Itim",
+                    fontFamily: "Prompt",
                     fontSize: "1.45rem",
                     fontWeight: "700",
                     mb: 1,

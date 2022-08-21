@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
+import { GetServerSideProps } from "next";
 
 // Global service and Types
 import { getHttpErrorObject, http } from "@/features/services";
@@ -12,10 +12,7 @@ import {
 } from "@/features/interfaces";
 
 // Global state and Global types
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "@/features/hooks/use-global-state";
+import { useAppDispatch } from "@/features/hooks/use-global-state";
 import { clearStateWithoutProducts } from "@/features/global-state/reducers/product";
 
 // Material design
@@ -37,18 +34,12 @@ interface IProps {
 const Cart = ({ products, errObj }: IProps) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const {
-    isLoading,
-    isSuccess,
-    pagination,
-    keyword: searchKey,
-  } = useAppSelector((state) => state.product);
 
+  //############################################
+  //             LIFE CYCLE METHOD
+  //############################################
   useEffect(() => {
-    // console.log("Hello home page");
-
     return () => {
-      // console.log("Home page unmount..");
       dispatch(clearStateWithoutProducts());
     };
   }, [dispatch]);
@@ -61,15 +52,6 @@ const Cart = ({ products, errObj }: IProps) => {
     return (
       <ErrorShow errorObject={errObj} handleRefreshPage={handleRefreshPage} />
     );
-  }
-
-  if (!isLoading && isSuccess && pagination.products.length > 0) {
-    router.push({
-      pathname: "/search",
-      query: {
-        keyword: searchKey,
-      },
-    });
   }
 
   return (
@@ -94,7 +76,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
     );
 
     const products: IProductResponse = productsData.data.products;
-    // console.log("Response", products);
     controller.abort();
 
     return {
@@ -103,7 +84,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
       },
     };
   } catch (error) {
-    // console.log("My error", error as AxiosError);
     const errResponse = getHttpErrorObject(error as AxiosError);
 
     return {

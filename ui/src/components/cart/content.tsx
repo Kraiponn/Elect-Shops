@@ -1,3 +1,5 @@
+import useTranslation from "next-translate/useTranslation";
+
 // Material design
 import { Box, Typography } from "@mui/material";
 
@@ -18,6 +20,7 @@ interface IProps {
  *                          ---  MAIN FUNCTION   ---                               *
  **********************************************************************************/
 const Content = ({ products }: IProps) => {
+  const { t } = useTranslation("cart");
   const { orders, quantity, totalPrice } = useAppSelector(
     (state) => state.product
   );
@@ -31,22 +34,22 @@ const Content = ({ products }: IProps) => {
         component="h2"
         sx={{
           fontFamily: "Prompt",
-          fontSize: { xs: "2rem", sm: "2.5rem", md: "3.2rem" },
+          fontSize: { xs: "1.55rem", sm: "1.789rem", md: "2.5rem" },
           fontWeight: 900,
         }}
       >
-        {`Shopping Cart`}
+        {t("title")}
       </Typography>
 
       <Typography
+        variant="subtitle1"
         sx={{
-          fontFamily: "Prompt",
-          fontWeight: 400,
           fontStyle: "italic",
-          marginTop: "2.5rem",
+          mt: "2rem",
+          mb: "0.75rem",
         }}
       >
-        {`${quantity} Products in Cart`}
+        {t("searchProductResult", { productTotal: quantity })}
       </Typography>
 
       {orders.length > 0 && quantity > 0 ? (
@@ -56,7 +59,10 @@ const Content = ({ products }: IProps) => {
           totalPrice={totalPrice}
         />
       ) : (
-        <EmptyCart />
+        <EmptyCart
+          title={t("emptyCart.title")}
+          buttonLabel={t("emptyCart.buttonLabel")}
+        />
       )}
 
       <Box sx={{ marginTop: "5rem" }}>

@@ -1,0 +1,27 @@
+{
+  "title": "Checkout",
+  "cancel": "Cancel",
+  "paymentMethod": {
+    "title": "Payment Method",
+    "cancel": "Cancel",
+    "visa": " **** {{visaNo}}",
+    "creditDebit": "Credit/Debit Card",
+    "paypal": "PayPal",
+    "paypallDesc": "In order to complete your transaction, we will transfer you over to PayPal's secure servers.",
+    "cardName": "Name of card",
+    "cardNo": "Card number",
+    "cardExpire": "Expiry date",
+    "cvc": "CVC/CVV",
+    "saveSecure": "Securely save this card for my later purchase"
+  },
+  "secureConnection": "Secure connection",
+  "order": "Order",
+  "summary": "Summary",
+  "price": "Original price",
+  "delivery": "Delivery charge",
+  "total": "Total",
+  "remark1": "By completing your purchase you agree to these",
+  "remark2": "Terms of Services.",
+  "remark3": "7-Day Money-Back Guarantee",
+  "button": "Complete Checkout"
+}

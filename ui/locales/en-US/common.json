@@ -1,3 +1,124 @@
 {
-  "title": "Next translate from scratch"
+  "title": "Next translate from scratch",
+  "auth": {
+    "emailBox": "Email address",
+    "pwdBox": "Password",
+    "confirmPwdBox": "Confirm password",
+    "emailRequire": "an email address is require",
+    "pwdRequire": "A password is require",
+    "confirmPwdRequire": "Confirm password is require",
+    "confirmPwdMatch": "Confirm password does not match",
+    "pwdMinChars": "Password must be at least 5 characters",
+    "pwdMaxChars": "Password must not more than 16 characters",
+    "submitButton": "SUBMIT",
+    "signup": {
+      "title": "Sign Up",
+      "alreadyAccount": "Already have an account?",
+      "loginTextButton": "Login here"
+    },
+    "login": {
+      "title": "Log In",
+      "forgotPwdTextButton": "Or forgot password?",
+      "noAccountText": "Don't have an account?",
+      "signupTextButton": "Signup here"
+    },
+    "forgotPassword": {
+      "title": "Forgot Password"
+    }
+  },
+  "productSlider": {
+    "title": "{{topic}}",
+    "more": "More",
+    "addToCart": "ADD TO CART",
+    "price": "Price"
+  },
+  "topNavigation": {
+    "appbarTitle": "Shob Shop",
+    "searchBox": "Search...",
+    "cartMenu": {
+      "emptyTitle": "Your cart is empty",
+      "emptySubtitle": "Keep Shopping",
+      "total": "Total",
+      "goToCartButton": "Go to Cart"
+    },
+    "authMenu": {
+      "login": "Log In",
+      "signout": "Log Out",
+      "signup": "Sign Up"
+    },
+    "accountMenu": {
+      "account": "Account settings",
+      "payment": "Payment methods",
+      "app": "App settings",
+      "logout": "Log Out"
+    }
+  },
+  "drawerMenu": {
+    "auth": {
+      "title": "AUTHENTICATION",
+      "signup": "Sign Up",
+      "login": "Log In",
+      "logout": "Log Out"
+    },
+    "alert": {
+      "title": "ALERT",
+      "notify": "Notifications",
+      "message": "Messages",
+      "wishlist": "Wishlist"
+    },
+    "account": {
+      "title": "ACCOUNT",
+      "setting": "Settings",
+      "payment": "Payment Method",
+      "purchase": "Purchase"
+    },
+    "mostPopular": {
+      "title": "MOST POPULAR",
+      "food": "Foods",
+      "ebook": "E-book",
+      "onlineCourse": "Online Courses",
+      "smartFarm": "Smart Farm",
+      "embedded": "Embedded System",
+      "graphic": "Graphic Design"
+    },
+    "moreFromUs": {
+      "title": "More FROM US",
+      "getApp": "Get the app",
+      "invite": "Invite friends",
+      "help": "Help"
+    }
+  },
+  "footer": {
+    "service": {
+      "title": "SERVICE",
+      "helpCentre": "Help Centre",
+      "howToBuy": "How to Buy",
+      "howToSell": "How to Sell",
+      "paymentMethod": "Payment Methods",
+      "shippingDelivery": "Shipping Delivery",
+      "return&Refund": "Return & Refund",
+      "contactUs": "Contact Us"
+    },
+    "about": {
+      "title": "About",
+      "policy": "Policy",
+      "blog": "Blog",
+      "sellerCentre": "Seller Centre"
+    },
+    "followUs": {
+      "title": "Follow Us",
+      "google": "Google",
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "youtube": "Youtube"
+    },
+    "downloadApp": {
+      "title": "DOWNLOAD APP",
+      "appleStore": "Apple Store",
+      "googlePlay": "Google Play"
+    },
+    "copyRight": {
+      "title": "© 2022 Shob shop. All Rights Reserved."
+    }
+  }
 }

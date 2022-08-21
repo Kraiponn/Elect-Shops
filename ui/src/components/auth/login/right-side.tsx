@@ -1,4 +1,4 @@
-import React from "react";
+import useTranslation from "next-translate/useTranslation";
 
 // Materials components
 import { Box, IconButton, Tooltip, Typography } from "@mui/material";
@@ -29,6 +29,8 @@ const RightSide = ({
   handleLogin,
   navigateToHomePage,
 }: IProps) => {
+  const { t } = useTranslation("common");
+
   return (
     <Box
       sx={{
@@ -80,7 +82,7 @@ const RightSide = ({
             duration: 1,
           }}
         >
-          {`Log In`}
+          {t("auth.login.title")}
         </Typography>
 
         <AuthForm

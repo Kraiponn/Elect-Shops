@@ -42,14 +42,14 @@ export default function useTheme() {
       },
     },
     typography: {
-      fontFamily: "Prompt",
+      fontFamily: "Prompt, Roboto, sans-serif",
       h1: {
-        fontSize: "2rem",
-        fontWeight: 700,
+        fontSize: "2.25rem",
+        fontWeight: 900,
       },
       h2: {
         fontSize: "1.75rem",
-        fontWeight: 700,
+        fontWeight: 900,
       },
       h3: {
         fontSize: "1.55rem",
@@ -106,6 +106,9 @@ export default function useTheme() {
           // /
         },
       },
+      MuiSelect: {
+        defaultProps: {},
+      },
     },
     breakpoints: {
       values: {
@@ -113,7 +116,7 @@ export default function useTheme() {
         sm: 500,
         md: 750,
         lg: 950,
-        xl: 1536,
+        xl: 1150,
       },
     },
   });

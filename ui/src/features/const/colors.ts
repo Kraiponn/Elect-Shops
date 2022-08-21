@@ -24,7 +24,8 @@ export const clDarkHard = "#090a17";
 export const clDarkPrimary = "#121212";
 export const clBlack = "#000000";
 
-export const clBgLight = "#c8d1d517";
+export const clBgLight = "#ecf0f216";
+export const clBgLight2 = "#c8d1d517";
 export const clWhite = "#ffffff";
 export const clWhiteGray = "#f5f5f5";
 

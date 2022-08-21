@@ -1,4 +1,4 @@
-import React from "react";
+import useTranslation from "next-translate/useTranslation";
 
 // Material design
 import { Divider } from "@mui/material";
@@ -12,42 +12,46 @@ interface IProps {
   handleItemSelectedType: (item: MenuType) => void;
 }
 
-/***********************************************
- *                MAIN METHOD                  *
- **********************************************/
-export default function AccountItemMenuGroup({ handleItemSelectedType }: IProps) {
+/***********************************************************************************
+ *                                MAIN FUNCTION                                    *
+ **********************************************************************************/
+export default function AccountItemMenuGroup({
+  handleItemSelectedType,
+}: IProps) {
+  const { t } = useTranslation("common");
+
   const handleItemSelecte = (item: MenuType) => {
-    handleItemSelectedType(item)
-  }
+    handleItemSelectedType(item);
+  };
 
   return (
     <>
       <MenuItem
         isTitle={true}
-        titleLabel={`Account`}
+        titleLabel={t("drawerMenu.account.title")}
+        text={t("drawerMenu.account.setting")}
         menuType={MenuType.ACCOUNT_SETTING}
-        text={`Account settings`}
         showIcon={true}
         Icon={ArrowForwardIosIcon}
         handleItemSelect={() => handleItemSelecte(MenuType.ACCOUNT_SETTING)}
       />
       <MenuItem
         isTitle={false}
+        text={t("drawerMenu.account.payment")}
         menuType={MenuType.PAYMENT_METHOD}
-        text={`Payment method`}
         showIcon={true}
         Icon={ArrowForwardIosIcon}
         handleItemSelect={() => handleItemSelecte(MenuType.PAYMENT_METHOD)}
       />
       <MenuItem
         isTitle={false}
+        text={t("drawerMenu.account.purchase")}
         menuType={MenuType.PURCHASE_HISTORY}
-        text={`Purchase history`}
         showIcon={true}
         Icon={ArrowForwardIosIcon}
         handleItemSelect={() => handleItemSelecte(MenuType.PURCHASE_HISTORY)}
       />
       <Divider sx={{ my: 2 }} />
     </>
-  )
+  );
 }

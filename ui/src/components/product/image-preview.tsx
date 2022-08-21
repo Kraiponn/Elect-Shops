@@ -16,12 +16,13 @@ import TwitterIcon from "@/assets/images/icons/icon-twitter.png";
 // Type for method
 interface IProps {
   product: IProduct;
+  favoriteLabel: string;
 }
 
 /***********************************************************************************
  *                          ---  MAIN FUNCTION   ---                               *
  **********************************************************************************/
-const ImagePreview = ({ product }: IProps) => {
+const ImagePreview = ({ product, favoriteLabel }: IProps) => {
   return (
     <Grid item xs={12} md={5}>
       {/*************   Product Image   *************/}
@@ -123,7 +124,7 @@ const ImagePreview = ({ product }: IProps) => {
             <FavoriteBorderIcon color="secondary" fontSize="large" />
           </IconButton>
 
-          <Typography variant="subtitle1">Favorite (9.9k)</Typography>
+          <Typography variant="subtitle1">{favoriteLabel} (9.9k)</Typography>
         </Box>
       </Box>
     </Grid>

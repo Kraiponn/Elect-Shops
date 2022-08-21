@@ -1,4 +1,4 @@
-import React from "react";
+import useTranslation from "next-translate/useTranslation";
 
 // Material design
 import { Divider } from "@mui/material";
@@ -13,12 +13,14 @@ interface IProps {
   handleItemSelectedType: (item: MenuType) => void;
 }
 
-/***********************************************
- *                MAIN METHOD                  *
- **********************************************/
+/***********************************************************************************
+ *                                MAIN FUNCTION                                    *
+ **********************************************************************************/
 export default function NotAuthItemMenuGroup({
   handleItemSelectedType,
 }: IProps) {
+  const { t } = useTranslation("common");
+
   const handleItemSelecte = (item: MenuType) => {
     handleItemSelectedType(item);
   };
@@ -27,9 +29,9 @@ export default function NotAuthItemMenuGroup({
     <>
       <MenuItem
         isTitle={true}
-        titleLabel={`Authentication`}
+        titleLabel={t("drawerMenu.auth.title")}
         menuType={MenuType.REGISTER}
-        text={`Sign Up`}
+        text={t("drawerMenu.auth.signup")}
         showIcon={true}
         quantity={0}
         Icon={AppRegistrationIcon}
@@ -38,7 +40,7 @@ export default function NotAuthItemMenuGroup({
       <MenuItem
         isTitle={false}
         menuType={MenuType.LOGIN}
-        text={`Log In`}
+        text={t("drawerMenu.auth.login")}
         showIcon={true}
         quantity={0}
         Icon={VpnKeyIcon}

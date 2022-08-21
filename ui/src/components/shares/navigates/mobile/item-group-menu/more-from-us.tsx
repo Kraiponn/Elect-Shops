@@ -1,4 +1,4 @@
-import React from "react";
+import useTranslation from "next-translate/useTranslation";
 
 // Material design
 import { Divider } from "@mui/material";
@@ -12,42 +12,46 @@ interface IProps {
   handleItemSelectedType: (item: MenuType) => void;
 }
 
-/***********************************************
- *                MAIN METHOD                  *
- **********************************************/
-export default function MoreFromUsItemMenuGroup({ handleItemSelectedType }: IProps) {
+/***********************************************************************************
+ *                                MAIN FUNCTION                                    *
+ **********************************************************************************/
+export default function MoreFromUsItemMenuGroup({
+  handleItemSelectedType,
+}: IProps) {
+  const { t } = useTranslation("common");
+
   const handleItemSelecte = (item: MenuType) => {
-    handleItemSelectedType(item)
-  }
+    handleItemSelectedType(item);
+  };
 
   return (
     <>
       <MenuItem
         isTitle={true}
-        titleLabel={`More from Us`}
+        titleLabel={t("drawerMenu.moreFromUs.title")}
+        text={t("drawerMenu.moreFromUs.getApp")}
         menuType={MenuType.GET_THE_APP}
-        text={`Get the app`}
         showIcon={true}
         Icon={ArrowForwardIosIcon}
         handleItemSelect={() => handleItemSelecte(MenuType.GET_THE_APP)}
       />
       <MenuItem
         isTitle={false}
+        text={t("drawerMenu.moreFromUs.invite")}
         menuType={MenuType.INVITE_FRIENDS}
-        text={`Invite friends`}
         showIcon={true}
         Icon={ArrowForwardIosIcon}
         handleItemSelect={() => handleItemSelecte(MenuType.INVITE_FRIENDS)}
       />
       <MenuItem
         isTitle={false}
+        text={t("drawerMenu.moreFromUs.help")}
         menuType={MenuType.HELP}
-        text={`Help`}
         showIcon={true}
         Icon={ArrowForwardIosIcon}
         handleItemSelect={() => handleItemSelecte(MenuType.HELP)}
       />
       <Divider sx={{ my: 2 }} />
     </>
-  )
+  );
 }

@@ -1,3 +1,8 @@
 {
-  "title": "ตระกร้าสินค้า"
+  "title": "ลงทะเบียน",
+  "emailBox": "อีเมล",
+  "password": "รหัสผ่าน",
+  "submitButton": "ยืนยัน",
+  "alreadyAccount": "คุณมีบัญชีแล้วใช่ไหม",
+  "loginTextButton": "ลงชื่อเข้าใช้"
 }

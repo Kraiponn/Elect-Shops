@@ -6,10 +6,15 @@ import { Box, Typography } from "@mui/material";
 // Components
 import TextButton from "@/components/shares/navigates/desktop/text-button";
 
+interface IProps {
+  login: string;
+  signup: string;
+}
+
 /***********************************************************************************
  *                          ---   MAIN FUNCTION   ---                              *
  **********************************************************************************/
-const AuthMenu = () => {
+const AuthMenu = ({ login, signup }: IProps) => {
   const router = useRouter();
 
   return (
@@ -17,28 +22,27 @@ const AuthMenu = () => {
       sx={{
         display: "flex",
         justifyContent: "center",
-        alignItems: "center",
+        alignItems: "baseline",
         marginX: "1rem",
         marginLeft: "1.5rem",
       }}
     >
-      <TextButton label={`Log In`} OnClick={() => router.push("/auth/login")} />
+      <TextButton
+        label={login}
+        OnClick={() =>
+          router.push("/auth/login", "/auth/login", { locale: router.locale })
+        }
+      />
 
-      <Typography
-        variant="h5"
-        sx={{
-          p: 1,
-          // color: "rgba(255, 255, 255, 0.898)",
-          // fontWeight: "100",
-          // fontFamily: "PromptLight",
-        }}
-      >
+      <Typography variant="h5" sx={{ p: 1 }}>
         |
       </Typography>
 
       <TextButton
-        label={`Sign Up`}
-        OnClick={() => router.push("/auth/signup")}
+        label={signup}
+        OnClick={() =>
+          router.push("/auth/signup", "/auth/signup", { locale: router.locale })
+        }
       />
     </Box>
   );

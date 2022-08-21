@@ -1,10 +1,14 @@
 import React from "react";
 import { useRouter } from "next/router";
+import useTranslation from "next-translate/useTranslation";
 
 // Material design
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { Box, Button, SvgIconTypeMap, Typography } from "@mui/material";
-import { clPrimaryDark } from "@/features/const/colors";
+
+// Global state and system colors
+import { useAppSelector } from "@/features/hooks/use-global-state";
+import { clDarkMedium, clWhite } from "@/features/const/colors";
 
 // Converter
 import { ThaiCurrencyFormatWithBuildIn } from "@/features/services";
@@ -22,6 +26,8 @@ interface IProps {
  **********************************************************************************/
 const TotalOrder = ({ quantity, totalPrice, Icon }: IProps) => {
   const router = useRouter();
+  const { t } = useTranslation("common");
+  const { darkMode } = useAppSelector((state) => state.gui);
 
   return quantity <= 0 ? (
     <Box
@@ -36,15 +42,11 @@ const TotalOrder = ({ quantity, totalPrice, Icon }: IProps) => {
     >
       <Icon color="inherit" sx={{ fontSize: "3.5rem" }} />
 
-      <Typography variant="h5">{`Your cart is empty`}</Typography>
-      <Typography
-        variant="h6"
-        sx={{
-          fontSize: "1.2rem",
-          color: clPrimaryDark,
-        }}
-      >
-        {`Keep Shopping`}
+      <Typography variant="h5">
+        {t("topNavigation.cartMenu.emptyTitle")}
+      </Typography>
+      <Typography variant="subtitle1">
+        {t("topNavigation.cartMenu.emptySubtitle")}
       </Typography>
     </Box>
   ) : (
@@ -54,12 +56,12 @@ const TotalOrder = ({ quantity, totalPrice, Icon }: IProps) => {
         padding: "1rem 1rem",
         width: "100%",
         height: "100%",
-        background: "rgb(255, 255, 255)",
+        background: darkMode ? clDarkMedium : clWhite,
         boxShadow: "0 .2rem .5rem blue",
         position: "sticky",
         left: 0,
         bottom: "0%",
-        zIndex: "9999",
+        zIndex: 9999,
       }}
     >
       <Typography
@@ -69,7 +71,9 @@ const TotalOrder = ({ quantity, totalPrice, Icon }: IProps) => {
           marginBottom: "0.789rem",
         }}
       >
-        {`Total: ${ThaiCurrencyFormatWithBuildIn(totalPrice)}`}
+        {`${t("topNavigation.cartMenu.total")}: ${ThaiCurrencyFormatWithBuildIn(
+          totalPrice
+        )}`}
       </Typography>
 
       <Button
@@ -83,9 +87,13 @@ const TotalOrder = ({ quantity, totalPrice, Icon }: IProps) => {
             cursor: "pointer",
           },
         }}
-        onClick={() => router.push("/products/cart")}
+        onClick={() =>
+          router.push("/products/cart", "/products/cart", {
+            locale: router.locale,
+          })
+        }
       >
-        {`Go to Cart`}
+        {t("topNavigation.cartMenu.goToCartButton")}
       </Button>
     </Box>
   );

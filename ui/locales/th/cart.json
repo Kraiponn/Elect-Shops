@@ -1,3 +1,19 @@
 {
-  "title": "ตระกร้าสินค้า"
+  "title": "ตะกร้าสินค้า",
+  "searchProductResult": "พบสินค้า {{productTotal}} รายการในตะกร้า",
+  "emptyCart": {
+    "title": "ไม่มีสินค้าในตะกร้า ช็อปปิ้งต่อไปโดยการค้นหาสินค้า",
+    "buttonLabel": "ช็อปปิ้งต่อไป"
+  },
+  "summary": {
+    "title": "โปรโมชั่น",
+    "isApply": "กำลังใช้งาน",
+    "couponBox": "ใส่คูปอง",
+    "applyButton": "ยืนยัน",
+    "productItemCount": "{{quantity}} รายการ",
+    "deliveryCharge": "ค่าจัดส่ง",
+    "total": "รวมสุทธิ",
+    "checkoutButton": "ชำระสินค้า",
+    "addMoreButton": "เพิ่มสินค้า"
+  }
 }

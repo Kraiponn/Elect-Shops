@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
+import useTranslation from "next-translate/useTranslation";
+import { ToastContainer, toast } from "react-toastify";
 
 // Material design
 import { Grid } from "@mui/material";
@@ -22,6 +24,7 @@ interface IProps {
  **********************************************************************************/
 const Content = ({ product }: IProps) => {
   const router = useRouter();
+  const { t } = useTranslation("product-detail");
   const [productQuantity, setProductQuantity] = useState<number>(1);
   const dispatch = useAppDispatch();
 
@@ -35,6 +38,15 @@ const Content = ({ product }: IProps) => {
     setProductQuantity((prev) => prev - 1);
   };
 
+  const onShowToastify = () => {
+    toast.success("Product added is successfully", {
+      // style: { background: "green", color: "white" },
+      position: toast.POSITION.TOP_RIGHT,
+      autoClose: 1500,
+      // icon: "🚀",
+    });
+  };
+
   const handleAddProductToCart = (product: IProduct) => {
     const input: IInputCart = {
       product,
@@ -42,21 +54,32 @@ const Content = ({ product }: IProps) => {
     };
 
     dispatch(increaseProductToCartWithSpecify(input));
-    router.push("/");
+    onShowToastify();
+  };
+
+  const handleOnBuyProduct = () => {
+    router.push("/products/cart", "/products/cart", {
+      locale: router.locale,
+    });
   };
 
   return (
-    <Grid container>
-      <ImagePreview product={product} />
+    <>
+      <ToastContainer />
 
-      <ProductDescription
-        product={product}
-        productQuantity={productQuantity}
-        increaseProduct={increaseProduct}
-        decreaseProduct={decreaseProduct}
-        handleAddProductToCart={() => handleAddProductToCart(product)}
-      />
-    </Grid>
+      <Grid container>
+        <ImagePreview favoriteLabel={t("favorite")} product={product} />
+
+        <ProductDescription
+          product={product}
+          productQuantity={productQuantity}
+          increaseProduct={increaseProduct}
+          decreaseProduct={decreaseProduct}
+          handleAddProductToCart={() => handleAddProductToCart(product)}
+          handleOnBuyProduct={handleOnBuyProduct}
+        />
+      </Grid>
+    </>
   );
 };
 

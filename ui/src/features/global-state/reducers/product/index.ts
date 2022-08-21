@@ -3,16 +3,13 @@ import {
   IProduct,
   ICart,
   IErorrResponseData,
-  IResponseMessage,
   IInputCart,
-  IProductSearchResponse,
   IInputFilterProduct,
   IProductResponse,
 } from "@/features/interfaces";
 import { http } from "@/features/services/http";
 import { AxiosError } from "axios";
 import { getHttpErrorObject } from "@/features/services/errors";
-import Cookies from "js-cookie";
 
 const initialState: ICart = {
   products: [],
@@ -35,47 +32,29 @@ const initialState: ICart = {
   isLoading: false,
   isSuccess: false,
   isError: null,
-  keyword: "",
+  isAddToCart: false,
 };
 
-/************************************************************
- *               Get Products With Search Key               *
- ************************************************************/
-export const fetchProducts = createAsyncThunk<
-  IProductSearchResponse,
-  string,
-  {
-    rejectValue: IErorrResponseData;
-  }
->("products/fetchProducts", async (searchKey, { rejectWithValue }) => {
-  const controller = new AbortController();
-  // console.log("Search product")
+const getProductApi = ({
+  searchKey,
+  categoryId,
+  minPrice,
+  maxPrice,
+  page,
+  limit,
+}: IInputFilterProduct) => {
+  let url = "";
 
-  try {
-    const response = await http.get(
-      searchKey
-        ? `/products?search=${searchKey}&page=${1}&limit=${12}`
-        : `/products?page=${1}&limit=${12}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        signal: controller.signal,
-        withCredentials: false,
-      }
-    );
+  if (searchKey && categoryId)
+    url = `/products?search=${searchKey}&categoryId=${categoryId}&page=${page}&limit=${limit}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
+  else if (searchKey)
+    url = `/products?search=${searchKey}&page=${page}&limit=${limit}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
+  else if (categoryId)
+    url = `/products?categoryId=${categoryId}&page=${page}&limit=${limit}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
+  else url = `/products?page=${page}&limit=${limit}`;
 
-    // console.log(response.data);
-    controller.abort();
-    const pagination = response.data as IProductResponse;
-
-    return { pagination, keyword: searchKey };
-  } catch (error) {
-    // console.log("Error loop...");
-    const errObj = getHttpErrorObject(error as AxiosError);
-    return rejectWithValue(errObj as IErorrResponseData);
-  }
-});
+  return url;
+};
 
 /************************************************************
  *               Get products with filters                  *
@@ -90,23 +69,18 @@ export const fetchProductsWithFilter = createAsyncThunk<
   "products/fetchProductsWithFilter",
   async (filterKeys, { rejectWithValue }) => {
     const controller = new AbortController();
-    const { searchKey, page, limit, minPrice, maxPrice } = filterKeys;
+    const url = getProductApi(filterKeys);
 
     try {
-      const response = await http.get(
-        searchKey
-          ? `/products?search=${searchKey}&page=${page}&limit=${limit}&minPrice=${minPrice}&maxPrice=${maxPrice}`
-          : `/products?page=${page}&limit=${limit}&minPrice=${minPrice}&maxPrice=${maxPrice}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          signal: controller.signal,
-          withCredentials: false,
-        }
-      );
+      const response = await http.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        signal: controller.signal,
+        withCredentials: false,
+      });
 
-      console.log(response.data);
+      // console.log(response.data);
       controller.abort();
       // const products = response.data;
 
@@ -125,6 +99,9 @@ const productSlice = createSlice({
   name: "product",
   initialState,
   reducers: {
+    clearStateAddToCart: (state) => {
+      state.isAddToCart = false;
+    },
     increaseProductToCartWithSpecify: (
       state,
       { payload }: PayloadAction<IInputCart>
@@ -180,6 +157,8 @@ const productSlice = createSlice({
             };
           }
         }
+
+        state.isAddToCart = true;
       }
 
       state.quantity = state.orders.reduce((accumulate, { quantity }) => {
@@ -221,6 +200,7 @@ const productSlice = createSlice({
       state.totalPrice = state.orders.reduce((accumulate, { totalPrice }) => {
         return accumulate + totalPrice;
       }, 0);
+      state.isAddToCart = true;
     },
     decreaseProductFromCart: (state, { payload }: PayloadAction<IProduct>) => {
       const productId = payload.id;
@@ -289,38 +269,9 @@ const productSlice = createSlice({
           limit: 10,
         },
       };
-      state.keyword = "";
     },
   },
   extraReducers: (builder) => {
-    /*************************************************************************
-     *                     Get Products With Search Key                      *
-     ************************************************************************/
-    builder.addCase(fetchProducts.pending, (state, { payload }) => {
-      // console.log("Fetch product pending...");
-      state.isLoading = true;
-      state.isSuccess = false;
-      state.isError = null;
-    });
-
-    builder.addCase(fetchProducts.fulfilled, (state, { payload }) => {
-      // console.log("Products...", payload);
-
-      state.isLoading = false;
-      state.isSuccess = true;
-      state.products = [];
-      state.pagination = payload.pagination;
-      state.keyword = payload.keyword;
-    });
-
-    builder.addCase(fetchProducts.rejected, (state, action) => {
-      // console.log("Error on rejected", action.payload);
-
-      state.isLoading = false;
-      state.isSuccess = false;
-      state.isError = action.payload as IErorrResponseData;
-    });
-
     /*************************************************************************
      *                      Get Products With Filter                         *
      ************************************************************************/
@@ -329,20 +280,16 @@ const productSlice = createSlice({
       state.isSuccess = false;
       state.isError = null;
     });
-
     builder.addCase(fetchProductsWithFilter.fulfilled, (state, { payload }) => {
       // console.log("Products", payload);
-
       state.isLoading = false;
       state.isSuccess = true;
       state.products = [];
       state.products = payload.products;
       state.pagination = payload;
     });
-
     builder.addCase(fetchProductsWithFilter.rejected, (state, action) => {
       // console.log("Error on rejected", action.payload);
-
       state.isLoading = false;
       state.isSuccess = false;
       state.isError = action.payload as IErorrResponseData;
@@ -351,6 +298,7 @@ const productSlice = createSlice({
 });
 
 export const {
+  clearStateAddToCart,
   increaseProductToCartWithSpecify,
   increaseProductToCart,
   decreaseProductFromCart,

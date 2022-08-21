@@ -1,3 +1,125 @@
 {
-  "title": "แปลภาษาด้วย Next translate"
+  "title": "แปลภาษาด้วย Next translate",
+  "auth": {
+    "emailBox": "อีเมล",
+    "pwdBox": "รหัสผ่าน",
+    "confirmPwdBox": "ยืนยันรหัสผ่าน",
+    "emailRequire": "กรุณากรอกอีเมลของคุณ",
+    "pwdRequire": "กรุณากรอกรหัสผ่าน",
+    "confirmPwdRequire": "กรุณายืนยันรหัสผ่านอีกครั้ง",
+    "confirmPwdMatch": "รหัสผ่านไม่ตรงกัน",
+    "pwdMinChars": "ความยาวรหัสผ่านขั้นต่ำควร 5 อักขระ",
+    "pwdMaxChars": "ความยาวรหัสผ่านต้องไม่เกิน 16 ตัวอีกษร",
+    "submitButton": "ยืนยัน",
+    "signup": {
+      "title": "ลงทะเบียน",
+      "alreadyAccount": "คุณมีบัญชีแล้วใช่ไหม?",
+      "loginTextButton": "ลงชื่อเข้าใช้"
+    },
+    "login": {
+      "title": "ลงชื่อเข้าใช้งาน",
+      "submitButton": "ลงชื่อเข้าใช้",
+      "forgotPwdTextButton": "หรือลืมรหัสผ่าน",
+      "noAccountText": "ยังไม่มีบัญชีใช่ไหม?",
+      "signupTextButton": "ลงทะเบียน"
+    },
+    "forgotPassword": {
+      "title": "ลืมรหัสผ่าน"
+    }
+  },
+  "productSlider": {
+    "title": "{{topic}}",
+    "more": "สินค้าเพิ่มเติม",
+    "addToCart": "เพิ่มลงตะกร้า",
+    "price": "ราคา"
+  },
+  "topNavigation": {
+    "appbarTitle": "ชอบช็อป",
+    "searchBox": "ค้นหาสินค้า...",
+    "cartMenu": {
+      "emptyTitle": "ไม่มีสินค้าในตะกร้า",
+      "emptySubtitle": "ช้อปต่อไป",
+      "total": "ทั้งหมด",
+      "goToCartButton": "ไปหน้าตะกร้า"
+    },
+    "authMenu": {
+      "login": "ลงชื่อเข้าใช้",
+      "signout": "ลงชื่อออก",
+      "signup": "สมัครสมาชิก"
+    },
+    "accountMenu": {
+      "account": "ตั้งค่าบัญชี",
+      "payment": "การชำระสินค้า",
+      "app": "ตั้งค่าระบบ",
+      "logout": "ออกจากระบบ"
+    }
+  },
+  "drawerMenu": {
+    "auth": {
+      "title": "สิทธิการเข้าถึง",
+      "signup": "ลงทะเบียน",
+      "login": "ลงชื่อ-เข้าใช้",
+      "logout": "ออกจากระบบ"
+    },
+    "alert": {
+      "title": "หมวดแจ้งเตือน",
+      "notify": "แจ้งเตือน",
+      "message": "ข้อความ",
+      "wishlist": "สินค้าที่ชอบ"
+    },
+    "account": {
+      "title": "หมวดบัญชี",
+      "setting": "ตั้งค่า",
+      "payment": "การชำระเงิน",
+      "purchase": "การซื้อสินค้า"
+    },
+    "mostPopular": {
+      "title": "หมวดยอดนิยม",
+      "food": "อาหาร",
+      "ebook": "หนังสือออนไลน์",
+      "onlineCourse": "คอร์สเรียนออนไลน์",
+      "smartFarm": "สวนสมัยใหม่",
+      "embedded": "สมองกลฝังตัว",
+      "graphic": "กราฟฟิก"
+    },
+    "moreFromUs": {
+      "title": "อื่นๆ",
+      "getApp": "แอป",
+      "invite": "เชิญเพื่อนของคุณ",
+      "help": "ศูนย์ช่วยเหลือ"
+    }
+  },
+  "footer": {
+    "service": {
+      "title": "บริการ",
+      "helpCentre": "ศูนย์ช่วยเหลือ",
+      "howToBuy": "วิธีซื้อ",
+      "howToSell": "วิธีขาย",
+      "paymentMethod": "วการชำระเงิน",
+      "shippingDelivery": "บริการส่งสินค้า",
+      "return&Refund": "คืนเงิน",
+      "contactUs": "ติดต่อเรา"
+    },
+    "about": {
+      "title": "เกี่ยวกับเรา",
+      "policy": "นโยบาย",
+      "blog": "บล็อก",
+      "sellerCentre": "ศูนย์ฝ่ายขาย"
+    },
+    "followUs": {
+      "title": "ติดตามเรา",
+      "google": "Google",
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "youtube": "Youtube"
+    },
+    "downloadApp": {
+      "title": "โหลดแอป",
+      "appleStore": "Apple Store",
+      "googlePlay": "Google Play"
+    },
+    "copyRight": {
+      "title": "© 2022 Shob shop. All Rights Reserved."
+    }
+  }
 }

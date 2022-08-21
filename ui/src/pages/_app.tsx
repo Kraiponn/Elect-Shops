@@ -1,6 +1,8 @@
 import type { AppProps } from "next/app";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers";
 
-// import { CssBaseline } from "@mui/material";
+import { CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { CacheProvider, EmotionCache } from "@emotion/react";
 import useTheme from "@/features/mui/useTheme";
@@ -20,7 +22,6 @@ import "@/assets/styles/banner-slider.css";
 import "@/assets/styles/product-list-slider.css";
 import "@/assets/styles/footer.css";
 import "@/assets/styles/activity-slider.css";
-import { CssBaseline } from "@mui/material";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -40,7 +41,9 @@ function MyApp({
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Component {...pageProps} />
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <Component {...pageProps} />
+        </LocalizationProvider>
       </ThemeProvider>
     </CacheProvider>
   );

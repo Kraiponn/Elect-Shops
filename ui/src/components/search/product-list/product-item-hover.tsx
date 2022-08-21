@@ -1,8 +1,8 @@
-import React from "react";
+import useTranslation from "next-translate/useTranslation";
 
 // Types and Services
 import { IProduct } from "@/features/interfaces";
-import { clSecondary } from "@/features/const/colors";
+import { clDarkMedium, clSecondary, clWhite } from "@/features/const/colors";
 import { ThaiCurrencyFormatWithBuildIn } from "@/features/services";
 
 // Material Design
@@ -11,6 +11,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
 interface IProps {
+  darkMode: boolean;
   product_name: string;
   description: string;
   unit_price: number;
@@ -24,6 +25,7 @@ interface IProps {
  *                         -----   MAIN FUNCTION   -----                           *
  **********************************************************************************/
 export default function ProductItemHover({
+  darkMode,
   product,
   product_name,
   description,
@@ -32,6 +34,8 @@ export default function ProductItemHover({
   handleIncreaseProductToCart,
   handleToggleProductFavorite,
 }: IProps) {
+  const { t } = useTranslation("search");
+
   return (
     <Box
       className="card-container_hover"
@@ -47,8 +51,10 @@ export default function ProductItemHover({
         left: "30%",
         bottom: "100%",
         zIndex: 12000,
-        background: "rgb(255, 255, 255)",
-        boxShadow: "0 0rem .3rem rgb(67, 92, 255)",
+        background: darkMode ? clDarkMedium : clWhite,
+        boxShadow: `0 0 0.4rem ${
+          darkMode ? "rgba(255, 255, 255, 0.795)" : "rgb(67, 92, 255)"
+        }`,
         borderRadius: ".5rem",
         visibility: "hidden",
         transform: "scale(0)",
@@ -67,8 +73,12 @@ export default function ProductItemHover({
           // borderTop: "20px solid rgb(255, 255, 255)",
           borderStyle: "solid",
           borderWidth: "20px 10px 0 10px",
-          borderColor: "white transparent transparent transparent",
-          filter: "drop-shadow(1px 1px 1px rgba(67, 92, 255, 0.795))",
+          borderColor: `${
+            darkMode ? clDarkMedium : clWhite
+          } transparent transparent transparent`,
+          filter: `drop-shadow(1px 1px 1px ${
+            darkMode ? "rgba(255, 255, 255, 0.795)" : "rgba(67, 92, 255, 0.795)"
+          })`,
         },
       }}
       component="div"
@@ -88,7 +98,9 @@ export default function ProductItemHover({
       <Typography
         variant="h5"
         sx={{ color: clSecondary, marginY: "1rem" }}
-      >{`Price: ${ThaiCurrencyFormatWithBuildIn(unit_price)}`}</Typography>
+      >{`${t("productList.price")} ${ThaiCurrencyFormatWithBuildIn(
+        unit_price
+      )}`}</Typography>
 
       <Box
         sx={{
@@ -115,7 +127,7 @@ export default function ProductItemHover({
           }}
           onClick={() => handleIncreaseProductToCart(product)}
         >
-          Add to Cart
+          {t("productList.addToCartButton")}
         </Button>
 
         <IconButton onClick={handleToggleProductFavorite}>

@@ -3,7 +3,7 @@ export interface IProfileBody {
   last_name: string;
   phone: string;
   address: string;
-  date_of_birth: Date;
+  date_of_birth?: string;
 }
 
 export type EditBoxType =

@@ -1,15 +1,14 @@
-import React from "react";
+import Slider from "react-slick";
 
 // Material design
 import { Typography, Box } from "@mui/material";
 import EastIcon from "@mui/icons-material/East";
 import ShopIcon from "@mui/icons-material/Shop";
 
-// Styles
-import Slider from "react-slick";
-
-// Types
+// Global state, types & colors system
+import { useAppSelector } from "@/features/hooks/use-global-state";
 import { IProduct } from "@/features/interfaces";
+import { clDarkMedium, clSecondary, clWhite } from "@/features/const/colors";
 
 // Components
 import {
@@ -17,25 +16,35 @@ import {
   PreviousButton,
 } from "@/components/home/custom-arrow-slider";
 import CardItem from "@/components/shares/ui/card-item";
-import { clSecondary } from "@/features/const/colors";
 
 interface IProps {
   title?: string;
   titleFontSize?: string;
   products: IProduct[];
+  moreProductLabel: string;
 }
 
 /***********************************************************************************
  *                        -----   MAIN FUNCTION   -----                            *
  **********************************************************************************/
-const ProductListItem = ({ title, titleFontSize, products }: IProps) => {
+const ProductListItem = ({
+  title,
+  titleFontSize,
+  products,
+  moreProductLabel,
+}: IProps) => {
+  const { darkMode } = useAppSelector((state) => state.gui);
+
   return (
     <Box
       sx={{
         margin: "1rem",
         padding: "1rem 0.5rem",
         my: "5rem",
-        boxShadow: "0 0 .5rem rgba(0, 0, 0, 0.252)",
+        background: darkMode ? clDarkMedium : clWhite,
+        boxShadow: darkMode
+          ? "0 0 7px rgba(221, 219, 224, 0.302)"
+          : "0 0 7px rgba(1, 1, 1, 0.162)",
         borderRadius: "0.5rem",
       }}
     >
@@ -59,9 +68,9 @@ const ProductListItem = ({ title, titleFontSize, products }: IProps) => {
             <ShopIcon sx={{ fontSize: titleFontSize ? "2rem" : "2.7rem" }} />
             <Typography
               sx={{
-                fontSize: titleFontSize ? titleFontSize : "2.5rem",
+                fontSize: titleFontSize ? titleFontSize : "2rem",
                 fontFamily: "Prompt",
-                fontWeight: titleFontSize ? 400 : 900,
+                fontWeight: titleFontSize ? 400 : 700,
                 ml: 1,
               }}
               component="h2"
@@ -85,18 +94,16 @@ const ProductListItem = ({ title, titleFontSize, products }: IProps) => {
             }}
           >
             <Typography
+              variant="h6"
               sx={{
-                fontFamily: "Prompt",
-                fontSize: "1.3rem",
-                fontWeight: 900,
                 color: clSecondary,
                 ml: 3,
               }}
               component="h5"
             >
-              {`More`}
+              {moreProductLabel}
             </Typography>
-            <EastIcon sx={{ fontSize: "1.3rem", ml: 1, color: clSecondary }} />
+            <EastIcon sx={{ fontSize: "1.2rem", ml: 1, color: clSecondary }} />
           </Box>
         </Box>
       )}

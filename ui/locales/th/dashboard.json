@@ -27,7 +27,7 @@
   "content": {
     "breadcrumbs": {
       "home": "หน้าหลัก",
-      "cart": "ตะกร้าสินค้า",
+      "product": "สินค้า",
       "dashboard": "แผงควบคุม"
     },
     "generalMenu": {

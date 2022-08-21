@@ -1,4 +1,5 @@
 import React from "react";
+import useTranslation from "next-translate/useTranslation";
 
 // Materials
 import { Box, Typography } from "@mui/material";
@@ -9,10 +10,12 @@ import { motion } from "framer-motion";
 import DefaultLayout from "@/components/shares/layouts/defaut-layout";
 import ForgotPasswordForm from "@/components/auth/forgot-password-form";
 
-/****************************************************
- *  MAIN FUNCTION
- */
+/***********************************************************************************
+ *                          ---   MAIN FUNCTION   ---                              *
+ **********************************************************************************/
 const ForgotPassword = () => {
+  const { t } = useTranslation("common");
+
   return (
     <DefaultLayout title="signup page">
       <Box
@@ -50,10 +53,14 @@ const ForgotPassword = () => {
               duration: 1,
             }}
           >
-            {`Forgot Password`}
+            {t("auth.forgotPassword.title")}
           </Typography>
 
-          <ForgotPasswordForm />
+          <ForgotPasswordForm
+            textSubmitButton={t("auth.submitButton")}
+            pwdRequire={t("auth.pwdRequire")}
+            pwdMinLength={t("auth.pwdMinChars")}
+          />
         </Box>
       </Box>
     </DefaultLayout>

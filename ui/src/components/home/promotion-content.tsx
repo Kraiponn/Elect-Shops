@@ -1,5 +1,5 @@
-import React from "react";
 import Image from "next/image";
+import useTranslation from "next-translate/useTranslation";
 
 // Material design
 import { Box, Grid, Typography } from "@mui/material";
@@ -17,20 +17,15 @@ import {
   secondaryActivityData,
 } from "@/components/home/home-dummy-data";
 
-// Components
+/***********************************************************************************
+ *                          ---   MAIN FUNCTION   ---                              *
+ **********************************************************************************/
+const Promotion = () => {
+  const { t } = useTranslation("home");
 
-interface IProps {
-  //   electrics: IProduct[];
-  //   books: IProduct[];
-}
-
-/***********************************************
- *                MAIN METHOD                  *
- **********************************************/
-const Promotion = ({}: IProps) => {
   return (
     <Box sx={{ margin: "4.5rem" }}>
-      <Typography variant="h3" sx={{fontWeight: 700, fontSize: '2.2rem'}}>{`Monthly Promotions`}</Typography>
+      <Typography variant="h1">{t("monthlyPromotion.title")}</Typography>
 
       <Grid container>
         <Grid

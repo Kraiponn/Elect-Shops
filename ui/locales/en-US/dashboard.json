@@ -26,8 +26,8 @@
   },
   "content": {
     "breadcrumbs": {
-      "home": "Home",
-      "cart": "Cart",
+      "home": "home",
+      "product": "products",
       "dashboard": "Dashboard"
     },
     "generalMenu": {

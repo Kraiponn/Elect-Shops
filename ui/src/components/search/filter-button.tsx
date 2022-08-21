@@ -1,4 +1,4 @@
-import React from "react";
+import useTranslation from "next-translate/useTranslation";
 
 // Components
 import { Box, IconButton, Typography } from "@mui/material";
@@ -13,6 +13,8 @@ interface IProps {
  *                         -----   MAIN FUNCTION   -----                           *
  **********************************************************************************/
 export default function FilterButton({ handleToggleShowFilterResule }: IProps) {
+  const { t } = useTranslation("search");
+
   return (
     <Box
       sx={{
@@ -25,10 +27,9 @@ export default function FilterButton({ handleToggleShowFilterResule }: IProps) {
       <IconButton onClick={handleToggleShowFilterResule}>
         <FilterListIcon fontSize="large" />
 
-        <Typography
-          variant="h5"
-          sx={{ marginLeft: "1rem" }}
-        >{`Filter Results`}</Typography>
+        <Typography variant="h5" sx={{ marginLeft: "1rem" }}>
+          {t("filterResult.title")}
+        </Typography>
       </IconButton>
     </Box>
   );

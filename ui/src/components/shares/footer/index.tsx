@@ -1,6 +1,7 @@
 import { NextPage } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import useTranslation from "next-translate/useTranslation";
 
 // Material design
 import { Box, Grid, IconButton, Typography } from "@mui/material";
@@ -20,47 +21,49 @@ import {
  *                         MAIN FUNCTION - CLIENT SIDE                             *
  **********************************************************************************/
 const Footer: NextPage = () => {
+  const { t } = useTranslation("common");
+
   return (
     <Box className="footer--container">
       <Grid container>
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="h6" sx={{ fontSize: "1.1rem", mt: 3 }}>
-            SERVICE
+            {t("footer.service.title")}
           </Typography>
           <ul className="footer__service">
             <li>
               <Link href="#" passHref>
-                <a>Help Centre</a>
+                <a>{t("footer.service.helpCentre")}</a>
               </Link>
             </li>
             <li>
               <Link href="#" passHref>
-                <a>How to Buy</a>
+                <a>{t("footer.service.howToBuy")}</a>
               </Link>
             </li>
             <li>
               <Link href="#" passHref>
-                <a>How to Sell</a>
+                <a>{t("footer.service.howToSell")}</a>
               </Link>
             </li>
             <li>
               <Link href="#" passHref>
-                <a>Payment Methods</a>
+                <a>{t("footer.service.paymentMethod")}</a>
               </Link>
             </li>
             <li>
               <Link href="#" passHref>
-                <a>Shipping Delivery</a>
+                <a>{t("footer.service.shippingDelivery")}</a>
               </Link>
             </li>
             <li>
               <Link href="#" passHref>
-                <a>Return & Refund</a>
+                <a>{t("footer.service.return&Refund")}</a>
               </Link>
             </li>
             <li>
               <Link href="#" passHref>
-                <a>Contact Us</a>
+                <a>{t("footer.service.contactUs")}</a>
               </Link>
             </li>
           </ul>
@@ -68,32 +71,22 @@ const Footer: NextPage = () => {
 
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="h6" sx={{ fontSize: "1.1rem", mt: 2 }}>
-            ABOUT
+            {t("footer.about.title")}
           </Typography>
           <ul className="footer__service">
             <li>
               <Link href="#" passHref>
-                <a>About Us</a>
+                <a>{t("footer.about.policy")}</a>
               </Link>
             </li>
             <li>
               <Link href="#" passHref>
-                <a>Policy</a>
+                <a>{t("footer.about.blog")}</a>
               </Link>
             </li>
             <li>
               <Link href="#" passHref>
-                <a>Blog</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="#" passHref>
-                <a>Seller Centre</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="#" passHref>
-                <a>Flash Deals</a>
+                <a>{t("footer.about.sellerCentre")}</a>
               </Link>
             </li>
           </ul>
@@ -101,7 +94,7 @@ const Footer: NextPage = () => {
 
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="h6" sx={{ fontSize: "1.1rem", mt: 2 }}>
-            FOLLOW US
+            {t("footer.followUs.title")}
           </Typography>
           <Box
             sx={{
@@ -121,7 +114,7 @@ const Footer: NextPage = () => {
             >
               <GoogleIcon color="inherit" />
               <Typography sx={{ marginLeft: "0.5rem", fontSize: "1rem" }}>
-                Google
+                {t("footer.followUs.google")}
               </Typography>
             </IconButton>
 
@@ -131,7 +124,7 @@ const Footer: NextPage = () => {
             >
               <FacebookIcon color="inherit" />
               <Typography sx={{ marginLeft: "0.5rem", fontSize: "1rem" }}>
-                Facebook
+                {t("footer.followUs.facebook")}
               </Typography>
             </IconButton>
 
@@ -141,7 +134,7 @@ const Footer: NextPage = () => {
             >
               <InstagramIcon color="inherit" />
               <Typography sx={{ marginLeft: "0.5rem", fontSize: "1rem" }}>
-                Instagram
+                {t("footer.followUs.instagram")}
               </Typography>
             </IconButton>
 
@@ -151,7 +144,7 @@ const Footer: NextPage = () => {
             >
               <YouTubeIcon color="inherit" />
               <Typography sx={{ marginLeft: "0.5rem", fontSize: "1rem" }}>
-                Youtube
+                {t("footer.followUs.youtube")}
               </Typography>
             </IconButton>
           </Box>
@@ -159,7 +152,7 @@ const Footer: NextPage = () => {
 
         <Grid item xs={12} sm={6} md={3}>
           <Typography variant="h6" sx={{ fontSize: "1.1rem", mt: 2 }}>
-            DOWNLOAD APP
+            {t("footer.downloadApp.title")}
           </Typography>
           <Box
             sx={{
@@ -218,7 +211,7 @@ const Footer: NextPage = () => {
                     fontWeight: 500,
                   }}
                 >
-                  Apple Store
+                  {t("footer.downloadApp.appleStore")}
                 </Typography>
               </Box>
 
@@ -254,7 +247,7 @@ const Footer: NextPage = () => {
                     fontWeight: 500,
                   }}
                 >
-                  Play Store
+                  {t("footer.downloadApp.googlePlay")}
                 </Typography>
               </Box>
             </Box>

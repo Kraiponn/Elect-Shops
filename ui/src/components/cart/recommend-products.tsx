@@ -1,12 +1,7 @@
-// Material design
-import { Container, Typography } from "@mui/material";
-
-// Services & Global state
-import { useAppSelector } from "@/features/hooks/use-global-state";
+import { useRouter } from "next/router";
+import useTranslation from "next-translate/useTranslation";
 
 // Components
-import EmptyCart from "@/components/cart/empty-cart";
-import ProductCart from "@/components/cart/product-cart";
 import ProductSlider from "@/components/shares/ui/product-list-slider";
 import { IProduct } from "@/features/interfaces";
 
@@ -14,13 +9,19 @@ interface IProps {
   products: IProduct[];
 }
 
-/***********************************************
- *                MAIN METHOD                  *
- **********************************************/
+/***********************************************************************************
+ *                          ---  MAIN FUNCTION   ---                               *
+ **********************************************************************************/
 const RecommendProduct = ({ products }: IProps) => {
+  const { t } = useTranslation("common");
+  const { locale } = useRouter();
+
   return (
     <ProductSlider
-      title={`You might also like`}
+      title={
+        locale === "th" ? "คุณอาจชอบสินค้าเหล่านี้" : `You might also like`
+      }
+      moreProductLabel={t("productSlider.more")}
       titleFontSize="1.5rem"
       products={products}
     />

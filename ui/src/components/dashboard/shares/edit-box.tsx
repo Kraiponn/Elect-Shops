@@ -120,7 +120,7 @@ export default function EditBox({
             {...field}
             className="edit-box"
             size="small"
-            type={name === "date_of_birth" ? "datetime-local" : "text"}
+            type={name === "date_of_birth" ? "date" : "text"}
             placeholder={placeHolder}
             error={handleErrorState()}
             startAdornment={

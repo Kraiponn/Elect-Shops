@@ -11,7 +11,7 @@ import { NavMenuType } from "@/features/interfaces";
 interface IProps {
   text: string;
   menuType: "title" | "subtitle";
-  fontFamily?: "Prompt" | "Roboto" | "Itim";
+  fontFamily?: "Prompt" | "Roboto" | "Prompt";
   Icon?: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
     muiName: string;
   };

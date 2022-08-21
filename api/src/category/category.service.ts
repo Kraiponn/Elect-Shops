@@ -161,6 +161,15 @@ export class CategoryService {
       };
     }
 
+    // Make for blank selection on client
+    categories.unshift({
+      id: 0,
+      category_name: 'All Products',
+      description: 'Choose all categories',
+      created_at: new Date(Date.now()),
+      updated_at: new Date(Date.now()),
+    });
+
     return {
       pagination,
       categories,

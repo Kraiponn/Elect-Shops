@@ -1,3 +1,14 @@
 {
-  "title": "ตระกร้าสินค้า"
+  "title": "Product Detail",
+  "breadcrumb": {
+    "home": "Home",
+    "product": "Products"
+  },
+  "rating": "Ratings",
+  "sell": "Sold",
+  "quantity": "Quantity",
+  "piece": "pieces",
+  "addToCartButton": "ADD TO CART",
+  "buyNowButton": "BUY NOW",
+  "favorite": "Favorite"
 }

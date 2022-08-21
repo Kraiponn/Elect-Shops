@@ -34,6 +34,7 @@ export interface IProductSearchResponse {
 
 export interface IInputFilterProduct {
   searchKey: string;
+  categoryId: number;
   page: number;
   limit: number;
   minPrice: number;
@@ -60,5 +61,5 @@ export interface ICart {
   isLoading: boolean;
   isSuccess: boolean;
   isError: IErorrResponseData | null;
-  keyword: string;
+  isAddToCart: boolean;
 }

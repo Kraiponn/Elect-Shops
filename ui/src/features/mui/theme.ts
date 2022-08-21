@@ -73,7 +73,7 @@ const theme = createTheme({
       fontSize: "1rem",
     },
     button: {
-      fontFamily: "Itim",
+      fontFamily: "Prompt",
       textTransform: "capitalize",
     },
     caption: {

@@ -1,4 +1,4 @@
-import React from "react";
+import useTranslation from "next-translate/useTranslation";
 
 // Material design
 import { Divider } from "@mui/material";
@@ -14,10 +14,12 @@ interface IProps {
   handleItemSelectedType: (item: MenuType) => void;
 }
 
-/***********************************************
- *                MAIN METHOD                  *
- **********************************************/
+/***********************************************************************************
+ *                                MAIN FUNCTION                                    *
+ **********************************************************************************/
 export default function AlertItemMenuGroup({ handleItemSelectedType }: IProps) {
+  const { t } = useTranslation("common");
+
   const handleItemSelecte = (item: MenuType) => {
     handleItemSelectedType(item);
   };
@@ -26,27 +28,27 @@ export default function AlertItemMenuGroup({ handleItemSelectedType }: IProps) {
     <>
       <MenuItem
         isTitle={true}
-        titleLabel={`Alert`}
+        titleLabel={t("drawerMenu.alert.title")}
+        text={t("drawerMenu.alert.notify")}
         menuType={MenuType.NOTIFICATION}
-        text={`Notifications`}
         showIcon={true}
         quantity={7}
         Icon={NotificationsIcon}
         handleItemSelect={() => handleItemSelecte(MenuType.NOTIFICATION)}
       />
       <MenuItem
+        text={t("drawerMenu.alert.message")}
         isTitle={false}
         menuType={MenuType.MESSAGE}
-        text={`Messages`}
         showIcon={true}
         quantity={8}
         Icon={EmailIcon}
         handleItemSelect={() => handleItemSelecte(MenuType.MESSAGE)}
       />
       <MenuItem
+        text={t("drawerMenu.alert.wishlist")}
         isTitle={false}
         menuType={MenuType.WISHLIST}
-        text={`Wishlist`}
         showIcon={true}
         quantity={9}
         Icon={FavoriteIcon}

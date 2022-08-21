@@ -1,5 +1,6 @@
-import React from "react";
+import { useState } from "react";
 
+// Material desing
 import { Box, Button } from "@mui/material";
 
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -10,31 +11,30 @@ import { motion } from "framer-motion";
 import PasswordInput from "@/components/shares/ui/password-input";
 import { IAuthForm } from "@/features/interfaces";
 
-// export interface IResetPWDForm {
-//   password: string;
-// }
+interface IProps {
+  textSubmitButton: string;
+  pwdRequire: string;
+  pwdMinLength: string;
+}
 
 interface IPwdInputBox {
   showPassword: boolean;
 }
 
-const schema = yup
-  .object({
-    password: yup
-      .string()
-      .required(`Please enter a password`)
-      .min(5, `Password must be at least 5 characters`),
-    //  confirmPassword: yup
-    //    .string()
-    //    .required(`Please enter confirm password`)
-    //    .oneOf([yup.ref("password")], `Confirm password does not match`),
-  })
-  .required();
+/***********************************************************************************
+ *                          ---   MAIN FUNCTION   ---                              *
+ **********************************************************************************/
+const ForgotPasswordForm = ({
+  textSubmitButton,
+  pwdMinLength,
+  pwdRequire,
+}: IProps) => {
+  const schema = yup
+    .object({
+      password: yup.string().required(pwdRequire).min(5, pwdMinLength),
+    })
+    .required();
 
-/****************************************************
- *                  MAIN FUNCTION
- ***************************************************/
-const ForgotPasswordForm = () => {
   const {
     handleSubmit,
     control,
@@ -43,8 +43,7 @@ const ForgotPasswordForm = () => {
     resolver: yupResolver(schema),
     reValidateMode: "onChange",
   });
-
-  const [values, setValues] = React.useState<IPwdInputBox>({
+  const [values, setValues] = useState<IPwdInputBox>({
     showPassword: false,
   });
 
@@ -105,12 +104,9 @@ const ForgotPasswordForm = () => {
             ease: "linear",
           }}
         >
-          <Button
-            sx={{ width: "50%" }}
-            type="submit"
-            variant="contained"
-            // fullWidth
-          >{`Submit`}</Button>
+          <Button sx={{ width: "50%" }} type="submit" variant="contained">
+            {textSubmitButton}
+          </Button>
         </Box>
       </form>
     </>

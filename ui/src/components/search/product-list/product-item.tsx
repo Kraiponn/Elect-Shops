@@ -1,13 +1,18 @@
 import React from "react";
 import Image from "next/image";
+import useTranslation from "next-translate/useTranslation";
 
+// Material design
+import { Box, Rating, Typography } from "@mui/material";
+import { clSecondary } from "@/features/const/colors";
+
+// Global state & types
+import { useAppSelector } from "@/features/hooks/use-global-state";
 import { IProduct } from "@/features/interfaces";
 import { ThaiCurrencyFormatWithBuildIn } from "@/features/services";
 
 // Components
-import { Box, Rating, Typography } from "@mui/material";
 import ProductItemHover from "@/components/search/product-list/product-item-hover";
-import { clSecondary } from "@/features/const/colors";
 
 interface IProps {
   products: IProduct[];
@@ -27,6 +32,9 @@ export default function ProductItem({
   handleIncreaseProductToCart,
   handleNavigateToProductDetail,
 }: IProps) {
+  const { t } = useTranslation("search");
+  const { darkMode } = useAppSelector((state) => state.gui);
+
   return (
     <>
       {products.map((product) => (
@@ -60,6 +68,7 @@ export default function ProductItem({
             unit_price={product.unit_price}
             description={product.description}
             favorite={favorite}
+            darkMode={darkMode}
             handleIncreaseProductToCart={handleIncreaseProductToCart}
             handleToggleProductFavorite={handleToggleProductFavorite}
           />
@@ -72,7 +81,6 @@ export default function ProductItem({
               position: "relative",
               width: { xs: "100px", sm: "150px", md: "220px" },
               height: { xs: "5rem", md: "7rem", lg: "10rem" },
-              // height: "10rem",
               transition: "all 0.7s ease",
               "&:hover": {
                 cursor: "pointer",
@@ -117,10 +125,9 @@ export default function ProductItem({
 
             <Box>
               <Rating defaultValue={5} precision={0.5} />
-              <Typography
-                variant="h6"
-                sx={{ color: clSecondary }}
-              >{`(${product.in_stock}) pcs`}</Typography>
+              <Typography variant="h6" sx={{ color: clSecondary }}>{`(${
+                product.in_stock
+              }) ${t("productList.piece")}`}</Typography>
             </Box>
           </Box>
 

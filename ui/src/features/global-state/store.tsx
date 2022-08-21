@@ -5,6 +5,7 @@ import authReducer from "@/features/global-state/reducers/auth";
 import guiReducer from "@/features/global-state/reducers/gui";
 import dashboardReducer from "@/features/global-state/reducers/dashboard";
 import productReducer from "@/features/global-state/reducers/product";
+import categoryReducer from "@/features/global-state/reducers/category";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     gui: guiReducer,
     dashboard: dashboardReducer,
     product: productReducer,
+    category: categoryReducer,
   },
   devTools: true,
 });

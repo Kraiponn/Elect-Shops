@@ -4,7 +4,10 @@ import { useRouter } from "next/router";
 import { Grid } from "@mui/material";
 
 // Services & Global state
-import { useAppDispatch } from "@/features/hooks/use-global-state";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "@/features/hooks/use-global-state";
 import { IProduct, IOrderProduct } from "@/features/interfaces";
 import {
   increaseProductToCart,
@@ -28,6 +31,7 @@ interface IProps {
 const ProductCart = ({ orders, quantity, totalPrice }: IProps) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const { darkMode } = useAppSelector((state) => state.gui);
 
   const handleIncreaseProductToCart = (product: IProduct) => {
     dispatch(increaseProductToCart(product));
@@ -39,10 +43,6 @@ const ProductCart = ({ orders, quantity, totalPrice }: IProps) => {
 
   const handleRemoveProductFromCart = (product: IProduct) => {
     dispatch(removeProductFromCart(product));
-  };
-
-  const handleShopingMoreProduct = () => {
-    router.push("/");
   };
 
   return (
@@ -57,7 +57,7 @@ const ProductCart = ({ orders, quantity, totalPrice }: IProps) => {
       <CartSummay
         quantity={quantity}
         totalPrice={totalPrice}
-        handleShopingMoreProduct={handleShopingMoreProduct}
+        darkMode={darkMode}
       />
     </Grid>
   );

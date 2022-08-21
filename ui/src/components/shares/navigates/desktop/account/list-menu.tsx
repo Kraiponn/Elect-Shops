@@ -1,5 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
+import useTranslation from "next-translate/useTranslation";
 
 // Material design
 import { Box, Divider, Typography } from "@mui/material";
@@ -25,26 +26,31 @@ import { MenuType } from "@/components/shares/navigates/enum";
  **********************************************************************************/
 const MenuList = () => {
   const router = useRouter();
+  const { t } = useTranslation("common");
   const { user } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
   const handleSystemLogout = () => {
     dispatch(systemLogout());
-    router.push("/auth/login");
+    router.push("/", "/", { locale: router.locale });
   };
 
   const handleItemSelectedType = (menuType: MenuType) => {
-    // console.log(menuType);
-
     switch (menuType) {
       case MenuType.ACCOUNT_SETTING:
-        router.push("/account/dashboard");
+        router.push("/account/dashboard", "/account/dashboard", {
+          locale: router.locale,
+        });
         break;
       case MenuType.PAYMENT_METHOD:
-        router.push("/account/dashboard");
+        router.push("/account/dashboard", "/account/dashboard", {
+          locale: router.locale,
+        });
         break;
       case MenuType.APP_SETTING:
-        router.push("/system/settings");
+        router.push("/account/dashboard", "/account/dashboard", {
+          locale: router.locale,
+        });
         break;
 
       default:
@@ -64,21 +70,21 @@ const MenuList = () => {
 
       <ItemMenu
         menuType={MenuType.ACCOUNT_SETTING}
-        title={`Account settings`}
+        title={t("topNavigation.accountMenu.account")}
         Icon={ManageAccountsIcon}
         handleSelectedItem={handleItemSelectedType}
       />
 
       <ItemMenu
         menuType={MenuType.PAYMENT_METHOD}
-        title={`Payment methods`}
+        title={t("topNavigation.accountMenu.payment")}
         Icon={AttachMoneyIcon}
         handleSelectedItem={handleItemSelectedType}
       />
 
       <ItemMenu
         menuType={MenuType.APP_SETTING}
-        title={`App Settings`}
+        title={t("topNavigation.accountMenu.app")}
         Icon={SettingsIcon}
         handleSelectedItem={handleItemSelectedType}
       />
@@ -104,7 +110,7 @@ const MenuList = () => {
             ml: 1,
           }}
         >
-          {`Log Out`}
+          {t("topNavigation.accountMenu.logout")}
         </Typography>
       </Box>
     </>

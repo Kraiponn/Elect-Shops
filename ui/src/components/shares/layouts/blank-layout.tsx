@@ -6,19 +6,18 @@ import Head from "next/head";
 // import { closeAccountMenu } from "@/features/global-state/reducers/gui";
 
 // Components & Material design
-import MyDialog from "@/components/shares/loader/my-dialog";
+// import MyDialog from "@/components/shares/loader/my-dialog";
 
 interface IProps {
   children: React.ReactNode;
   title: string;
   description?: string;
-  isLoading?: boolean;
 }
 
 /***********************************************************************************
  *                          ---   MAIN FUNCTION   ---                              *
  **********************************************************************************/
-const BlankLayout = ({ children, title, description, isLoading }: IProps) => {
+const BlankLayout = ({ children, title, description }: IProps) => {
   return (
     <>
       <Head>
@@ -27,11 +26,12 @@ const BlankLayout = ({ children, title, description, isLoading }: IProps) => {
         <title>{title}</title>
       </Head>
 
-      <MyDialog
+      {/* <MyDialog
         type="LOADING"
         isShow={isLoading ? true : false}
+        // isShow={true}
         toggleDialogState={() => {}}
-      />
+      /> */}
 
       <main>{children}</main>
     </>

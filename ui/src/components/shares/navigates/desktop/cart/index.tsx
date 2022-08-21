@@ -29,7 +29,7 @@ const CartMenu = () => {
         position: "relative",
         display: "inline-block",
         mx: 1,
-        ml: 5,
+        ml: 2,
         "&:hover": {
           ".dropdown--list-menu": {
             visibility: "visible",
@@ -37,7 +37,11 @@ const CartMenu = () => {
           },
         },
       }}
-      onClick={() => router.push(`/products/cart`)}
+      onClick={() =>
+        router.push(`/products/cart`, `/products/cart`, {
+          locale: router.locale,
+        })
+      }
     >
       <>
         <Badge

@@ -1,4 +1,4 @@
-import React from "react";
+import useTranslation from "next-translate/useTranslation";
 
 import {
   IconButton,
@@ -35,6 +35,8 @@ const PasswordInput = ({
   handleClickShowPassword,
   handleMouseDownPassword,
 }: IEmailProps) => {
+  const { t } = useTranslation("common");
+
   /*****************************************************************
    * Toggle visible or hidden a password
    */
@@ -74,7 +76,9 @@ const PasswordInput = ({
             size="small"
             type={showPassword ? "text" : "password"}
             placeholder={
-              pwdType === "password" ? "Password" : "Confirm password"
+              pwdType === "password"
+                ? t("auth.pwdBox")
+                : t("auth.confirmPwdBox")
             }
             error={
               pwdType === "password"

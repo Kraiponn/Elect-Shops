@@ -1,3 +1,19 @@
 {
-  "title": "cart"
+  "title": "Shopping cart",
+  "searchProductResult": "{{productTotal}} Products in cart",
+  "emptyCart": {
+    "title": "Your cart is empty. Keep shopping to find a products!",
+    "buttonLabel": "Keep Shopping"
+  },
+  "summary": {
+    "title": "Promotions",
+    "isApply": "is applied",
+    "couponBox": "Enter coupon",
+    "applyButton": "APPLY",
+    "productItemCount": "{{quantity}} items",
+    "deliveryCharge": "Delivery charge",
+    "total": "Total",
+    "checkoutButton": "CHECK OUT",
+    "addMoreButton": "ADD MORE PRODUCT"
+  }
 }

@@ -5,6 +5,9 @@ import { useRouter } from "next/router";
 // Material design
 import { Box, Grid, Typography } from "@mui/material";
 
+// Global state, system colors and types
+import { useAppSelector } from "@/features/hooks/use-global-state";
+
 // Converter
 import { ThaiCurrencyFormatWithBuildIn } from "@/features/services";
 import { clSecondary } from "@/features/const/colors";
@@ -23,16 +26,14 @@ interface IProps {
 /***********************************************************************************
  *                          ---   MAIN FUNCTION   ---                              *
  **********************************************************************************/
-const ItemMenu = ({
-  id,
-  product_name,
-  unit_price,
-  image_url,
-}: IProps) => {
+const ItemMenu = ({ id, product_name, unit_price, image_url }: IProps) => {
   const router = useRouter();
+  const { darkMode } = useAppSelector((state) => state.gui);
 
   const handleShowProductDetail = (productId: number) => {
-    router.push(`/products/${productId}`);
+    router.push(`/products/[productId]`, `/products/${productId}`, {
+      locale: router.locale,
+    });
   };
 
   return (
@@ -40,7 +41,9 @@ const ItemMenu = ({
       component="div"
       onClick={() => handleShowProductDetail(id)}
       sx={{
-        borderBottom: "0.01rem solid rgba(1, 1, 1, 0.1)",
+        borderBottom: darkMode
+          ? "1px solid rgba(220, 217, 217, 0.1)"
+          : "1px solid rgba(1, 1, 1, 0.1)",
         paddingY: "0.5rem",
         paddingX: "0.75rem",
         width: "100%",
@@ -75,17 +78,15 @@ const ItemMenu = ({
               height: "5rem",
             }}
           >
-            <Typography
-              className="multine-ellipsis_2"
-              variant="h5"
-            >
+            <Typography className="multine-ellipsis_2" variant="h6">
               {product_name}
             </Typography>
 
             <Typography
-              variant="h6"
+              variant="subtitle2"
               sx={{
                 fontStyle: "italic",
+                fontWeight: 700,
                 color: clSecondary,
               }}
             >{`${ThaiCurrencyFormatWithBuildIn(unit_price)}`}</Typography>

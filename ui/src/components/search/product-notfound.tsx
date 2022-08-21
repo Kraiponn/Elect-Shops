@@ -2,24 +2,28 @@ import Image from "next/image";
 
 // Components
 import { Box, Typography } from "@mui/material";
-
 import ProductNotFoundLogo from "@/assets/images/empty-cart.png";
 
-/***********************************************
- *               MAIN METHOD
- **********************************************/
-export default function ProductNotFound() {
+interface IProps {
+  title: string;
+  subtitle: string;
+}
+
+/***********************************************************************************
+ *                                MAIN FUNCTION                                    *
+ **********************************************************************************/
+export default function ProductNotFound({ title, subtitle }: IProps) {
   return (
     <Box
       sx={{
-        width: "70%",
-        minHeight: "100vh",
-        margin: "3rem auto",
+        width: "75%",
+        minHeight: "80vh",
+        margin: "0 auto",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        border: "0.001rem solid rgba(182, 180, 180, 0.356)",
+        // border: "0.001rem solid rgba(182, 180, 180, 0.356)",
       }}
     >
       <Typography
@@ -27,16 +31,20 @@ export default function ProductNotFound() {
         sx={{
           color: "rgb(251, 5, 5)",
         }}
-      >{`!Oops`}</Typography>
+      >
+        {title}
+      </Typography>
       <Typography
         variant="h4"
         sx={{
           color: "#919090d2",
           marginY: "1rem",
         }}
-      >{`Product Not Found`}</Typography>
+      >
+        {subtitle}
+      </Typography>
 
-      <Box sx={{ position: "relative", width: "35%", height: "13rem" }}>
+      <Box sx={{ position: "relative", width: "50%", height: "15rem" }}>
         <Image
           src={ProductNotFoundLogo}
           alt="not found"

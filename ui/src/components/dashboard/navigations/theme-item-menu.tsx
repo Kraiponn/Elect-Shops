@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouter } from "next/router";
 
 // Material Design
 import { IconButton, styled, Switch } from "@mui/material";
@@ -61,16 +62,21 @@ interface IProps {
 /***********************************************************************************
  *                          ---   MAIN FUNCTION   ---                              *
  **********************************************************************************/
-export default function ThemeItemMenu({
-  darkMode,
-  handleChangeMode,
-}: IProps) {
+export default function ThemeItemMenu({ darkMode, handleChangeMode }: IProps) {
+  const router = useRouter();
+
   return (
     <IconButton onClick={handleChangeMode}>
       {darkMode ? (
-        <DarkModeIcon fontSize="medium" />
+        <DarkModeIcon fontSize="medium" color="inherit" />
       ) : (
-        <LightModeIcon fontSize="medium" />
+        <LightModeIcon
+          fontSize="medium"
+          sx={{
+            color:
+              router.asPath === "/account/dashboard" ? "inherit" : "#ffff08",
+          }}
+        />
       )}
     </IconButton>
   );

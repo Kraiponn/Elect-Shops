@@ -4,35 +4,51 @@ import Image from "next/image";
 // Material design
 import { Box, Typography, Button } from "@mui/material";
 
-// Components
-import EmptyCartImage from "@/assets/images/empty-shopping-cart-v2.jpg";
+// Global state
+import { useAppSelector } from "@/features/hooks/use-global-state";
 
-interface IProps {}
+// Components
+import EmptyCartImage from "@/assets/images/empty-cart.png";
+import { clDarkMedium, clWhiteGray } from "@/features/const/colors";
+
+interface IProps {
+  title: string;
+  buttonLabel: string;
+}
 
 /***********************************************************************************
  *                          ---  MAIN FUNCTION   ---                               *
  **********************************************************************************/
-const EmptyCart = ({}: IProps) => {
+const EmptyCart = ({ title, buttonLabel }: IProps) => {
+  const { darkMode } = useAppSelector((state) => state.gui);
   const router = useRouter();
 
   const handleKeepShopping = () => {
-    router.push("/");
+    router.push("/", "/", { locale: router.locale });
   };
 
   return (
     <Box
       sx={{
         width: "100%",
-        height: "45vh",
-        padding: "2rem 0",
+        padding: "3rem 1rem",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        border: "1px solid #f0f4f6",
+        background: darkMode ? clDarkMedium : clWhiteGray,
+        border: darkMode
+          ? "1px solid rgba(225, 216, 216, 0.33)"
+          : "1px solid rgba(44, 43, 43, 0.067)",
       }}
     >
-      <Box sx={{ position: "relative", width: "15rem", height: "15rem" }}>
+      <Box
+        sx={{
+          position: "relative",
+          width: { xs: "50%", lg: "25rem" },
+          height: "15rem",
+        }}
+      >
         <Image
           src={EmptyCartImage}
           alt="empty product in cart"
@@ -42,24 +58,24 @@ const EmptyCart = ({}: IProps) => {
       </Box>
 
       <Typography
+        variant="h4"
         sx={{
-          fontFamily: "Prompt",
-          fontSize: "1.2rem",
-          fontWeight: 400,
+          fontSize: { xs: "0.7rem", sm: "1rem", md: "1.2rem", lg: "1.5rem" },
+          mt: 2,
         }}
       >
-        {`Your cart is empty. Keep shopping to find a course!`}
+        {title}
       </Typography>
 
       <Button
         variant="contained"
         sx={{
           marginTop: "1.3rem",
-          fontSize: "1.1rem",
+          fontSize: "1rem",
         }}
         onClick={handleKeepShopping}
       >
-        Keep Shopping
+        {buttonLabel}
       </Button>
     </Box>
   );

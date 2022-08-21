@@ -1,4 +1,4 @@
-import React from "react";
+import useTranslation from "next-translate/useTranslation";
 
 import { InputAdornment, OutlinedInput, Typography } from "@mui/material";
 import EmailIcon from "@mui/icons-material/Email";
@@ -22,6 +22,8 @@ interface IEmailProps {
  *                  MAIN FUNCTION
  ***************************************************/
 const EmailInput = ({ errors, control }: IEmailProps) => {
+  const { t } = useTranslation("common");
+
   return (
     <>
       <Controller
@@ -33,7 +35,7 @@ const EmailInput = ({ errors, control }: IEmailProps) => {
             {...field}
             size="small"
             type="email"
-            placeholder={`Email address`}
+            placeholder={t("auth.emailBox")}
             fullWidth
             error={!!errors.email}
             startAdornment={

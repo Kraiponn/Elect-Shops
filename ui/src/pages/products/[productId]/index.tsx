@@ -1,13 +1,9 @@
 import React from "react";
-import { useRouter } from "next/router";
 import { GetServerSideProps, NextPage } from "next";
 import { ParsedUrlQuery } from "querystring";
 
 // Material design
 import { Toolbar, Box } from "@mui/material";
-
-// Global state
-import { useAppSelector } from "@/features/hooks/use-global-state";
 
 import { getHttpErrorObject, http } from "@/features/services";
 import { IProduct } from "@/features/interfaces";
@@ -31,25 +27,8 @@ interface IParams extends ParsedUrlQuery {
  *                           MAIN FUNCTION - CLIENT SIDE                           *
  **********************************************************************************/
 const ProductDetail: NextPage<IProps> = ({ product }) => {
-  const router = useRouter();
-  const {
-    isLoading,
-    isSuccess,
-    pagination,
-    keyword: searchKey,
-  } = useAppSelector((state) => state.product);
-
-  if (!isLoading && isSuccess && pagination.products.length > 0) {
-    router.push({
-      pathname: "/search",
-      query: {
-        keyword: searchKey,
-      },
-    });
-  }
-
   return (
-    <DefautLayout title="Cart" description="product on your cart">
+    <DefautLayout title="cart" description="product on your cart">
       <Toolbar />
 
       <Box

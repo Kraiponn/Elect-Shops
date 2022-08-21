@@ -1,3 +1,14 @@
 {
-  "title": "ตระกร้าสินค้า"
+  "title": "รายละเอียดสินค้า",
+  "breadcrumb": {
+    "home": "หน้าหลัก",
+    "product": "สินค้า"
+  },
+  "rating": "เรตติ้ง",
+  "sell": "ขายแล้ว",
+  "quantity": "จำนวน",
+  "piece": "ชิ้น",
+  "addToCartButton": "เพิ่มลงตะกร้า",
+  "buyNowButton": "สั่งซื้อ",
+  "favorite": "ชื่นชอบ"
 }

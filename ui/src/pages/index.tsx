@@ -49,8 +49,6 @@ const Home = ({ electrics, books, errObj }: IProps) => {
   };
 
   useEffect(() => {
-    // console.log("Hello home page");
-
     return () => {
       // console.log("Home page unmount..");
       dispatch(clearStateWithoutProducts());
@@ -63,14 +61,18 @@ const Home = ({ electrics, books, errObj }: IProps) => {
     );
   }
 
-  if (!isLoading && isSuccess && pagination.products.length > 0) {
-    router.push({
-      pathname: "/search",
-      query: {
-        keyword: keyword,
-      },
-    });
-  }
+  // if (!isLoading && isSuccess && pagination.products.length > 0) {
+  //   router.push(
+  //     "/search",
+  //     {
+  //       pathname: "/search",
+  //       query: {
+  //         keyword: keyword,
+  //       },
+  //     },
+  //     { locale: router.locale }
+  //   );
+  // }
 
   return (
     <DefautLayout title="home" description="welcome to shoping">
@@ -84,7 +86,7 @@ const Home = ({ electrics, books, errObj }: IProps) => {
           width: "30%",
           margin: "0 auto",
           marginTop: "5rem",
-          borderTop: "0.1rem solid gray",
+          borderTop: "0.1rem solid #0101011b",
         }}
       />
 

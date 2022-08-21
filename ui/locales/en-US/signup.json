@@ -1,3 +1,8 @@
 {
-  "title": "ตระกร้าสินค้า"
+  "title": "Sign Up",
+  "emailBox": "Email address",
+  "password": "Password",
+  "submitButton": "SUBMIT",
+  "alreadyAccount": "Already have an account?",
+  "loginTextButton": "Login here"
 }

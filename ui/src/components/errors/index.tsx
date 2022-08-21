@@ -40,7 +40,7 @@ const ErrorPage = ({ errorObject, handleRefreshPage }: IProps) => {
           }}
         >
           <ErrorIcon sx={{ fontSize: "5rem" }} />
-          <Typography sx={{ fontSize: "2rem", fontFamily: "Itim" }}>
+          <Typography sx={{ fontSize: "2rem", fontFamily: "Prompt" }}>
             {errorObject.error} : {errorObject.statusCode}
           </Typography>
 

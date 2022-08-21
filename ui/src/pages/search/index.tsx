@@ -1,13 +1,11 @@
 import React, { useEffect } from "react";
-import { useRouter } from "next/router";
+import { GetServerSideProps } from "next";
+import { requireAuthentication } from "@/features/services/secure/require-auth";
 
 // Global state
-import {
-  useAppSelector,
-  useAppDispatch,
-} from "@/features/hooks/use-global-state";
+import { useAppDispatch } from "@/features/hooks/use-global-state";
 import { clearStateWithoutProducts } from "@/features/global-state/reducers/product";
-// import { ParsedUrlQuery } from "querystring";
+import { getCategories } from "@/features/global-state/reducers/category";
 
 // Components
 import { Toolbar } from "@mui/material";
@@ -18,38 +16,35 @@ import Content from "@/components/search/content";
  *                                MAIN FUNCTION                                    *
  **********************************************************************************/
 const SearchPage = () => {
-  const router = useRouter();
   const dispatch = useAppDispatch();
-  const {
-    isLoading,
-    isSuccess,
-    pagination,
-    keyword: searchKey,
-  } = useAppSelector((state) => state.product);
 
   useEffect(() => {
+    dispatch(getCategories());
+
     return () => {
-      // console.log("Search page unmounting..");
       dispatch(clearStateWithoutProducts());
     };
-  });
-
-  if (!isLoading && isSuccess && pagination.products.length > 0) {
-    router.push({
-      pathname: "/search",
-      query: {
-        keyword: searchKey,
-      },
-    });
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
 
   return (
-    <DefautLayout title="search product" description="welcome to shoping">
+    <DefautLayout title="content" description="product search">
       <Toolbar />
 
       <Content />
     </DefautLayout>
   );
 };
+
+/***********************************************************************************
+ *                                MAIN FUNCTION                                    *
+ **********************************************************************************/
+export const getServerSideProps: GetServerSideProps = requireAuthentication(
+  async (ctx) => {
+    return {
+      props: {},
+    };
+  }
+);
 
 export default SearchPage;

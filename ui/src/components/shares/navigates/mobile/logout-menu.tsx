@@ -1,4 +1,4 @@
-import React from "react";
+import useTranslation from "next-translate/useTranslation";
 
 // Material design
 import { Box, Typography } from "@mui/material";
@@ -12,6 +12,8 @@ interface IProps {
  *                                MAIN FUNCTION                                    *
  **********************************************************************************/
 const LogoutMenu = ({ handleSystemLogout }: IProps) => {
+  const { t } = useTranslation("common");
+
   const handleLogout = () => {
     handleSystemLogout();
   };
@@ -34,12 +36,12 @@ const LogoutMenu = ({ handleSystemLogout }: IProps) => {
       <Typography
         onClick={handleLogout}
         sx={{
-          fontFamily: "Itim",
+          fontFamily: "Prompt",
           fontSize: "1.1rem",
           ml: 1,
         }}
       >
-        {`Log Out`}
+        {t("drawerMenu.auth.logout")}
       </Typography>
     </Box>
   );

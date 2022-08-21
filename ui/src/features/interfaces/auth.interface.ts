@@ -20,7 +20,7 @@ export interface IProfile {
   last_name?: string;
   email: string;
   password: string;
-  date_of_birth?: Date;
+  date_of_birth?: string;
   phone?: string;
   address?: string;
   role: UserType;
@@ -28,6 +28,11 @@ export interface IProfile {
   image_url?: string;
   created_at: Date;
   updated_at: Date;
+}
+
+export interface IInputEditProfile {
+  form: HTMLFormElement | undefined | FormData;
+  userId: number;
 }
 
 export interface IAuth {

@@ -1,4 +1,4 @@
-import React from "react";
+import useTranslation from "next-translate/useTranslation";
 
 // Material design
 import {
@@ -12,8 +12,10 @@ import {
 import AddCircleIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircleOutline";
 
+import { useAppSelector } from "@/features/hooks/use-global-state";
 import { ThaiCurrencyFormatWithBuildIn } from "@/features/services";
 import { IProduct } from "@/features/interfaces";
+import { clDarkMedium, clWhiteGray } from "@/features/const/colors";
 
 // Type for method
 interface IProps {
@@ -22,6 +24,7 @@ interface IProps {
   increaseProduct: () => void;
   decreaseProduct: () => void;
   handleAddProductToCart: (product: IProduct) => void;
+  handleOnBuyProduct: () => void;
 }
 
 /***********************************************************************************
@@ -33,10 +36,14 @@ const ProductDescription = ({
   increaseProduct,
   decreaseProduct,
   handleAddProductToCart,
+  handleOnBuyProduct,
 }: IProps) => {
+  const { t } = useTranslation("product-detail");
+  const { darkMode } = useAppSelector((state) => state.gui);
+
   return (
     <Grid item xs={12} md={7} sx={{ paddingLeft: "2rem" }}>
-      <Typography variant="h3">{product.product_name}</Typography>
+      <Typography variant="h2">{product.product_name}</Typography>
 
       <Typography
         variant="body1"
@@ -59,7 +66,7 @@ const ProductDescription = ({
           alignItems: "center",
           marginTop: "2.5rem",
           padding: "1rem",
-          background: "rgba(240, 236, 236, 0.407)",
+          background: darkMode ? clDarkMedium : clWhiteGray,
         }}
       >
         <Typography
@@ -84,10 +91,10 @@ const ProductDescription = ({
         <Rating name="favorite" defaultValue={4.5} precision={0.5} />
         <Box sx={{ marginX: "1rem" }}>{"|"}</Box>
 
-        <Typography variant="body2">{`9k Ratings`}</Typography>
+        <Typography variant="body2">{`9k ${t("rating")}`}</Typography>
 
         <Box sx={{ marginX: "1rem" }}>{"|"}</Box>
-        <Typography variant="body2">{`5k Sold`}</Typography>
+        <Typography variant="body2">{`5k ${t("sell")}`}</Typography>
       </Box>
 
       {/************* Increase and Decrease product qantity ************/}
@@ -105,13 +112,12 @@ const ProductDescription = ({
             fontWeight: 400,
           }}
         >
-          {`Quantity`}
+          {t("quantity")}
         </Typography>
 
         <Box
           sx={{
             display: "flex",
-            flexDirection: "row",
             justifyContent: "flex-start",
             alignItems: "center",
             marginLeft: "0.5rem",
@@ -143,7 +149,7 @@ const ProductDescription = ({
             marginLeft: "1.2rem",
           }}
         >
-          {`(${product.in_stock}) pieces`}
+          {`(${product.in_stock}) ${t("piece")}`}
         </Typography>
       </Box>
 
@@ -169,7 +175,9 @@ const ProductDescription = ({
             },
           }}
           onClick={() => handleAddProductToCart(product)}
-        >{`Add to Cart`}</Button>
+        >
+          {t("addToCartButton")}
+        </Button>
 
         <Button
           sx={{
@@ -191,7 +199,10 @@ const ProductDescription = ({
               transform: "scale(0.9)",
             },
           }}
-        >{`Buy Now`}</Button>
+          onClick={handleOnBuyProduct}
+        >
+          {t("buyNowButton")}
+        </Button>
       </Box>
     </Grid>
   );

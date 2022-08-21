@@ -1,3 +1,22 @@
 {
-  "title": "ตระกร้าสินค้า"
+  "title": "{{quantity}} Results for ",
+  "subtitle": "'{{keyword}}'",
+  "emptyProduct": {
+    "title": "!Oops",
+    "subtitle": "Product Not Found"
+  },
+  "filterResult": {
+    "title": "Filter Results",
+    "category": "Categories",
+    "priceRange": "Price Range",
+    "applyButton": "APPLY",
+    "rating": "Ratings",
+    "up": "{{ratings}} & Up"
+  },
+  "productList": {
+    "title": "{{quantity}} Results",
+    "price": "Price",
+    "piece": "pcs",
+    "addToCartButton": "ADD TO CART"
+  }
 }

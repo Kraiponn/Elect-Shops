@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import useTranslation from "next-translate/useTranslation";
 
 // Materials
 import { Box, Typography } from "@mui/material";
@@ -15,6 +16,8 @@ import Logo from "@/assets/images/little-pug-dog.webp";
  *                          ---   MAIN FUNCTION   ---                              *
  **********************************************************************************/
 const LeftSide = () => {
+  const { t } = useTranslation("login");
+
   return (
     <Box
       sx={{
@@ -76,7 +79,7 @@ const LeftSide = () => {
             // yoyo: 3,
           }}
         >
-          {`Shopping Online`}
+          {t("bannerTitle")}
         </Typography>
 
         <Typography
@@ -97,7 +100,7 @@ const LeftSide = () => {
             duration: 2,
           }}
         >
-          {`Welcome to shob shop. Please signin to join with us.`}
+          {t("bannerSubtitle")}
         </Typography>
       </Box>
     </Box>

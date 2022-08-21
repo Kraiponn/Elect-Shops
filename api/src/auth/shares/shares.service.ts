@@ -41,7 +41,7 @@ export class SharesService {
     const [access_token, refresh_token] = await Promise.all([
       this.jwtService.sign(payload, {
         secret: this.configService.get<string>('ACCESS_TOKEN_KEY'),
-        expiresIn: '10m',
+        expiresIn: '7d',
       }),
       this.jwtService.sign(payload, {
         secret: this.configService.get<string>('REFRESH_TOKEN_KEY'),
