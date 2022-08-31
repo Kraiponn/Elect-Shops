@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
+import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
+import { requireAuthentication } from "@/features/services/secure/require-auth";
 
 // Material Design
 import { Box, CssBaseline, useTheme } from "@mui/material";
@@ -10,8 +12,8 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "@/features/hooks/use-global-state";
-import { setAuthSuccess } from "@/features/global-state/reducers/auth";
-import { IAuthPayload } from "@/features/interfaces";
+import { fetchProfileById } from "@/features/global-state/reducers/auth";
+import { closeAccountMenu } from "@/features/global-state/reducers/gui";
 
 // Components
 import BlankLayout from "@/components/shares/layouts/blank-layout";
@@ -38,37 +40,31 @@ export default function Dashboard() {
     setOpen(false);
   };
 
+  //#########################################
+  //           Life cycle method
+  //#########################################
   useEffect(() => {
     const getAccountState = async () => {
-      let _user;
-      let _accessToken;
-      // console.log("Dashboard effect...");
+      if (!access_token || !profile) {
+        const _accessToken = Cookies.get("access_token");
 
-      if (!user && !access_token) {
-        _user = Cookies.get("user");
-        _accessToken = Cookies.get("access_token");
-
-        if (_user && _accessToken) {
-          dispatch(
-            setAuthSuccess({
-              user: JSON.parse(_user),
-              access_token: _accessToken,
-            })
-          );
+        if (_accessToken) {
+          dispatch(fetchProfileById());
         } else {
-          return router.push("/auth/login", "/auth/login", {
-            locale: currentLocale,
+          router.push("/auth/login", "/auth/login", {
+            locale: router.locale,
           });
         }
       }
     };
 
     getAccountState();
-
     return () => {
-      //
+      dispatch(closeAccountMenu());
     };
-  }, [access_token, currentLocale, dispatch, router, user]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [access_token, currentLocale, profile, user]);
 
   return (
     <BlankLayout title="Dashboard" description="dashboard settings">
@@ -77,14 +73,14 @@ export default function Dashboard() {
           <CssBaseline />
           <TopNavigation
             open={open}
-            user={user}
+            profile={profile}
             handleDrawerOpen={handleDrawerOpen}
           />
 
           <SidebarMenu
             open={open}
             theme={theme}
-            user={user as IAuthPayload}
+            profile={profile}
             handleDrawerClose={handleDrawerClose}
           />
 
@@ -94,3 +90,14 @@ export default function Dashboard() {
     </BlankLayout>
   );
 }
+
+/***********************************************************************************
+ *                       ---   SERVER SIDE PART   ---                              *
+ **********************************************************************************/
+export const getServerSideProps: GetServerSideProps = requireAuthentication(
+  async () => {
+    return {
+      props: {},
+    };
+  }
+);

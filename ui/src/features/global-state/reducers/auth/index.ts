@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-
 import {
   IAuth,
   IAuthInput,
   IAuthPayload,
   IErorrResponseData,
+  IInputEditPassword,
   IInputEditProfile,
   IProfile,
   IResponseMessage,
@@ -12,9 +12,9 @@ import {
 import { http } from "@/features/services/http";
 import { AxiosError } from "axios";
 import { getHttpErrorObject } from "@/features/services/errors";
-
 import Cookies from "js-cookie";
 
+// INITIAL STATE
 const initialState: IAuth = {
   user: null,
   profile: null,
@@ -114,7 +114,77 @@ export const updateProfile = createAsyncThunk<
       signal: controller.signal,
     });
 
-    console.log("Update profile...", response.data);
+    // console.log("Update profile...", response.data);
+    controller.abort();
+    return response.data;
+  } catch (error) {
+    const errObj = getHttpErrorObject(error as AxiosError);
+    return thunkApi.rejectWithValue(errObj as IErorrResponseData);
+  }
+});
+
+/*****************************************************
+ *                  UPDATE PASSWORD                  *
+ ****************************************************/
+export const updatePassword = createAsyncThunk<
+  IResponseMessage,
+  IInputEditPassword,
+  {
+    rejectValue: IErorrResponseData;
+  }
+>("auth/updatePassword", async (formData, thunkApi) => {
+  const controller = new AbortController();
+  const accessToken = Cookies.get("access_token");
+  const { currentPassword, newPassword, userId } = formData;
+
+  try {
+    const response = await http.put(
+      `/auth/user/update-password/${userId}`,
+      {
+        currentPassword,
+        newPassword,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json; charset=UTF-8",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        signal: controller.signal,
+      }
+    );
+
+    // console.log("Update password...", response.data);
+    controller.abort();
+    return response.data;
+  } catch (error) {
+    const errObj = getHttpErrorObject(error as AxiosError);
+    return thunkApi.rejectWithValue(errObj as IErorrResponseData);
+  }
+});
+
+/*****************************************************
+ *                  REMOVE ACCOUNT                   *
+ ****************************************************/
+export const removeAccount = createAsyncThunk<
+  IResponseMessage,
+  number,
+  {
+    rejectValue: IErorrResponseData;
+  }
+>("auth/removeAccount", async (userId, thunkApi) => {
+  const controller = new AbortController();
+  const accessToken = Cookies.get("access_token");
+
+  try {
+    const response = await http.delete(`/auth/user/${userId}`, {
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      signal: controller.signal,
+    });
+
+    // console.log("Remove profile...", response.data);
     controller.abort();
     return response.data;
   } catch (error) {
@@ -147,18 +217,6 @@ export const systemLogout = createAsyncThunk<
     controller.abort();
     return response.data;
   } catch (error) {
-    const err = error as AxiosError;
-
-    if (err.code === "ERR_NETWORK") {
-      const errObj = {
-        error: "Invalid connection",
-        message: "No internet(network) connection or api url is incorrect.",
-        statusCode: 500,
-      };
-
-      return thunkApi.rejectWithValue(errObj as IErorrResponseData);
-    }
-
     const errObj = getHttpErrorObject(error as AxiosError);
     return thunkApi.rejectWithValue(errObj as IErorrResponseData);
   }
@@ -234,10 +292,20 @@ export const authSlice = createSlice({
       state.isSuccess = false;
     });
     builder.addCase(fetchProfileById.fulfilled, (state, { payload }) => {
-      state.isSuccess = true;
+      state.isSuccess = false;
       state.isLoading = false;
       state.error = null;
       state.profile = payload;
+
+      state.user = {
+        sub: payload.id,
+        email: payload.email,
+        user_name: `${payload.first_name} ${payload.last_name}`,
+        role: payload.role,
+        image_url: payload.image_url as string,
+      };
+      state.access_token = Cookies.get("access_token");
+      Cookies.set("user", JSON.stringify(state.user));
     });
     builder.addCase(fetchProfileById.rejected, (state, action) => {
       // console.log("Error on rejected", action.payload);
@@ -273,6 +341,52 @@ export const authSlice = createSlice({
       });
     });
     builder.addCase(updateProfile.rejected, (state, action) => {
+      // console.log("Error on rejected", action.payload);
+      state.error = action.payload ? action.payload : null;
+      state.isLoading = false;
+      state.isSuccess = false;
+    });
+
+    /**********************************
+     *    UPDATE PASSWORD
+     */
+    builder.addCase(updatePassword.pending, (state) => {
+      state.error = null;
+      state.isLoading = true;
+      state.isSuccess = false;
+    });
+    builder.addCase(updatePassword.fulfilled, (state, { payload }) => {
+      state.isSuccess = true;
+      state.isLoading = false;
+      state.error = null;
+    });
+    builder.addCase(updatePassword.rejected, (state, action) => {
+      // console.log("Error on rejected", action.payload);
+      state.error = action.payload ? action.payload : null;
+      state.isLoading = false;
+      state.isSuccess = false;
+    });
+
+    /**********************************
+     *    DELETE ACCOUNT
+     */
+    builder.addCase(removeAccount.pending, (state) => {
+      state.error = null;
+      state.isLoading = true;
+      state.isSuccess = false;
+    });
+    builder.addCase(removeAccount.fulfilled, (state, { payload }) => {
+      state.isSuccess = true;
+      state.isLoading = false;
+      state.error = null;
+      state.access_token = "";
+      state.user = null;
+      state.profile = null;
+
+      Cookies.remove("user");
+      Cookies.remove("access_token");
+    });
+    builder.addCase(removeAccount.rejected, (state, action) => {
       // console.log("Error on rejected", action.payload);
       state.error = action.payload ? action.payload : null;
       state.isLoading = false;

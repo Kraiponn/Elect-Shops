@@ -96,12 +96,12 @@ export const getSelectNavDrawerMenu = (
       };
       break;
 
-    case NavMenuType.INVOICE:
+    case NavMenuType.CATEGORY:
       updateState = {
         ...initSidebarListItemMenu,
         account: state.sidebarListItemMenu.account,
         accountSetting: false,
-        invoices: true,
+        categories: true,
       };
       break;
 

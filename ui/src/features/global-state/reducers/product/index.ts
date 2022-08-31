@@ -129,6 +129,7 @@ const productSlice = createSlice({
           quantity: mQuantity,
           totalPrice: mTotalPrice,
         };
+        state.isAddToCart = true;
       } else {
         let onceLoop = true;
 
@@ -251,8 +252,10 @@ const productSlice = createSlice({
     clearStateWithoutProducts: (state) => {
       state.isLoading = false;
       state.isSuccess = false;
+      state.isError = null;
     },
     clearProductState: (state) => {
+      state.isError = null;
       state.isLoading = false;
       state.isSuccess = false;
       state.products = [];
@@ -269,6 +272,14 @@ const productSlice = createSlice({
           limit: 10,
         },
       };
+    },
+    clearProductCart: (state) => {
+      state.isError = null;
+      state.isLoading = false;
+      state.isSuccess = false;
+      state.orders = [];
+      state.quantity = 0;
+      state.totalPrice = 0;
     },
   },
   extraReducers: (builder) => {
@@ -305,6 +316,7 @@ export const {
   removeProductFromCart,
   clearProductState,
   clearStateWithoutProducts,
+  clearProductCart,
 } = productSlice.actions;
 
 export default productSlice.reducer;

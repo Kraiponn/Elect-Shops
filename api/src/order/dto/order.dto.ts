@@ -16,9 +16,10 @@ export class OrderCreatedDto {
   @IsNotEmpty()
   address: string;
 
+  @IsOptional()
   @IsDateString()
   @IsNotEmpty()
-  order_date: Date;
+  order_date?: Date;
 
   @IsNumberString({}, { each: true })
   products: number[];

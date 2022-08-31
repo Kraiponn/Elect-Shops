@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useTranslation from "next-translate/useTranslation";
+import { ToastContainer, toast } from "react-toastify";
 
 // Material Design
 import { Typography, Box, Tabs, Tab, Skeleton } from "@mui/material";
@@ -19,11 +20,6 @@ import MyDialog from "@/components/shares/loader/my-dialog";
 import TabPanel from "@/components/dashboard/shares/tab-panel";
 import Profile from "@/components/dashboard/content/general/account-setting/profile";
 import Security from "@/components/dashboard/content/general/account-setting/seurity";
-
-/*******************************************************************************
- *                           Constant and Types                                *
- ******************************************************************************/
-import { clGray50 } from "@/features/const/colors";
 
 interface IProps {
   darkMode: boolean;
@@ -88,17 +84,34 @@ export default function AccountSetting({ darkMode }: IProps) {
     dispatch(clearErrorAndLoadingState());
   }
 
+  const onShowToastify = () => {
+    toast.success("Profile updated is successfully.", {
+      autoClose: 1000,
+      position: toast.POSITION.TOP_RIGHT,
+    });
+  };
+
   //#####################################
-  //         LEFT CYCLE CONTROL
+  //         LIFE CYCLE CONTROL
   //#####################################
   useEffect(() => {
-    dispatch(fetchProfileById());
-    // console.log("useEffect fetchProfile");
-  }, [dispatch]);
+    // if (!profile || !user) dispatch(fetchProfileById());
+    if (isSuccess) {
+      onShowToastify();
+      handleClearAlertState();
+    }
+
+    return () => {
+      handleClearAlertState();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, isSuccess, profile, user]);
 
   return (
     <>
       {ShowModalOrLoading()}
+      <ToastContainer />
+
       {!profile ? (
         <Box sx={{ width: "90%", margin: "auto" }}>
           <Skeleton
@@ -166,11 +179,6 @@ export default function AccountSetting({ darkMode }: IProps) {
               label={t(`${TRANSLATE_KEY}.security.title`)}
               id={`profile-tab-${1}`}
             />
-            {/* <Tab
-            className="profile-tab"
-            label={t(`${TRANSLATE_KEY}.address.title`)}
-            id={`profile-tab-${2}`}
-          /> */}
           </Tabs>
 
           <TabPanel value={profileTabNo.profileTabNo} index={0}>

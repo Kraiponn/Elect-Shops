@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
+import { ToastContainer, toast } from "react-toastify";
+import Cookies from "js-cookie";
 
 // Global service and Types
 import { getHttpErrorObject, http } from "@/features/services";
@@ -11,16 +13,24 @@ import {
   IProductResponse,
 } from "@/features/interfaces";
 
-// Global state and Global types
-import { useAppDispatch } from "@/features/hooks/use-global-state";
-import { clearStateWithoutProducts } from "@/features/global-state/reducers/product";
+// Global state and Types
+import {
+  useAppSelector,
+  useAppDispatch,
+} from "@/features/hooks/use-global-state";
+import { fetchProfileById } from "@/features/global-state/reducers/auth";
+import {
+  clearStateAddToCart,
+  clearStateWithoutProducts,
+} from "@/features/global-state/reducers/product";
 
 // Material design
 import { Toolbar } from "@mui/material";
 
 // Components
-import DefautLayout from "@/components/shares/layouts/defaut-layout";
-import Content from "@/components/cart/content";
+import MyDialog from "@/components/shares/loader/my-dialog";
+import DefautLayout from "@/components/shares/layouts/default-layout";
+import Content from "@/components/product/cart/content";
 import ErrorShow from "@/components/errors";
 
 interface IProps {
@@ -34,15 +44,38 @@ interface IProps {
 const Cart = ({ products, errObj }: IProps) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const { access_token } = useAppSelector((state) => state.auth);
+  const { isAddToCart, isLoading } = useAppSelector((state) => state.product);
+
+  const onShowToastify = () => {
+    toast.success("Product added is successfully.", {
+      autoClose: 1000,
+      position: toast.POSITION.TOP_RIGHT,
+    });
+  };
 
   //############################################
   //             LIFE CYCLE METHOD
   //############################################
   useEffect(() => {
+    if (!access_token) {
+      const _accessToken = Cookies.get("access_token");
+
+      if (_accessToken) {
+        dispatch(fetchProfileById());
+      }
+    }
+
+    if (isAddToCart) {
+      onShowToastify();
+      dispatch(clearStateAddToCart());
+    }
+
     return () => {
       dispatch(clearStateWithoutProducts());
     };
-  }, [dispatch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAddToCart]);
 
   const handleRefreshPage = () => {
     router.reload();
@@ -57,6 +90,13 @@ const Cart = ({ products, errObj }: IProps) => {
   return (
     <DefautLayout title="Cart" description="product on your cart">
       <Toolbar />
+      <ToastContainer />
+
+      <MyDialog
+        type="LOADING"
+        isShow={isLoading}
+        toggleDialogState={() => {}}
+      />
 
       <Content products={products} />
     </DefautLayout>

@@ -8,8 +8,8 @@ import { useAppSelector } from "@/features/hooks/use-global-state";
 import { IProduct } from "@/features/interfaces";
 
 // Components
-import EmptyCart from "@/components/cart/empty-cart";
-import ProductCart from "@/components/cart/product-cart";
+import EmptyCart from "@/components/product/cart/empty-cart";
+import ProductCart from "@/components/product/cart/product-cart";
 import RecommendProduct from "./recommend-products";
 
 interface IProps {

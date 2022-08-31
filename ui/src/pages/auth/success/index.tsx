@@ -12,11 +12,11 @@ import {
 import { clearErrorAndLoadingState } from "@/features/global-state/reducers/auth";
 
 // Components
-import DefaultLayout from "@/components/shares/layouts/defaut-layout";
+import DefaultLayout from "@/components/shares/layouts/default-layout";
 
-/****************************************************
- *                 MAIN FUNCTION
- */
+/***********************************************************************************
+ *                          ---   MAIN FUNCTION   ---                              *
+ **********************************************************************************/
 const SignupSuccess = () => {
   const router = useRouter();
   const { isSuccess } = useAppSelector((state) => state.auth);
@@ -26,7 +26,8 @@ const SignupSuccess = () => {
     if (!isSuccess) {
       router.push("/auth/login");
     }
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess]);
 
   const goToLoginPage = () => {
     dispatch(clearErrorAndLoadingState());

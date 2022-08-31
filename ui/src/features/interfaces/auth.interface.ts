@@ -1,9 +1,9 @@
 import { IErorrResponseData } from "@/features/interfaces";
 
 export enum UserType {
-  GUEST,
-  USER,
-  ADMIN,
+  GUEST = "GUEST",
+  USER = "USER",
+  ADMIN = "ADMIN",
 }
 
 export interface IAuthPayload {
@@ -11,7 +11,7 @@ export interface IAuthPayload {
   email: string;
   user_name: string;
   image_url: string;
-  role: UserType;
+  role: "GUEST" | "USER" | "ADMIN";
 }
 
 export interface IProfile {
@@ -23,7 +23,7 @@ export interface IProfile {
   date_of_birth?: string;
   phone?: string;
   address?: string;
-  role: UserType;
+  role: "GUEST" | "USER" | "ADMIN";
   image_id?: string;
   image_url?: string;
   created_at: Date;
@@ -33,6 +33,12 @@ export interface IProfile {
 export interface IInputEditProfile {
   form: HTMLFormElement | undefined | FormData;
   userId: number;
+}
+
+export interface IInputEditPassword {
+  userId: number;
+  currentPassword: string;
+  newPassword: string;
 }
 
 export interface IAuth {

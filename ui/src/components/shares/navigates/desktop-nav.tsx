@@ -31,7 +31,7 @@ interface IProps {}
 const DesktopNav = ({}: IProps) => {
   const { currentLocale, darkMode } = useAppSelector((state) => state.gui);
   const { t } = useTranslation("common");
-  const { user } = useAppSelector((state) => state.auth);
+  const { profile } = useAppSelector((state) => state.auth);
   const router = useRouter();
   const dispatch = useAppDispatch();
 
@@ -59,7 +59,7 @@ const DesktopNav = ({}: IProps) => {
 
       <SearchProductBox />
 
-      {user ? <NotificationMenu /> : null}
+      {profile ? <NotificationMenu /> : null}
 
       {/*********************   App Language Menu - Top Navigatoin   *******************/}
       <LangItemMenu
@@ -75,9 +75,9 @@ const DesktopNav = ({}: IProps) => {
 
       <CartMenu />
 
-      {user ? <AccountMenu /> : null}
+      {profile ? <AccountMenu /> : null}
 
-      {!user && (
+      {!profile && (
         <AuthMenu
           login={t("topNavigation.authMenu.login")}
           signup={t("topNavigation.authMenu.signup")}

@@ -1,16 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { GetServerSideProps, NextPage } from "next";
 import { ParsedUrlQuery } from "querystring";
+import { ToastContainer, toast } from "react-toastify";
+import Cookies from "js-cookie";
 
 // Material design
 import { Toolbar, Box } from "@mui/material";
 
+// Global state
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "@/features/hooks/use-global-state";
+import {
+  clearStateWithoutProducts,
+  clearStateAddToCart,
+} from "@/features/global-state/reducers/product";
+import { fetchProfileById } from "@/features/global-state/reducers/auth";
 import { getHttpErrorObject, http } from "@/features/services";
 import { IProduct } from "@/features/interfaces";
 import { AxiosError } from "axios";
 
 // Components
-import DefautLayout from "@/components/shares/layouts/defaut-layout";
+import MyDialog from "@/components/shares/loader/my-dialog";
+import DefautLayout from "@/components/shares/layouts/default-layout";
 import TopBreadcrumbs from "@/components/product/breadcrumbs";
 import Content from "@/components/product/content";
 
@@ -27,9 +40,51 @@ interface IParams extends ParsedUrlQuery {
  *                           MAIN FUNCTION - CLIENT SIDE                           *
  **********************************************************************************/
 const ProductDetail: NextPage<IProps> = ({ product }) => {
+  const dispatch = useAppDispatch();
+  const { isLoading, isAddToCart } = useAppSelector((state) => state.product);
+  const { access_token } = useAppSelector((state) => state.auth);
+
+  const onShowToastify = () => {
+    toast.success("Product added is successfully.", {
+      autoClose: 1000,
+      position: toast.POSITION.TOP_RIGHT,
+      // style: { background: "green", color: "white" },
+      // icon: "🚀",
+    });
+  };
+
+  //############################################
+  //             LIFE CYCLE METHOD
+  //############################################
+  useEffect(() => {
+    if (!access_token) {
+      const _accessToken = Cookies.get("access_token");
+
+      if (_accessToken) {
+        dispatch(fetchProfileById());
+      }
+    }
+
+    if (isAddToCart) {
+      onShowToastify();
+      dispatch(clearStateAddToCart());
+    }
+
+    return () => {
+      dispatch(clearStateWithoutProducts());
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAddToCart]);
+
   return (
     <DefautLayout title="cart" description="product on your cart">
       <Toolbar />
+      <ToastContainer />
+      <MyDialog
+        type="LOADING"
+        isShow={isLoading}
+        toggleDialogState={() => {}}
+      />
 
       <Box
         sx={{
@@ -78,34 +133,3 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 };
 
 export default ProductDetail;
-
-// export const getStaticPaths: GetStaticPaths = async () => {
-//   const { data } = await http.get(`/products?page=1&limit=20`);
-//   const { products } = data as IProductResponse;
-
-//   const paths = products.map((product) => {
-//     return {
-//       params: { productId: String(product.id) },
-//     };
-//   });
-
-//   return {
-//     paths,
-//     fallback: true,
-//   };
-// };
-
-// export const getStaticProps: GetStaticProps = async ({ params }) => {
-//   const { data } = await http.get(`/products?page=1&limit=20`);
-//   const { products } = data as IProductResponse;
-
-//   //   console.log("products", params);
-//   const { productId } = params as IParams;
-//   const product = products.find((product) => product.id === Number(productId));
-
-//   return {
-//     props: {
-//       product,
-//     },
-//   };
-// };

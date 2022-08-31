@@ -16,7 +16,7 @@ import { DELIVERY_CHARGE } from "@/features/const/currency";
 import { clWhite } from "@/features/const/colors";
 
 // Components
-import TextHorizontal from "@/components/cart/text-horizontal";
+import TextHorizontal from "@/components/product/cart/text-horizontal";
 
 interface IProps {
   quantity: number;

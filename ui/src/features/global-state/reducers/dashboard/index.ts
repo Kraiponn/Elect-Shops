@@ -13,9 +13,9 @@ const initSidebarListItemMenu: ISidebarMenu = {
   purchase: false,
   notifications: false,
   customers: false,
+  categories: false,
   products: false,
   orders: false,
-  invoices: false,
 };
 
 const initialState: IDashboardUI = {

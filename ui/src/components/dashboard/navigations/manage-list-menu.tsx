@@ -64,6 +64,16 @@ export default function MangementListMenu({
           isActive={currentItem.customers ? true : false}
         />
 
+        {/***************  Categories Item Menu  ***************/}
+        <ManageItemMenu
+          text={t("leftSideNav.category")}
+          menuType="title"
+          Icon={DescriptionIcon}
+          handleSelectItemMenu={handleSelectItemMenu}
+          itemSelectType={NavMenuType.CATEGORY}
+          isActive={currentItem.categories ? true : false}
+        />
+
         {/***************  Product Item Menu  ***************/}
         <ManageItemMenu
           text={t("leftSideNav.product")}
@@ -82,16 +92,6 @@ export default function MangementListMenu({
           handleSelectItemMenu={handleSelectItemMenu}
           itemSelectType={NavMenuType.ORDER}
           isActive={currentItem.orders ? true : false}
-        />
-
-        {/***************  Invoice Item Menu  ***************/}
-        <ManageItemMenu
-          text={t("leftSideNav.invoice")}
-          menuType="title"
-          Icon={DescriptionIcon}
-          handleSelectItemMenu={handleSelectItemMenu}
-          itemSelectType={NavMenuType.INVOICE}
-          isActive={currentItem.invoices ? true : false}
         />
       </Box>
       <Divider />

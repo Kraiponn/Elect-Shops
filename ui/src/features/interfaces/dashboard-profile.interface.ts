@@ -13,8 +13,8 @@ export type EditBoxType =
   | "address"
   | "date_of_birth";
 
-export interface IChnagePwdForm {
-  currentPwd: string;
-  newPwd: string;
-  confirmPwd: string;
+export interface IChangePwdForm {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
 }

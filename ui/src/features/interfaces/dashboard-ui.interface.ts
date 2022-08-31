@@ -12,7 +12,7 @@ export enum NavMenuType {
   CUSTOMER = "dashboard/CUSTOMER",
   PRODUCT = "dashboard/PRODUCT",
   ORDER = "dashboard/ORDER",
-  INVOICE = "dashboard/INVOICE",
+  CATEGORY = "dashboard/CATEGORY",
   SETTING = "dashboard/SETTING",
   ANALYTIC = "dashboard/ANALYTIC",
   LOGOUT = "dashboard/LOGOUT",
@@ -36,9 +36,9 @@ export interface ISidebarMenu {
   purchase: boolean;
   notifications: boolean;
   customers: boolean;
+  categories: boolean;
   products: boolean;
   orders: boolean;
-  invoices: boolean;
 }
 
 export interface IAccountListMenu {

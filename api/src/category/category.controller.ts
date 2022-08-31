@@ -78,19 +78,28 @@ export class CategoryController {
    * route     Get /v2/api/categories/:categoryId
    * access    Public
    */
-
   @Get('/:categoryId')
   getCategoryById(@Param('categoryId') categoryId: number) {
     return this.categoryService.getCategoryById(Number(categoryId));
   }
 
-  /********************************
+  /************************************************************************************
    * desc      Get many categories with pagination
-   * route     Get /v2/api/categories?page=xx&limit=xx
+   * route     Get /v2/api/categories?page=xx&limit=xx&noPrefixZeroIndex=[boolean]
    * access    Public
    */
   @Get()
-  getCategories(@Query('page') page: number, @Query('limit') limit: number) {
-    return this.categoryService.getCategories(Number(page), Number(limit));
+  getCategories(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+    @Query('noPrefixZeroIndex') noPrefixZeroIndex: boolean,
+    @Query('search') search: string,
+  ) {
+    return this.categoryService.getCategories(
+      Number(page),
+      Number(limit),
+      Boolean(noPrefixZeroIndex),
+      search,
+    );
   }
 }

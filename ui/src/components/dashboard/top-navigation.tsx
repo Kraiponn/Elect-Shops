@@ -26,11 +26,12 @@ import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 
 // Constant & Types & Global state
 import { DRAWER_WIDTH } from "@/components/dashboard/utils/constants";
-import { IAuthPayload, NavMenuType } from "@/features/interfaces";
+import { IProfile, NavMenuType } from "@/features/interfaces";
 import {
   useAppSelector,
   useAppDispatch,
 } from "@/features/hooks/use-global-state";
+import { systemLogout } from "@/features/global-state/reducers/auth";
 import {
   changeLanguagesMode,
   changeThemeMode,
@@ -46,7 +47,7 @@ import LangItemMenu from "@/components/dashboard/navigations/lang-item-menu";
 
 interface IProps {
   open: boolean;
-  user: IAuthPayload | null | undefined;
+  profile: IProfile | null | undefined;
   handleDrawerOpen: () => void;
 }
 
@@ -76,7 +77,7 @@ const AppBar = styled(MuiAppBar, {
  **********************************************************************************/
 export default function TopNavigation({
   open,
-  user,
+  profile,
   handleDrawerOpen,
 }: IProps) {
   const router = useRouter();
@@ -87,10 +88,20 @@ export default function TopNavigation({
   const dispatch = useAppDispatch();
 
   const handleSelectItem = (item: NavMenuType) => {
-    if (item === NavMenuType.PROFILE) {
-      //
-    } else if (item === NavMenuType.SECURITY) {
-      //
+    switch (item) {
+      case NavMenuType.PROFILE:
+        //
+        break;
+      case NavMenuType.SETTING:
+        //
+        break;
+      case NavMenuType.ANALYTIC:
+        //
+        break;
+      case NavMenuType.LOGOUT:
+        dispatch(systemLogout());
+        break;
+      default:
     }
   };
 
@@ -196,7 +207,7 @@ export default function TopNavigation({
             }}
           >
             <Image
-              src={user?.image_url ? user.image_url : ProfileImage}
+              src={profile?.image_url ? profile.image_url : ProfileImage}
               alt="Profile picture menu"
               layout="fill"
               objectFit="contain"
@@ -245,7 +256,7 @@ export default function TopNavigation({
                 sx={{ position: "relative", width: "45px", height: "45px" }}
               >
                 <Image
-                  src={user?.image_url ? user.image_url : ProfileImage}
+                  src={profile?.image_url ? profile.image_url : ProfileImage}
                   alt="profile image"
                   layout="fill"
                   objectFit="contain"
@@ -262,7 +273,7 @@ export default function TopNavigation({
                 }}
               >
                 <Typography variant="h6">
-                  {user?.user_name ? user.user_name : ""}
+                  {profile ? `${profile.first_name} ${profile.last_name}` : ""}
                 </Typography>
                 <Typography
                   sx={{
@@ -272,7 +283,7 @@ export default function TopNavigation({
                     opacity: 0.7,
                   }}
                 >
-                  {user?.email ? user.email : ""}
+                  {profile?.email ? profile.email : ""}
                 </Typography>
               </Box>
             </Box>

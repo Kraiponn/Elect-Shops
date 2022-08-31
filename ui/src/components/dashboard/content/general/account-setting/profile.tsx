@@ -1,32 +1,50 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import Image from "next/image";
 import useTranslation from "next-translate/useTranslation";
 
 // Material Design
-import { Avatar, Box, Button, Grid, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  Typography,
+} from "@mui/material";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 
 // Global state
 import {
-  // useAppSelector,
   useAppDispatch,
+  useAppSelector,
 } from "@/features/hooks/use-global-state";
-import { updateProfile } from "@/features/global-state/reducers/auth";
-
-// Color system
-import { clDarkLight, clDarkMedium, clGray50 } from "@/features/const/colors";
-
-// Components
-import AccountForm from "@/components/dashboard/content/general/account-setting/account-form";
+import {
+  updateProfile,
+  removeAccount,
+} from "@/features/global-state/reducers/auth";
 import {
   IInputEditProfile,
   IProfile,
   IProfileBody,
 } from "@/features/interfaces";
 
+// Color system
+import { clDarkLight, clDarkMedium, clGray50 } from "@/features/const/colors";
+
+// Components
+import DefaultImage from "@/assets/images/little-pug-dog.webp";
+import AccountForm from "@/components/dashboard/content/general/account-setting/account-form";
+import ConfirmDialog from "@/components/shares/dialog/confirm-dialog";
+
 interface IProps {
   darkMode: boolean;
   profile: IProfile;
+}
+
+interface IDialogState {
+  isShow: boolean;
+  isRemove: boolean;
 }
 
 const TRANSLATE_KEY = "content.generalMenu.account";
@@ -35,12 +53,15 @@ const TRANSLATE_KEY = "content.generalMenu.account";
  *                          ---   MAIN FUNCTION   ---                              *
  **********************************************************************************/
 export default function Profile({ darkMode, profile }: IProps) {
-  const { t } = useTranslation("dashboard");
   const dispatch = useAppDispatch();
+  const router = useRouter();
+  const { t } = useTranslation("dashboard");
+  const [dlgState, setDlgState] = useState<IDialogState>({
+    isShow: false,
+    isRemove: false,
+  });
   const [selectFile, setSelectFile] = useState<File | undefined>();
-  // const { user, profile, isLoading, isSuccess, error } = useAppSelector(
-  //   (state) => state.auth
-  // );
+  const { isLoading, isSuccess } = useAppSelector((state) => state.auth);
 
   const handleSelectImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0)
@@ -68,11 +89,36 @@ export default function Profile({ darkMode, profile }: IProps) {
   };
 
   const onRemoveAccount = () => {
-    //
+    setDlgState({ ...dlgState, isShow: true });
   };
+
+  const handleConfirmDialog = (result: boolean) => {
+    setDlgState({
+      ...dlgState,
+      isShow: !dlgState.isShow,
+      isRemove: result,
+    });
+  };
+
+  //#####################################
+  //         LIFE CYCLE CONTROL
+  //#####################################
+  useEffect(() => {
+    if (dlgState.isRemove) {
+      dispatch(removeAccount(profile.id));
+      // router.push("/", "/", { locale: router.locale });
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dlgState.isRemove]);
 
   return (
     <>
+      <ConfirmDialog
+        isShow={dlgState.isShow}
+        handleResponse={handleConfirmDialog}
+      />
+
       {profile ? (
         <>
           {/******************   Profile Details   *******************/}
@@ -112,7 +158,9 @@ export default function Profile({ darkMode, profile }: IProps) {
                     src={
                       selectFile
                         ? URL.createObjectURL(selectFile)
-                        : (profile.image_url as string)
+                        : profile.image_url
+                        ? profile.image_url
+                        : DefaultImage
                     }
                     alt="profile"
                     layout="fill"
@@ -196,7 +244,11 @@ export default function Profile({ darkMode, profile }: IProps) {
                 sx={{ mt: 2 }}
                 onClick={onRemoveAccount}
               >
-                {t(`${TRANSLATE_KEY}.profile.deleteAccount`)}
+                {isLoading && !isSuccess ? (
+                  <CircularProgress />
+                ) : (
+                  t(`${TRANSLATE_KEY}.profile.deleteAccount`)
+                )}
               </Button>
             </Grid>
           </Grid>

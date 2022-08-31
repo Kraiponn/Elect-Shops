@@ -1,5 +1,3 @@
-import React from "react";
-
 // Material Design
 import { Box } from "@mui/material";
 

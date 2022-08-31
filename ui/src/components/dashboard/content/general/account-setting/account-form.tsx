@@ -1,5 +1,4 @@
 import React from "react";
-// import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import dayjs from "dayjs";
 import buddhistEra from "dayjs/plugin/buddhistEra";
@@ -40,7 +39,7 @@ const TRANSLATE_KEY = "content.generalMenu.account";
  **********************************************************************************/
 export default function AccountForm({ profile, handleUpdateProfile }: IProps) {
   const { t } = useTranslation("dashboard");
-  const { isLoading } = useAppSelector((state) => state.auth);
+  const { isLoading, isSuccess } = useAppSelector((state) => state.auth);
 
   const schema = yup
     .object({
@@ -156,7 +155,7 @@ export default function AccountForm({ profile, handleUpdateProfile }: IProps) {
           variant="contained"
           sx={{ mt: "1rem", paddingX: "2rem" }}
         >
-          {isLoading ? (
+          {isLoading && !isSuccess ? (
             <CircularProgress />
           ) : (
             t(`${TRANSLATE_KEY}.profile.save`)

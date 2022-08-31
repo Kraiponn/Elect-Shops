@@ -62,7 +62,7 @@ export class OrderService {
     const order = await this.prismaService.order.create({
       data: {
         id: this.getUniqueId(),
-        order_date: new Date(order_date),
+        order_date: order_date ? new Date(order_date) : undefined,
         address: address ? address : '',
         user_id: userId,
         order_details: {

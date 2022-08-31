@@ -9,7 +9,6 @@ import {
   AccordionSummary,
   Box,
   Checkbox,
-  Container,
   FormControlLabel,
   Grid,
   Radio,
@@ -51,7 +50,6 @@ export default function ContentList({}: IProps) {
 
   const handlePaymentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPaymentType((event.target as HTMLInputElement).value);
-    //  console.log("Result from select", (event.target as HTMLInputElement).value);
   };
 
   const handleExpandChange =
@@ -325,13 +323,27 @@ export default function ContentList({}: IProps) {
               </Typography>
 
               <Box sx={{ flexGrow: 1 }} />
-              <Typography
-                variant="body1"
-                color="secondary"
-                sx={{ fontWeight: 900 }}
+
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
               >
-                {ThaiCurrencyFormatWithBuildIn(order.product.unit_price)}
-              </Typography>
+                <Typography
+                  variant="body1"
+                  color="secondary"
+                  sx={{ fontWeight: 900 }}
+                >
+                  {ThaiCurrencyFormatWithBuildIn(order.product.unit_price)}
+                </Typography>
+
+                <Typography variant="body1" sx={{ fontWeight: 900 }}>
+                  x{order.quantity}
+                </Typography>
+              </Box>
             </Box>
           ))}
       </Box>

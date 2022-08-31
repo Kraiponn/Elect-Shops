@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
+import Cookies from "js-cookie";
 
 // Materials
 import { Box, Typography } from "@mui/material";
@@ -14,17 +15,15 @@ import {
 import {
   asyncAuth,
   clearErrorAndLoadingState,
-  setAuthSuccess,
+  fetchProfileById,
 } from "@/features/global-state/reducers/auth";
-import { clearStateWithoutProducts } from "@/features/global-state/reducers/product";
 import { IAuthForm, IAuthInput } from "@/features/interfaces";
+import { clDarkHard, clDarkMedium, clWhite } from "@/features/const/colors";
 
 // Components
-import DefaultLayout from "@/components/shares/layouts/defaut-layout";
+import DefaultLayout from "@/components/shares/layouts/default-layout";
 import AuthForm from "@/components/auth/auth-form";
 import MyDialog from "@/components/shares/loader/my-dialog";
-import Cookies from "js-cookie";
-import { clDarkHard, clDarkMedium, clWhite } from "@/features/const/colors";
 
 /***********************************************************************************
  *                          ---   MAIN FUNCTION   ---                              *
@@ -38,15 +37,6 @@ const SignUp = () => {
   const { isLoading, isSuccess, error, user, access_token } = useAppSelector(
     (state) => state.auth
   );
-
-  //#########################################
-  //           Life cycle method
-  //#########################################
-  useEffect(() => {
-    return () => {
-      dispatch(clearStateWithoutProducts());
-    };
-  }, [dispatch]);
 
   const handleSignup = ({ email, password }: IAuthForm) => {
     const values: IAuthInput = {
@@ -63,21 +53,28 @@ const SignUp = () => {
     dispatch(clearErrorAndLoadingState());
   };
 
-  // Keep user and access_token to global state
-  if (!user && !access_token) {
-    const _user = Cookies.get("user");
-    const _accessToken = Cookies.get("access_token");
+  //#########################################
+  //           Life cycle method
+  //#########################################
+  useEffect(() => {
+    // Keep user and access_token to global state
+    if (!access_token) {
+      const _accessToken = Cookies.get("access_token");
 
-    if (_user && _accessToken) {
-      dispatch(
-        setAuthSuccess({ user: JSON.parse(_user), access_token: _accessToken })
-      );
+      if (_accessToken) dispatch(fetchProfileById());
     }
-  } else if (isSuccess) {
-    return router.push("/auth/success", "/auth/success", {
-      locale: router.locale,
-    });
-  }
+
+    if (isSuccess) {
+      router.push("/", "/", {
+        locale: router.locale,
+      });
+    }
+
+    return () => {
+      dispatch(clearErrorAndLoadingState());
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [access_token, dispatch, isSuccess, user]);
 
   return (
     <DefaultLayout title="content" description="signup page">

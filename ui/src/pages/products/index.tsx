@@ -1,23 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 
 // Material design
 import {
   Box,
-  TextField,
-  Toolbar,
   Typography,
-  useMediaQuery,
 } from "@mui/material";
-import DefautLayout from "@/components/shares/layouts/defaut-layout";
+import DefautLayout from "@/components/shares/layouts/default-layout";
 
 /***********************************************
  *               MAIN METHOD
  **********************************************/
 const ProductPage = () => {
-  const router = useRouter();
-  const { t, lang } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <DefautLayout title="product page" description="welcome to shoping">

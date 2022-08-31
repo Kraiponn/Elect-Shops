@@ -32,8 +32,8 @@ export default function useTheme() {
         main: red.A400,
       },
       background: {
-        default: darkMode ? clDarkHard : clBgLight,
-        paper: darkMode ? clDarkHard : clBgLight,
+        default: darkMode ? clDarkHard : clWhite,
+        paper: darkMode ? clDarkHard : clWhite,
         // default: clDark,
         // paper: clDark,
       },
@@ -97,17 +97,6 @@ export default function useTheme() {
         defaultProps: {
           elevation: 1,
         },
-      },
-      MuiTextField: {
-        defaultProps: {},
-      },
-      MuiOutlinedInput: {
-        defaultProps: {
-          // /
-        },
-      },
-      MuiSelect: {
-        defaultProps: {},
       },
     },
     breakpoints: {

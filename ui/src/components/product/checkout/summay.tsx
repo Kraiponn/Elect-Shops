@@ -1,42 +1,21 @@
-import React from "react";
-import Image from "next/image";
+import React, { useEffect } from "react";
+import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 
 // Material components & Icons
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  Button,
-  Checkbox,
-  Container,
-  FormControlLabel,
-  Grid,
-  Radio,
-  RadioGroup,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  TextField,
-  Typography,
-} from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import LockIcon from "@mui/icons-material/Lock";
+import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
 
 // Global state and System colors
-import { useAppSelector } from "@/features/hooks/use-global-state";
-import { clDarkHard, clPrimary, clWhite } from "@/features/const/colors";
+import {
+  useAppSelector,
+  useAppDispatch,
+} from "@/features/hooks/use-global-state";
+import { createdOrder } from "@/features/global-state/reducers/order";
+import { clPrimary } from "@/features/const/colors";
 
 // Components
-import {
-  CardMaster,
-  CardVisa,
-  CardPaypal,
-} from "@/components/product/checkout/util";
 import { ThaiCurrencyFormatWithBuildIn } from "@/features/services";
+import { IInputOrder, IOrderProduct } from "@/features/interfaces";
 
 interface IProps {}
 
@@ -44,9 +23,52 @@ interface IProps {}
  *                          ---  MAIN FUNCTION   ---                               *
  **********************************************************************************/
 export default function Summary({}: IProps) {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
   const { t } = useTranslation("checkout");
   const { darkMode } = useAppSelector((state) => state.gui);
   const { orders, totalPrice } = useAppSelector((state) => state.product);
+  const { profile } = useAppSelector((state) => state.auth);
+  const { isLoading, isSuccess, error } = useAppSelector(
+    (state) => state.order
+  );
+
+  const getProductQuantities = (order: IOrderProduct[]): string[] => {
+    let productIds: string[] = [];
+
+    orders.forEach((order) => {
+      for (let index = 0; index < order.quantity; index++) {
+        productIds.push(order.product.id.toString());
+      }
+    });
+
+    return productIds;
+  };
+
+  const handleOrderProducts = () => {
+    const formData: IInputOrder = {
+      address: profile?.address ? profile.address : "",
+      products: getProductQuantities(orders),
+    };
+
+    // console.log(formData);
+    dispatch(createdOrder(formData));
+  };
+
+  //############################################
+  //             LIFE CYCLE METHOD
+  //############################################
+  useEffect(() => {
+    if (isSuccess) {
+      router.push(
+        "/products/checkout/order-success",
+        "/products/checkout/order-success",
+        { locale: router.locale }
+      );
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess]);
 
   return (
     <Grid item xs={12} lg={5}>
@@ -151,8 +173,9 @@ export default function Summary({}: IProps) {
           color="primary"
           fullWidth
           sx={{ py: "1rem", fontSize: "1.2rem" }}
+          onClick={handleOrderProducts}
         >
-          {t("button")}
+          {isLoading ? <CircularProgress /> : t("button")}
         </Button>
 
         <Typography

@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-import { OrderType, UserType } from '@prisma/client';
+import { UserType } from '@prisma/client';
 
 import { GetRoleType, GetUserId } from 'src/auth/decorators';
 import { AccessTokenGuard } from 'src/auth/guards';
@@ -32,11 +32,11 @@ export class OrderController {
    */
   @UseGuards(AccessTokenGuard)
   @Post()
-  @UseInterceptors(FileInterceptor('image'))
+  // @UseInterceptors(FileInterceptor('image'))
   async createOrder(
     @GetUserId() userId: number,
     @Body() body: OrderCreatedDto,
-    @UploadedFile() file: Express.Multer.File,
+    // @UploadedFile() file: Express.Multer.File,
   ) {
     // console.log(body.products);
     // return { message: 'successfully' };

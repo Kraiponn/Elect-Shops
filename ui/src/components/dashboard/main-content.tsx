@@ -24,7 +24,7 @@ import Notification from "@/components/dashboard/content/general/notification";
 import Customer from "@/components/dashboard/content/management/customers";
 import Product from "@/components/dashboard/content/management/products";
 import Order from "@/components/dashboard/content/management/orders";
-import Invoice from "@/components/dashboard/content/management/invoices";
+import Category from "@/components/dashboard/content/management/categories";
 
 /*******************************************************************************
  *                           Constant and Types                                *
@@ -118,8 +118,8 @@ export default function Content({ open }: IProps) {
     else if (sidebarListItemMenu.products)
       return <Product darkMode={darkMode} />;
     else if (sidebarListItemMenu.orders) return <Order darkMode={darkMode} />;
-    else if (sidebarListItemMenu.invoices)
-      return <Invoice darkMode={darkMode} />;
+    else if (sidebarListItemMenu.categories)
+      return <Category darkMode={darkMode} />;
   };
 
   return (

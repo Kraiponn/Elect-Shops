@@ -1,11 +1,15 @@
-import React, { ChangeEvent, FormEvent } from "react";
+import React, { ChangeEvent, FormEvent, useEffect } from "react";
 import useTranslation from "next-translate/useTranslation";
 
 // Components
 import { Box, Grid } from "@mui/material";
 
 // Global state and Types
-import { useAppSelector } from "@/features/hooks/use-global-state";
+import {
+  useAppSelector,
+  useAppDispatch,
+} from "@/features/hooks/use-global-state";
+import { getCategories } from "@/features/global-state/reducers/category";
 
 // Components
 import ProductCategoryList from "@/components/search/product-list/product-category-list";
@@ -33,7 +37,16 @@ export default function FilterProduct({
   handleOnChangeProductCategory,
 }: IProps) {
   const { t } = useTranslation("search");
+  const dispatch = useAppDispatch();
   const { darkMode } = useAppSelector((state) => state.gui);
+
+  //############################################
+  //             LIFE CYCLE METHOD
+  //############################################
+  useEffect(() => {
+    dispatch(getCategories());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Grid item xs={12} md={12} lg={3}>

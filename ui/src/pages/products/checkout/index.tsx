@@ -4,7 +4,11 @@ import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { requireAuthentication } from "@/features/services/secure/require-auth";
 
 // Global state and Global types
-import { useAppSelector } from "@/features/hooks/use-global-state";
+import {
+  useAppSelector,
+  useAppDispatch,
+} from "@/features/hooks/use-global-state";
+import { fetchProfileById } from "@/features/global-state/reducers/auth";
 
 // Material design
 import { Toolbar } from "@mui/material";
@@ -23,11 +27,20 @@ interface IProps {
  **********************************************************************************/
 const Checkout = ({}: IProps) => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const { orders } = useAppSelector((state) => state.product);
+  const { profile } = useAppSelector((state) => state.auth);
 
+  //############################################
+  //             LIFE CYCLE METHOD
+  //############################################
   useEffect(() => {
     if (orders.length === 0 || !orders) {
       return router.back();
+    }
+
+    if (!profile) {
+      dispatch(fetchProfileById());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orders]);

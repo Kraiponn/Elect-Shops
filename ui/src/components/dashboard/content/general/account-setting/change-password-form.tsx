@@ -1,13 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 // Material Design
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
+
+// Global state
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "@/features/hooks/use-global-state";
+import { updatePassword } from "@/features/global-state/reducers/auth";
 
 // Form validation & Types
 import { clGray100 } from "@/features/const/colors";
-import { IChnagePwdForm } from "@/features/interfaces";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { IChangePwdForm, IInputEditPassword } from "@/features/interfaces";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
@@ -29,21 +36,25 @@ const TRANSLATE_KEY = "content.generalMenu.account";
  **********************************************************************************/
 export default function AccountForm({ darkMode }: IProps) {
   const { t } = useTranslation("dashboard");
+  const { profile, isLoading, isSuccess } = useAppSelector(
+    (state) => state.auth
+  );
+  const dispatch = useAppDispatch();
   const schema = yup
     .object({
-      currentPwd: yup
+      currentPassword: yup
         .string()
         .required(t(`${TRANSLATE_KEY}.security.errRequiredCurrentPwdBox`))
         .min(5, t(`${TRANSLATE_KEY}.security.errMinPwdBox`)),
-      newPwd: yup
+      newPassword: yup
         .string()
         .required(t(`${TRANSLATE_KEY}.security.errRequiredNewPwdBox`))
         .min(5, t(`${TRANSLATE_KEY}.security.errMinPwdBox`)),
-      confirmPwd: yup
+      confirmPassword: yup
         .string()
         .required(t(`${TRANSLATE_KEY}.security.errRequiredConfirmPwdBox`))
         .oneOf(
-          [yup.ref(`newPwd`)],
+          [yup.ref(`newPassword`)],
           t(`${TRANSLATE_KEY}.security.errNotMatchPwdBox`)
         ),
     })
@@ -53,16 +64,34 @@ export default function AccountForm({ darkMode }: IProps) {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<IChnagePwdForm>({
+    reset,
+  } = useForm<IChangePwdForm>({
     resolver: yupResolver(schema),
     reValidateMode: "onChange",
   });
 
   // Form submit
-  const handleOnSubmit: SubmitHandler<IChnagePwdForm> = (body) => {
-    console.log("Form data:", body);
-    //  handleAuth(body);
+  const handleOnSubmit = (body: IChangePwdForm) => {
+    // console.log("Form data:", body);
+
+    const updatedForm: IInputEditPassword = {
+      userId: profile ? profile.id : 0,
+      currentPassword: body.currentPassword,
+      newPassword: body.newPassword,
+    };
+
+    dispatch(updatePassword(updatedForm));
+    reset();
   };
+
+  //#####################################
+  //         LIFT CYCLE CONTROL
+  //#####################################
+  useEffect(() => {
+    if (isSuccess && !isLoading) {
+      reset({ newPassword: "", currentPassword: "", confirmPassword: "" });
+    }
+  }, [isLoading, isSuccess, reset]);
 
   return (
     <form onSubmit={handleSubmit(handleOnSubmit)}>
@@ -80,7 +109,7 @@ export default function AccountForm({ darkMode }: IProps) {
         </Typography>
 
         <PasswordBox
-          name="currentPwd"
+          name="currentPassword"
           control={control}
           Icon={VpnKeyIcon}
           placeHolder={t(`${TRANSLATE_KEY}.security.currentPassword`)}
@@ -88,7 +117,7 @@ export default function AccountForm({ darkMode }: IProps) {
         />
 
         <PasswordBox
-          name="newPwd"
+          name="newPassword"
           control={control}
           Icon={VpnKeyIcon}
           placeHolder={t(`${TRANSLATE_KEY}.security.newPassword`)}
@@ -96,7 +125,7 @@ export default function AccountForm({ darkMode }: IProps) {
         />
 
         <PasswordBox
-          name="confirmPwd"
+          name="confirmPassword"
           control={control}
           Icon={VpnKeyIcon}
           placeHolder={t(`${TRANSLATE_KEY}.security.confirmPassword`)}
@@ -104,7 +133,11 @@ export default function AccountForm({ darkMode }: IProps) {
         />
 
         <Button type="submit" variant="contained">
-          {t(`${TRANSLATE_KEY}.security.confirm`)}
+          {isLoading && !isSuccess ? (
+            <CircularProgress />
+          ) : (
+            t(`${TRANSLATE_KEY}.security.confirm`)
+          )}
         </Button>
       </Box>
     </form>

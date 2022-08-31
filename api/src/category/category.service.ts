@@ -121,21 +121,52 @@ export class CategoryService {
   async getCategories(
     page: number,
     limit: number,
+    noPrefixZeroIndex = true,
+    search: string,
   ): Promise<{ pagination: IPaginate; categories: Category[] }> {
     const startIndex = (page - 1) * limit;
     const lastIndex = page * limit;
 
-    const total = await this.prismaService.category.count();
-    const categories = await this.prismaService.category.findMany({
-      take: limit,
-      skip: startIndex,
-      orderBy: {
-        id: 'asc',
-      },
-    });
+    // const total = await this.prismaService.category.count();
+    let categories: Category[];
+    let quantity = 0;
 
+    if (search) {
+      quantity = await this.prismaService.category.count({
+        where: {
+          category_name: {
+            contains: search,
+            mode: 'insensitive',
+          },
+        },
+      });
+      categories = await this.prismaService.category.findMany({
+        where: {
+          category_name: {
+            contains: search,
+            mode: 'insensitive',
+          },
+        },
+        take: limit,
+        skip: startIndex,
+        orderBy: {
+          id: 'asc',
+        },
+      });
+    } else {
+      quantity = await this.prismaService.category.count();
+      categories = await this.prismaService.category.findMany({
+        take: limit,
+        skip: startIndex,
+        orderBy: {
+          id: 'asc',
+        },
+      });
+    }
+
+    // catQuantities = categories.length;
     const pagination: IPaginate = {
-      total,
+      total: quantity,
       current: page,
       next: {
         page: 0,
@@ -147,7 +178,7 @@ export class CategoryService {
       },
     };
 
-    if (lastIndex < total) {
+    if (lastIndex < quantity) {
       pagination.next = {
         page: page + 1,
         limit,
@@ -162,13 +193,14 @@ export class CategoryService {
     }
 
     // Make for blank selection on client
-    categories.unshift({
-      id: 0,
-      category_name: 'All Products',
-      description: 'Choose all categories',
-      created_at: new Date(Date.now()),
-      updated_at: new Date(Date.now()),
-    });
+    if (!noPrefixZeroIndex)
+      categories.unshift({
+        id: 0,
+        category_name: 'All Products',
+        description: 'Choose all categories',
+        created_at: new Date(Date.now()),
+        updated_at: new Date(Date.now()),
+      });
 
     return {
       pagination,

@@ -1,13 +1,6 @@
 import React from "react";
 import Head from "next/head";
 
-// Global State
-// import { useAppDispatch } from "@/features/hooks/use-global-state";
-// import { closeAccountMenu } from "@/features/global-state/reducers/gui";
-
-// Components & Material design
-// import MyDialog from "@/components/shares/loader/my-dialog";
-
 interface IProps {
   children: React.ReactNode;
   title: string;
@@ -25,13 +18,6 @@ const BlankLayout = ({ children, title, description }: IProps) => {
         <meta name={title} content={description ? description : ""} />
         <title>{title}</title>
       </Head>
-
-      {/* <MyDialog
-        type="LOADING"
-        isShow={isLoading ? true : false}
-        // isShow={true}
-        toggleDialogState={() => {}}
-      /> */}
 
       <main>{children}</main>
     </>

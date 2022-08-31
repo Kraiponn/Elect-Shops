@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 
 // Materials
@@ -36,6 +36,7 @@ const Login = () => {
       email,
       password,
     };
+
     dispatch(asyncAuth(values));
   };
 
@@ -48,11 +49,19 @@ const Login = () => {
     router.push("/", "/", { locale: router.locale });
   };
 
-  if (isSuccess) {
-    dispatch(clearErrorAndLoadingState());
+  //#########################################
+  //           Life cycle method
+  //#########################################
+  useEffect(() => {
+    if (isSuccess) {
+      router.push("/", "/", { locale: router.locale });
+    }
 
-    return router.push("/", "/", { locale: router.locale });
-  }
+    return () => {
+      dispatch(clearErrorAndLoadingState());
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, isSuccess]);
 
   return (
     <BlankLayout title="Login page">

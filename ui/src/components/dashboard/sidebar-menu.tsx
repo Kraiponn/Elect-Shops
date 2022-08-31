@@ -14,7 +14,12 @@ import {
 } from "@/features/hooks/use-global-state";
 import { navDrawerSelectItemChange } from "@/features/global-state/reducers/dashboard";
 import { DRAWER_WIDTH } from "@/components/dashboard/utils/constants";
-import { IAuthPayload, NavMenuType } from "@/features/interfaces";
+import {
+  IAuthPayload,
+  IProfile,
+  NavMenuType,
+  UserType,
+} from "@/features/interfaces";
 import { clDarkMedium, clGray100 } from "@/features/const/colors";
 
 // Components
@@ -34,7 +39,7 @@ import SidebarHeaderMenu from "@/components/dashboard/navigations/sidebar-header
 interface IProps {
   open: boolean;
   theme: Theme;
-  user: IAuthPayload;
+  profile: IProfile | null | undefined;
   handleDrawerClose: () => void;
 }
 
@@ -44,7 +49,7 @@ interface IProps {
 export default function SidebarMenu({
   open,
   theme,
-  user,
+  profile,
   handleDrawerClose,
 }: IProps) {
   const { sidebarListItemMenu } = useAppSelector((state) => state.dashboard);
@@ -100,8 +105,8 @@ export default function SidebarMenu({
 
       {/***************   Header Profile   ******************/}
       <SidebarHeaderMenu
-        userName={user?.user_name ? user.user_name : ""}
-        imageUrl={user?.image_url ? user.image_url : ""}
+        userName={profile ? `${profile.first_name} ${profile.last_name}` : ""}
+        imageUrl={profile?.image_url ? profile.image_url : ""}
       />
 
       {/***************  Account List Item Menu  ******************/}
@@ -112,10 +117,12 @@ export default function SidebarMenu({
       />
 
       {/***************  Management List Item Menu  ***************/}
-      <MangeListMenu
-        handleSelectItemMenu={handleSelectItemMenu}
-        currentItem={sidebarListItemMenu}
-      />
+      {profile && profile.role === "ADMIN" ? (
+        <MangeListMenu
+          handleSelectItemMenu={handleSelectItemMenu}
+          currentItem={sidebarListItemMenu}
+        />
+      ) : null}
     </Drawer>
   );
 }

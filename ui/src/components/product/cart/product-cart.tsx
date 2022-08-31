@@ -16,8 +16,8 @@ import {
 } from "@/features/global-state/reducers/product";
 
 // Components
-import CartListItem from "@/components/cart/cart-list-item";
-import CartSummay from "@/components/cart/cart-summary";
+import CartListItem from "@/components/product/cart/cart-list-item";
+import CartSummay from "@/components/product/cart/cart-summary";
 
 interface IProps {
   orders: IOrderProduct[];

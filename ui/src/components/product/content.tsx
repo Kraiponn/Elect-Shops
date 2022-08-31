@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import { ToastContainer, toast } from "react-toastify";
 
 // Material design
 import { Grid } from "@mui/material";
@@ -38,15 +37,6 @@ const Content = ({ product }: IProps) => {
     setProductQuantity((prev) => prev - 1);
   };
 
-  const onShowToastify = () => {
-    toast.success("Product added is successfully", {
-      // style: { background: "green", color: "white" },
-      position: toast.POSITION.TOP_RIGHT,
-      autoClose: 1500,
-      // icon: "🚀",
-    });
-  };
-
   const handleAddProductToCart = (product: IProduct) => {
     const input: IInputCart = {
       product,
@@ -54,7 +44,6 @@ const Content = ({ product }: IProps) => {
     };
 
     dispatch(increaseProductToCartWithSpecify(input));
-    onShowToastify();
   };
 
   const handleOnBuyProduct = () => {
@@ -65,8 +54,6 @@ const Content = ({ product }: IProps) => {
 
   return (
     <>
-      <ToastContainer />
-
       <Grid container>
         <ImagePreview favoriteLabel={t("favorite")} product={product} />
 

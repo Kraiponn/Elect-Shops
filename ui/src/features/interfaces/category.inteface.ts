@@ -1,4 +1,20 @@
-import { IProduct, IErorrResponseData } from "@/features/interfaces";
+import { IErorrResponseData } from "@/features/interfaces";
+
+export interface IInputCategory {
+  id?: number;
+  category_name: string;
+  description: string;
+}
+
+export interface ICategory {
+  id: number;
+  category_name: string;
+  description: string;
+  created_at?: Date;
+  updated_at?: Date;
+}
+
+export interface ISingleCategoryResponse extends IInputCategory {}
 
 export interface IPage {
   page: number;
@@ -12,12 +28,11 @@ export interface IPaginate {
   prev: IPage;
 }
 
-export interface ICategory {
-  id: number;
-  category_name: string;
-  description: string;
-  created_at: Date;
-  updated_at: Date;
+export interface ISearchCategory {
+  page: number;
+  limit: number;
+  noPrefixZeroIndex: boolean;
+  searchKey: string;
 }
 
 export interface ICategoryResponse {
@@ -27,3 +42,5 @@ export interface ICategoryResponse {
   isSuccess: boolean;
   error: IErorrResponseData | null;
 }
+
+export interface ICUCategoryResponse extends IInputCategory {}

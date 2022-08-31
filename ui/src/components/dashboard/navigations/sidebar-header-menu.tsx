@@ -24,7 +24,6 @@ export default function SidebarHeaderMenu({ userName, imageUrl }: IProps) {
       <Box
         sx={{
           width: "100%",
-          // minHeight: "13rem",
           paddingY: "1.5rem",
           background: clDarkMedium,
           color: clGray100,

@@ -22,7 +22,7 @@
     "customer": "Customers",
     "product": "Products",
     "order": "Orders",
-    "invoice": "Invoices"
+    "category": "Categories"
   },
   "content": {
     "breadcrumbs": {
@@ -36,7 +36,7 @@
         "profile": {
           "title": "Profile",
           "selectImage": "Select Image",
-          "fileSize": "File size",
+          "fileSize": "File size maximum 1.5Mb",
           "fileSupport": "File extension: (.jpg, .jpeg, .png)",
           "firstName": "First name",
           "lastName": "Last name",

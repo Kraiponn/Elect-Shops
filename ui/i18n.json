@@ -4,14 +4,15 @@
   "pages": {
     "*": ["common"],
 
+    "/products/checkout/order-success": ["order-success"],
     "/account/dashboard": ["dashboard"],
     "/auth/login": ["login"],
     "/auth/forgot-password": ["forgot-password"],
     "/auth/signup": ["signup"],
-    "/products/[productId]": ["product-detail"],
     "/products/cart": ["cart"],
-    "/products": ["product"],
+    "/products/[productId]": ["product-detail"],
     "/products/checkout": ["checkout"],
+    "/products": ["product"],
     "/search": ["search"],
     "/content/[slug]": ["content"],
     "/": ["home"]

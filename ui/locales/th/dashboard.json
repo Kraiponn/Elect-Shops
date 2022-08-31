@@ -22,7 +22,7 @@
     "customer": "ลูกค้า",
     "product": "สินค้า",
     "order": "การสั่งซื้อ",
-    "invoice": "ใบสั่งของ"
+    "category": "รายการสินค้า"
   },
   "content": {
     "breadcrumbs": {
