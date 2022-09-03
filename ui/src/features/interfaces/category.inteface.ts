@@ -1,3 +1,4 @@
+import { ECategory } from "@/features/const/enum";
 import { IErorrResponseData } from "@/features/interfaces";
 
 export interface IInputCategory {
@@ -37,10 +38,13 @@ export interface ISearchCategory {
 
 export interface ICategoryResponse {
   pagination: IPaginate;
+  dataPerPage: number;
+  currentPage: number;
   categories: ICategory[];
   isLoading: boolean;
   isSuccess: boolean;
   error: IErorrResponseData | null;
+  processType: ECategory;
 }
 
 export interface ICUCategoryResponse extends IInputCategory {}

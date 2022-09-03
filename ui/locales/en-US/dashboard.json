@@ -128,6 +128,33 @@
           "description": "Important notifications about your account security."
         }
       }
+    },
+    "management": {
+      "category": {
+        "title": "Product Categories",
+        "dialog": {
+          "title": "Remove category",
+          "description": "Are you sure to remove this category?"
+        },
+        "read": {
+          "searchBox": "Search...",
+          "addButton": "Add",
+          "tableId": "Id",
+          "tableName": "Product Category",
+          "tableDescription": "Description",
+          "dataPerPageLabel": "Data / Page",
+          "emptyLabel": "Category Not Found",
+          "addCategoryButton": "Add Category"
+        },
+        "create": {
+          "createTitle": "Create category",
+          "updateTitle": "Update category",
+          "categoryName": "Category Name",
+          "description": "Description",
+          "submitButton": "SUBMIT",
+          "viewCategory": "Back to List Categories"
+        }
+      }
     }
   }
 }

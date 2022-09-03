@@ -1,19 +1,18 @@
 import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
+import useTranslation from "next-translate/useTranslation";
 
 // Material Design
-import { clDarkMedium, clWhite } from "@/features/const/colors";
+import { clDarkMedium, clSecondary, clWhite } from "@/features/const/colors";
 import {
   Box,
   Button,
   IconButton,
   InputAdornment,
-  LinearProgress,
   MenuItem,
   OutlinedInput,
   Pagination,
   Select,
   SelectChangeEvent,
-  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -25,8 +24,10 @@ import SearchIcon from "@mui/icons-material/Search";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
+import InfoIcon from "@mui/icons-material/Info";
 
-// Global state
+// Global state and Types
+import { ECategory } from "@/features/const/enum";
 import {
   useAppSelector,
   useAppDispatch,
@@ -34,94 +35,40 @@ import {
 import {
   getCategories,
   clearCategoryState,
+  updatePaginationChange,
 } from "@/features/global-state/reducers/category";
 
-// Components
-import MyDialog from "@/components/shares/dialog/confirm-dialog";
-
 interface IProps {
-  onSelectTabIndex: (tabIndex: number, catId: number) => void;
+  onNavigateToCRUDOrDetail: (navType: ECategory, cId: number) => void;
 }
+
+const SUFIX_LOCALE = "content.management.category.read";
 
 /***********************************************************************************
  *                          ---   MAIN FUNCTION   ---                              *
  **********************************************************************************/
-export default function List({ onSelectTabIndex }: IProps) {
+export default function List({ onNavigateToCRUDOrDetail }: IProps) {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation("dashboard");
   const { darkMode } = useAppSelector((state) => state.gui);
   const [searchKey, setSearchKey] = useState<string>("");
-  const [cMode, setCMode] = useState<"READ" | "EDIT">("READ");
-  const { categories, pagination, isLoading, isSuccess } = useAppSelector(
-    (state) => state.category
-  );
-
-  const [mPagination, setMPagination] = useState<{
-    page: number;
-    perPage: number;
-  }>({ page: 1, perPage: 10 });
-
-  const [dialog, setDialog] = useState<{
-    isOpen: boolean;
-    confirm: boolean;
-    categoryId: number;
-  }>({
-    isOpen: false,
-    confirm: false,
-    categoryId: 0,
-  });
-
-  const onPerPageChange = (e: SelectChangeEvent) => {
-    // console.log("Data per page ", e.target.value);
-    setMPagination({ ...mPagination, perPage: Number(e.target.value) });
-
-    dispatch(
-      getCategories({
-        page: mPagination.page,
-        limit: Number(e.target.value),
-        noPrefixZeroIndex: true,
-        searchKey,
-      })
-    );
-  };
-
-  const onPaginateChange = (_: ChangeEvent<unknown>, value: number) => {
-    // console.log("Paginate change", value);
-    setMPagination({ ...mPagination, page: value });
-
-    dispatch(
-      getCategories({
-        page: value,
-        limit: mPagination.perPage,
-        noPrefixZeroIndex: true,
-        searchKey,
-      })
-    );
-  };
-
-  const handleChangeTabIndex = (tabIndex: number, cId: number) => {
-    // console.log("List item select cateID", cId);
-    onSelectTabIndex(tabIndex, cId);
-  };
-
-  const onRemoveCategory = (cId: number) => {
-    setDialog({ ...dialog, isOpen: true, categoryId: cId });
-  };
-
-  const handleResponse = (isConfirm: boolean) => {
-    if (isConfirm) {
-      setDialog({ ...dialog, isOpen: false, confirm: true });
-    } else {
-      setDialog({ ...dialog, isOpen: false, confirm: false });
-    }
-  };
+  const {
+    categories,
+    pagination,
+    isLoading,
+    isSuccess,
+    processType,
+    currentPage,
+    dataPerPage,
+  } = useAppSelector((state) => state.category);
 
   const handleKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.code === "Enter") {
       // console.log("Search key:", searchKey);
       dispatch(
         getCategories({
-          page: mPagination.page,
-          limit: mPagination.perPage,
+          page: currentPage,
+          limit: dataPerPage,
           noPrefixZeroIndex: true,
           searchKey,
         })
@@ -135,60 +82,80 @@ export default function List({ onSelectTabIndex }: IProps) {
     setSearchKey(event.target.value);
   };
 
-  const handleChangeProcessMode = (mode: 'READ' | 'EDIT') => {
-    setCMode(mode)
-  }
-
-  //#########################################
-  //           Life cycle method
-  //#########################################
-  useEffect(() => {
-    // if (!categories || categories.length <= 0)
-    //   dispatch(
-    //     getCategories({
-    //       page: 1,
-    //       limit: 10,
-    //       noPrefixZeroIndex: true,
-    //       searchKey,
-    //     })
-    //   );
+  const onDataPerPageChange = (e: SelectChangeEvent) => {
+    dispatch(
+      updatePaginationChange({
+        currentPage: 1,
+        dataPerPage: Number(e.target.value),
+      })
+    );
 
     dispatch(
       getCategories({
         page: 1,
-        limit: 10,
+        limit: Number(e.target.value),
         noPrefixZeroIndex: true,
         searchKey,
       })
     );
+  };
 
-    // console.log("List useEffect #1");
+  const onPaginateChange = (_: ChangeEvent<unknown>, value: number) => {
+    dispatch(
+      updatePaginationChange({
+        currentPage: value,
+        dataPerPage,
+      })
+    );
+
+    dispatch(
+      getCategories({
+        page: value,
+        limit: dataPerPage,
+        noPrefixZeroIndex: true,
+        searchKey,
+      })
+    );
+  };
+
+  const handleChangeCategoryProcess = (catType: ECategory, cId: number) => {
+    onNavigateToCRUDOrDetail(catType, cId);
+  };
+
+  //############################################################
+  //                   LIFE CYCLE CONTROL
+  //############################################################
+  useEffect(() => {
+    dispatch(
+      getCategories({
+        page: 1,
+        limit: dataPerPage,
+        noPrefixZeroIndex: true,
+        searchKey: "",
+      })
+    );
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (isSuccess) dispatch(clearCategoryState());
-    if (dialog.confirm) {
-      // remove code here
-      setDialog({ ...dialog, isOpen: false, confirm: false });
-    }
+    if (isSuccess && categories && processType === ECategory.DELETE)
+      dispatch(
+        getCategories({
+          page: currentPage,
+          limit: dataPerPage,
+          noPrefixZeroIndex: true,
+          searchKey,
+        })
+      );
+    else if (isSuccess && categories) dispatch(clearCategoryState());
 
-    return () => {
-      if (isSuccess || isLoading) dispatch(clearCategoryState());
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSuccess, dialog]);
+  }, [isSuccess, categories, processType]);
 
   return (
     <>
-      <MyDialog
-        type="CONFIRM"
-        isShow={dialog.isOpen}
-        title={`Remove category`}
-        description={`Are you sure to remove this category?`}
-        handleResponse={handleResponse}
-      />
-      {isLoading && <LinearProgress sx={{ mt: "2rem" }} color="warning" />}
+      {/* {isLoading && <LinearProgress sx={{ mt: "2rem" }} color="warning" />} */}
 
       <Box
         sx={{
@@ -199,12 +166,39 @@ export default function List({ onSelectTabIndex }: IProps) {
           boxShadow: `0 0 0.5rem #0101011b`,
         }}
       >
+        {/*********    DISPLAY THIS COMPONENT WHEN IS EMPTY    ***************/}
         {!categories ? (
-          <>
-            <Skeleton variant="rectangular" height="5rem" />
-            <Skeleton variant="rectangular" height="7rem" />
-            <Skeleton variant="rectangular" height="7rem" />
-          </>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <InfoIcon
+              sx={{ fontSize: "5rem", mb: "1rem", color: clSecondary }}
+            />
+            <Typography
+              variant="h2"
+              component="h2"
+              sx={{ color: darkMode ? "#fbfbfb50" : "#01010130" }}
+            >
+              {t(`${SUFIX_LOCALE}.emptyLabel`)}
+            </Typography>
+
+            <Button
+              variant="contained"
+              onClick={() => handleChangeCategoryProcess(ECategory.CREATE, 0)}
+              sx={{
+                px: "2rem",
+                mt: "2.5rem",
+              }}
+            >
+              {t(`${SUFIX_LOCALE}.addCategoryButton`)}
+            </Button>
+          </Box>
         ) : (
           <>
             <Box
@@ -219,7 +213,7 @@ export default function List({ onSelectTabIndex }: IProps) {
                 sx={{ textAlign: "right" }}
                 size="small"
                 type="text"
-                placeholder={`Search...`}
+                placeholder={t(`${SUFIX_LOCALE}.searchBox`)}
                 onChange={handleSearchChange}
                 onKeyDown={handleKeyPress}
                 startAdornment={
@@ -233,21 +227,29 @@ export default function List({ onSelectTabIndex }: IProps) {
                 color="primary"
                 variant="contained"
                 startIcon={<AddIcon />}
-                onClick={() => handleChangeTabIndex(1, 0)}
-              >{`Add`}</Button>
+                onClick={() => handleChangeCategoryProcess(ECategory.CREATE, 0)}
+              >
+                {t(`${SUFIX_LOCALE}.addButton`)}
+              </Button>
             </Box>
 
             <Table>
               <TableHead>
                 <TableRow>
                   <TableCell align="center">
-                    <Typography variant="h6">{`Id`}</Typography>
+                    <Typography variant="h6">
+                      {t(`${SUFIX_LOCALE}.tableId`)}
+                    </Typography>
                   </TableCell>
                   <TableCell align="left">
-                    <Typography variant="h6">{`Name`}</Typography>
+                    <Typography variant="h6">
+                      {t(`${SUFIX_LOCALE}.tableName`)}
+                    </Typography>
                   </TableCell>
                   <TableCell align="left">
-                    <Typography variant="h6">{`Description`}</Typography>
+                    <Typography variant="h6">
+                      {t(`${SUFIX_LOCALE}.tableDescription`)}
+                    </Typography>
                   </TableCell>
                   <TableCell align="center">
                     <Typography variant="h6">{`#`}</Typography>
@@ -258,7 +260,14 @@ export default function List({ onSelectTabIndex }: IProps) {
               <TableBody>
                 {categories &&
                   categories.map((cat) => (
-                    <TableRow key={cat.id}>
+                    <TableRow
+                      key={cat.id}
+                      sx={{
+                        "&:hover": {
+                          background: "rgba(7, 36, 255, 0.067)",
+                        },
+                      }}
+                    >
                       <TableCell align="center">
                         <Typography variant="subtitle2">{cat.id}</Typography>
                       </TableCell>
@@ -277,12 +286,24 @@ export default function List({ onSelectTabIndex }: IProps) {
 
                       <TableCell align="center">
                         <IconButton
-                          onClick={() => handleChangeTabIndex(2, cat.id)}
+                          onClick={() =>
+                            handleChangeCategoryProcess(
+                              ECategory.UPDATE,
+                              cat.id
+                            )
+                          }
                         >
                           <EditIcon color="primary" />
                         </IconButton>
 
-                        <IconButton onClick={() => onRemoveCategory(cat.id)}>
+                        <IconButton
+                          onClick={() =>
+                            handleChangeCategoryProcess(
+                              ECategory.DELETE,
+                              cat.id
+                            )
+                          }
+                        >
                           <DeleteIcon color="secondary" />
                         </IconButton>
                       </TableCell>
@@ -307,7 +328,9 @@ export default function List({ onSelectTabIndex }: IProps) {
                   alignItems: "center",
                 }}
               >
-                <Typography variant="subtitle2">{`Data / page`}</Typography>
+                <Typography variant="subtitle2">
+                  {t(`${SUFIX_LOCALE}.dataPerPageLabel`)}
+                </Typography>
                 <Select
                   sx={{
                     fontSize: "0.89rem",
@@ -318,8 +341,8 @@ export default function List({ onSelectTabIndex }: IProps) {
                   }}
                   variant="standard"
                   size="small"
-                  value={mPagination.perPage.toString()}
-                  onChange={onPerPageChange}
+                  value={dataPerPage.toString()}
+                  onChange={onDataPerPageChange}
                 >
                   <MenuItem value={5}>5</MenuItem>
                   <MenuItem value={10}>10</MenuItem>
@@ -330,7 +353,7 @@ export default function List({ onSelectTabIndex }: IProps) {
               </Box>
 
               <Pagination
-                count={Math.ceil(pagination.total / mPagination.perPage)}
+                count={Math.ceil(pagination.total / dataPerPage)}
                 variant="text"
                 shape="rounded"
                 size="small"

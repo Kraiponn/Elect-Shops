@@ -1,16 +1,27 @@
 import React, { useEffect, useState } from "react";
+import useTranslation from "next-translate/useTranslation";
 
 // Material Design
-import { Box, Tab, Tabs } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+
+// Global types and state
+import { ECategory } from "@/features/const/enum";
+import {
+  useAppDispatch,
+} from "@/features/hooks/use-global-state";
+import {
+  clearCategoryState,
+  deleteCategoryById,
+} from "@/features/global-state/reducers/category";
 
 // Components
-import TabPanel from "@/components/dashboard/shares/tab-panel";
+import MyDialog from "@/components/shares/dialog/confirm-dialog";
 import CategoryList from "@/components/dashboard/content/management/categories/list";
 import CreateCategory from "@/components/dashboard/content/management/categories/create";
 import EditCategory from "@/components/dashboard/content/management/categories/edit";
 
-interface ITab {
-  tabIndex: number;
+interface ICategoryProcess {
+  type: ECategory;
   cId: number;
 }
 
@@ -18,74 +29,92 @@ interface ITab {
  *                          ---   MAIN FUNCTION   ---                              *
  **********************************************************************************/
 export default function Category() {
-  const [tabObj, setTabObj] = useState<ITab>({
-    tabIndex: 0,
+  const dispatch = useAppDispatch();
+  const { t } = useTranslation("dashboard");
+  const [catObj, setCatObj] = useState<ICategoryProcess>({
+    type: ECategory.READ,
     cId: 0,
   });
+  const [dialog, setDialog] = useState<{
+    isOpen: boolean;
+    confirm: boolean;
+    categoryId: number;
+  }>({
+    isOpen: false,
+    confirm: false,
+    categoryId: 0,
+  });
 
-  const handleTabChange = (
-    _: React.SyntheticEvent<Element, Event>,
-    index: number
-  ) => {
-    setTabObj({ ...tabObj, tabIndex: index });
+  const handleResponse = (isConfirm: boolean) => {
+    if (isConfirm) {
+      setDialog({ ...dialog, isOpen: false, confirm: true });
+    } else {
+      setDialog({ ...dialog, isOpen: false, confirm: false });
+    }
   };
 
-  const onSelectTabIndex = (tIndex: number, catId: number) => {
-    setTabObj({ cId: catId, tabIndex: tIndex });
+  const onNavigateToCRUDOrDetail = (navType: ECategory, cId: number) => {
+    if (navType === ECategory.DELETE) setDialog({ ...dialog, isOpen: true });
+
+    setCatObj({ ...catObj, type: navType, cId });
+    dispatch(clearCategoryState());
+  };
+
+  const handleUI = () => {
+    switch (catObj.type) {
+      case ECategory.CREATE:
+        return (
+          <CreateCategory onNavigateToCRUDOrDetail={onNavigateToCRUDOrDetail} />
+        );
+
+      case ECategory.UPDATE:
+        return (
+          <EditCategory
+            categoryId={catObj.cId}
+            onNavigateToCRUDOrDetail={onNavigateToCRUDOrDetail}
+          />
+        );
+
+      case ECategory.DELETE:
+        return (
+          <CategoryList onNavigateToCRUDOrDetail={onNavigateToCRUDOrDetail} />
+        );
+
+      default:
+        return (
+          <CategoryList onNavigateToCRUDOrDetail={onNavigateToCRUDOrDetail} />
+        );
+    }
   };
 
   //############################################################
-  //                   Life cycle method
+  //                   LIFE CYCLE CONTROL                      #
   //############################################################
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (catObj.type === ECategory.DELETE && dialog.confirm) {
+      setDialog({ ...dialog, confirm: false });
+      dispatch(deleteCategoryById(catObj.cId));
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [catObj, dialog]);
 
   return (
     <>
+      <MyDialog
+        type="CONFIRM"
+        isShow={dialog.isOpen}
+        title={t("content.management.category.dialog.title")}
+        description={t("content.management.category.dialog.description")}
+        handleResponse={handleResponse}
+      />
+
       <Box sx={{ width: "100%", padding: "1rem" }}>
-        <Tabs
-          value={tabObj.tabIndex}
-          onChange={handleTabChange}
-          aria-label="category tab menu"
-          sx={{
-            marginTop: "0.5rem",
-            ".category-tab": {
-              fontFamily: "Prompt",
-              fontWeight: 700,
-              fontSize: "1.1rem",
-            },
-          }}
-        >
-          <Tab
-            className="category-tab"
-            label={`List`}
-            id={`category-tab-${0}`}
-          />
-          <Tab
-            className="category-tab"
-            label={`Create`}
-            id={`category-tab-${1}`}
-          />
-          <Tab
-            className="category-tab"
-            label={`Update`}
-            id={`category-tab-${2}`}
-          />
-        </Tabs>
+        <Typography variant="h2" component="h2">
+          {t("content.management.category.title")}
+        </Typography>
 
-        <TabPanel value={tabObj.tabIndex} index={0}>
-          <CategoryList onSelectTabIndex={onSelectTabIndex} />
-        </TabPanel>
-
-        <TabPanel value={tabObj.tabIndex} index={1}>
-          <CreateCategory onSelectTabIndex={onSelectTabIndex} />
-        </TabPanel>
-
-        <TabPanel value={tabObj.tabIndex} index={2}>
-          <EditCategory
-            categoryId={tabObj.cId}
-            onSelectTabIndex={onSelectTabIndex}
-          />
-        </TabPanel>
+        {handleUI()}
       </Box>
     </>
   );

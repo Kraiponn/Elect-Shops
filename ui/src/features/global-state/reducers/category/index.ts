@@ -11,6 +11,7 @@ import {
 import { http } from "@/features/services/http";
 import { AxiosError } from "axios";
 import { getHttpErrorObject } from "@/features/services/errors";
+import { ECategory } from "@/features/const/enum";
 
 const initialState: ICategoryResponse & { singleCategory: ICategory | null } = {
   pagination: {
@@ -30,6 +31,9 @@ const initialState: ICategoryResponse & { singleCategory: ICategory | null } = {
   isLoading: false,
   isSuccess: false,
   error: null,
+  dataPerPage: 10,
+  currentPage: 1,
+  processType: ECategory.READ,
 };
 
 /************************************************************
@@ -157,6 +161,38 @@ export const cuCategory = createAsyncThunk<
 });
 
 /************************************************************
+ *                  DELETE CATEGORY BY ID                      *
+ ***********************************************************/
+export const deleteCategoryById = createAsyncThunk<
+  ICategory,
+  number,
+  {
+    rejectValue: IErorrResponseData;
+  }
+>("categories/deleteCategoryById", async (categoryId, { rejectWithValue }) => {
+  const controller = new AbortController();
+
+  try {
+    const response = await http.delete(`/categories/${categoryId}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Cookies.get("access_token")}`,
+      },
+      signal: controller.signal,
+      withCredentials: false,
+    });
+
+    // console.log(response.data);
+    controller.abort();
+
+    return response.data;
+  } catch (error) {
+    const errObj = getHttpErrorObject(error as AxiosError);
+    return rejectWithValue(errObj as IErorrResponseData);
+  }
+});
+
+/************************************************************
  *                  CREATE CATEGORY SLICE                   *
  ***********************************************************/
 const categorySlice = createSlice({
@@ -169,10 +205,18 @@ const categorySlice = createSlice({
       state.error = null;
       state.categories = payload;
     },
+    updatePaginationChange: (
+      state,
+      { payload }: PayloadAction<{ currentPage: number; dataPerPage: number }>
+    ) => {
+      state.dataPerPage = payload.dataPerPage;
+      state.currentPage = payload.currentPage;
+    },
     clearCategoryState: (state) => {
       state.isLoading = false;
       state.isSuccess = false;
       state.error = null;
+      state.processType = ECategory.READ;
     },
   },
   extraReducers: (builder) => {
@@ -184,14 +228,12 @@ const categorySlice = createSlice({
       state.isSuccess = false;
       state.error = null;
     });
-
     builder.addCase(getCategories.fulfilled, (state, { payload }) => {
       state.isLoading = false;
       state.isSuccess = true;
       state.categories = payload.categories;
       state.pagination = payload.pagination;
     });
-
     builder.addCase(getCategories.rejected, (state, action) => {
       // console.log("Error on rejected", action.payload);
       state.isLoading = false;
@@ -207,13 +249,11 @@ const categorySlice = createSlice({
       state.isSuccess = false;
       state.error = null;
     });
-
     builder.addCase(getCategoryById.fulfilled, (state, { payload }) => {
       state.isLoading = false;
       state.isSuccess = true;
       state.singleCategory = payload;
     });
-
     builder.addCase(getCategoryById.rejected, (state, action) => {
       state.isLoading = false;
       state.isSuccess = false;
@@ -228,14 +268,33 @@ const categorySlice = createSlice({
       state.isSuccess = false;
       state.error = null;
     });
-
-    builder.addCase(cuCategory.fulfilled, (state, action) => {
+    builder.addCase(cuCategory.fulfilled, (state, _) => {
       state.isLoading = false;
       state.isSuccess = true;
+      state.processType = ECategory.CREATE_UPDATE;
     });
-
     builder.addCase(cuCategory.rejected, (state, action) => {
       // console.log("Error on rejected", action.payload);
+      state.isLoading = false;
+      state.isSuccess = false;
+      state.error = action.payload as IErorrResponseData;
+    });
+
+    /*************************************************************************
+     *                         Delete CATEGORY BY ID                         *
+     ************************************************************************/
+    builder.addCase(deleteCategoryById.pending, (state) => {
+      state.isLoading = true;
+      state.isSuccess = false;
+      state.error = null;
+    });
+    builder.addCase(deleteCategoryById.fulfilled, (state, { payload }) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.singleCategory = null;
+      state.processType = ECategory.DELETE;
+    });
+    builder.addCase(deleteCategoryById.rejected, (state, action) => {
       state.isLoading = false;
       state.isSuccess = false;
       state.error = action.payload as IErorrResponseData;
@@ -243,6 +302,7 @@ const categorySlice = createSlice({
   },
 });
 
-export const { setCategories, clearCategoryState } = categorySlice.actions;
+export const { setCategories, updatePaginationChange, clearCategoryState } =
+  categorySlice.actions;
 
 export default categorySlice.reducer;

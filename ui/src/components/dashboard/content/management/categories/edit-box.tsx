@@ -1,7 +1,3 @@
-import useTranslation from "next-translate/useTranslation";
-
-import { useAppSelector } from "@/features/hooks/use-global-state";
-
 import { Box, InputAdornment, OutlinedInput, Typography } from "@mui/material";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
@@ -18,15 +14,13 @@ interface IProps {
   editBoxName: "category_name" | "description";
   control: Control<IInputCategory, any>;
   errors: ErrorsInputType;
+  placeholder: string;
 }
 
 /****************************************************
  *                  MAIN FUNCTION
  ***************************************************/
-const EditBox = ({ errors, control, editBoxName }: IProps) => {
-  const { t } = useTranslation("dashboard");
-  const { darkMode } = useAppSelector((state) => state.gui);
-
+const EditBox = ({ errors, control, editBoxName, placeholder }: IProps) => {
   return (
     <>
       <Controller
@@ -46,9 +40,7 @@ const EditBox = ({ errors, control, editBoxName }: IProps) => {
             type="text"
             multiline={editBoxName === "category_name" ? false : true}
             rows={editBoxName === "category_name" ? 1 : 5}
-            placeholder={
-              editBoxName === "category_name" ? "Category name" : "Description"
-            }
+            placeholder={placeholder}
             fullWidth
             error={
               editBoxName === "category_name"

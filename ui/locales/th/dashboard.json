@@ -128,6 +128,34 @@
           "description": "แจ้งเตือนเรื่องสำคัญต่างๆ ที่เกี่ยวข้องกับความปลอดภัยของคุณ"
         }
       }
+    },
+    "management": {
+      "category": {
+        "title": "หมวดหมู่สินค้า",
+        "dialog": {
+          "title": "ลบหมวดหมู่สินค้า",
+          "description": "คุณแน่ใจใช่ไหมที่จะลบรายการนี้?"
+        },
+        "read": {
+          "searchBox": "ค้นหา...",
+          "addButton": "เพิ่มรายการ",
+          "tableId": "รหัส",
+          "tableName": "หมวดหมู่",
+          "tableDescription": "รายละเอียด",
+          "dataPerPageLabel": "ข้อมูล / หน้า",
+          "emptyLabel": "ไม่พบข้อมูล หมวดหมู่สินค้า",
+          "addCategoryButton": "เพิ่มหมวดหมู่สินค้า"
+        },
+        "create": {
+          "title": "เพิ่มหมวดหมู่สินค้า",
+          "categoryName": "ชื่อหมวดหมู่",
+          "createTitle": "เพิ่มหมวดหมู่",
+          "updateTitle": "แก้ไขหมวดหมู่",
+          "description": "รายละเอียด",
+          "submitButton": "ยืนยัน",
+          "viewCategory": "กลับหน้า แสดงหมวดหมู่"
+        }
+      }
     }
   }
 }

@@ -40,9 +40,9 @@ export default function Dashboard() {
     setOpen(false);
   };
 
-  //#########################################
-  //           Life cycle method
-  //#########################################
+  //############################################################
+  //                   LIFE CYCLE CONTROL
+  //############################################################
   useEffect(() => {
     const getAccountState = async () => {
       if (!access_token || !profile) {

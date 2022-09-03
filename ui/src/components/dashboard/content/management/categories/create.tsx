@@ -1,84 +1,63 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import useTranslation from "next-translate/useTranslation";
 
-// Material Design
+// Material Design & System colors
 import { clDarkMedium } from "@/features/const/colors";
-import { Box, LinearProgress } from "@mui/material";
+import { Box, Button } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-// Global state
+// Global state and Types
+import { IInputCategory } from "@/features/interfaces";
+import { ECategory } from "@/features/const/enum";
 import {
   useAppSelector,
   useAppDispatch,
 } from "@/features/hooks/use-global-state";
-import {
-  cuCategory,
-  clearCategoryState,
-} from "@/features/global-state/reducers/category";
-import { IInputCategory } from "@/features/interfaces";
+import { cuCategory } from "@/features/global-state/reducers/category";
 
 // Components
-import MyDialog from "@/components/shares/dialog/confirm-dialog";
 import CategoryForm from "@/components/dashboard/content/management/categories/category-form";
 
 interface IProps {
-  onSelectTabIndex: (tabIndex: number, catId: number) => void;
+  onNavigateToCRUDOrDetail: (navType: ECategory, cId: number) => void;
 }
 
+const SUFIX_LOCALE = "content.management.category.create";
+
 /***********************************************************************************
- *                          ---   MAIN FUNCTION   ---                              *
+ *                         ---   MAIN FUNCTION   ---                               *
  **********************************************************************************/
-export default function Create({ onSelectTabIndex }: IProps) {
-  const { darkMode } = useAppSelector((state) => state.gui);
-  const [dialog, setDialog] = useState<{
-    isOpen: boolean;
-    confirm: boolean;
-    categoryId: number;
-  }>({
-    isOpen: false,
-    confirm: false,
-    categoryId: 0,
-  });
+export default function Create({ onNavigateToCRUDOrDetail }: IProps) {
   const dispatch = useAppDispatch();
-  const { isLoading, isSuccess, error } = useAppSelector(
+  const { t } = useTranslation("dashboard");
+  const { darkMode } = useAppSelector((state) => state.gui);
+  const { isLoading, isSuccess, processType } = useAppSelector(
     (state) => state.category
   );
-
-  const handleResponse = (isConfirm: boolean) => {
-    if (isConfirm) {
-      setDialog({ ...dialog, isOpen: false, confirm: true });
-    } else {
-      setDialog({ ...dialog, isOpen: false, confirm: false });
-    }
-
-    dispatch(clearCategoryState());
-  };
 
   const onCreateOrUpdateCategory = (body: IInputCategory) => {
     dispatch(cuCategory(body));
   };
 
-  //#########################################
-  //           Life cycle method
-  //#########################################
+  //############################################################
+  //                   LIFE CYCLE CONTROL
+  //############################################################
   useEffect(() => {
-    if (isSuccess) onSelectTabIndex(0, 0);
+    if (isSuccess && processType === ECategory.CREATE_UPDATE)
+      onNavigateToCRUDOrDetail(ECategory.READ, 0);
 
-    return () => {
-      dispatch(clearCategoryState());
-    };
-  }, [dispatch, isSuccess, onSelectTabIndex]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess]);
 
   return (
     <>
-      {error && (
-        <MyDialog
-          type="ERROR"
-          isShow={error ? true : false}
-          title={error.error}
-          description={error.message as string}
-          handleResponse={handleResponse}
-        />
-      )}
-      {isLoading && <LinearProgress sx={{ mt: "2rem" }} color="warning" />}
+      <Button
+        startIcon={<ArrowBackIcon />}
+        onClick={() => onNavigateToCRUDOrDetail(ECategory.READ, 0)}
+        sx={{ fontWeight: 900, mt: "1rem" }}
+      >
+        {t(`${SUFIX_LOCALE}.viewCategory`)}
+      </Button>
 
       <Box
         sx={{
@@ -91,7 +70,7 @@ export default function Create({ onSelectTabIndex }: IProps) {
       >
         <CategoryForm
           formType="CREATE"
-          categoryId={0}
+          singleCategory={null}
           onCreateOrUpdateCategory={onCreateOrUpdateCategory}
         />
       </Box>

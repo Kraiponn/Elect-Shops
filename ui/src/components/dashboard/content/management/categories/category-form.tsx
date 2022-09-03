@@ -1,20 +1,11 @@
 import React, { useEffect } from "react";
-import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 
 // Material design components
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, CircularProgress, Grid, Typography } from "@mui/material";
 
 // Global state and Types
-import {
-  useAppSelector,
-  useAppDispatch,
-} from "@/features/hooks/use-global-state";
-import {
-  cuCategory,
-  clearCategoryState,
-  getCategoryById,
-} from "@/features/global-state/reducers/category";
+import { useAppSelector } from "@/features/hooks/use-global-state";
 
 // Form validation
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -27,24 +18,22 @@ import EditBox from "@/components/dashboard/content/management/categories/edit-b
 
 interface IProps {
   formType: "CREATE" | "UPDATE";
-  categoryId: number;
+  singleCategory: ICategory | null;
   onCreateOrUpdateCategory: (body: IInputCategory) => void;
 }
+
+const SUFIX_LOCALE = "content.management.category.create";
 
 /***********************************************************************************
  *                          ---   MAIN FUNCTION   ---                              *
  **********************************************************************************/
 export default function CategoryForm({
   formType,
-  categoryId,
+  singleCategory,
   onCreateOrUpdateCategory,
 }: IProps) {
-  const router = useRouter();
-  const dispatch = useAppDispatch();
-  const { t } = useTranslation("common");
-  const { isSuccess, singleCategory } = useAppSelector(
-    (state) => state.category
-  );
+  const { t } = useTranslation("dashboard");
+  const { isLoading } = useAppSelector((state) => state.category);
 
   const schema = yup
     .object({
@@ -56,6 +45,7 @@ export default function CategoryForm({
   const {
     handleSubmit,
     control,
+    setValue,
     formState: { errors },
   } = useForm<IInputCategory>({
     resolver: yupResolver(schema),
@@ -71,19 +61,15 @@ export default function CategoryForm({
     onCreateOrUpdateCategory(body);
   };
 
-  // console.log("Edit form", categoryId, category);
-
   //############################################################
-  //                   Life cycle method
+  //                   LIFE CYCLE CONTROL                      #
   //############################################################
   useEffect(() => {
-    if (categoryId !== 0) dispatch(getCategoryById(categoryId));
-
-    return () => {
-      console.log("Unmount on category form");
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [categoryId]);
+    if (singleCategory) {
+      setValue("category_name", singleCategory.category_name);
+      setValue("description", singleCategory.description);
+    }
+  }, [setValue, singleCategory]);
 
   return (
     <>
@@ -94,7 +80,9 @@ export default function CategoryForm({
             component="h2"
             sx={{ mb: { xs: "1rem", lg: 0 } }}
           >
-            {formType === "CREATE" ? `Basic details` : `Update category`}
+            {formType === "CREATE"
+              ? t(`${SUFIX_LOCALE}.createTitle`)
+              : t(`${SUFIX_LOCALE}.updateTitle`)}
           </Typography>
         </Grid>
 
@@ -104,15 +92,23 @@ export default function CategoryForm({
               editBoxName="category_name"
               control={control}
               errors={errors}
+              placeholder={t(`${SUFIX_LOCALE}.categoryName`)}
             />
 
             <EditBox
               editBoxName="description"
               control={control}
               errors={errors}
+              placeholder={t(`${SUFIX_LOCALE}.description`)}
             />
 
-            <Button variant="contained" type="submit">{`SUBMIT`}</Button>
+            <Button variant="contained" type="submit">
+              {isLoading ? (
+                <CircularProgress />
+              ) : (
+                t(`${SUFIX_LOCALE}.submitButton`)
+              )}
+            </Button>
           </form>
         </Grid>
       </Grid>

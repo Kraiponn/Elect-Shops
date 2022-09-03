@@ -1,58 +1,44 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import useTranslation from "next-translate/useTranslation";
 
-// Material Design
+// Material design & System colors
 import { clDarkMedium } from "@/features/const/colors";
-import { Box, LinearProgress } from "@mui/material";
+import { Box, Button } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-// Global state
+// Global state & Types
+import { ECategory } from "@/features/const/enum";
+import { IInputCategory } from "@/features/interfaces";
 import {
   useAppSelector,
   useAppDispatch,
 } from "@/features/hooks/use-global-state";
 import {
   cuCategory,
-  clearCategoryState,
   getCategoryById,
+  clearCategoryState,
 } from "@/features/global-state/reducers/category";
-import { ICategory, IInputCategory } from "@/features/interfaces";
 
 // Components
-import MyDialog from "@/components/shares/dialog/confirm-dialog";
 import CategoryForm from "@/components/dashboard/content/management/categories/category-form";
 
 interface IProps {
   categoryId: number;
-  onSelectTabIndex: (tabIndex: number, catId: number) => void;
+  onNavigateToCRUDOrDetail: (navType: ECategory, cId: number) => void;
 }
+
+const SUFIX_LOCALE = "content.management.category.create";
 
 /***********************************************************************************
  *                          ---   MAIN FUNCTION   ---                              *
  **********************************************************************************/
-export default function Edit({ categoryId, onSelectTabIndex }: IProps) {
+export default function Edit({ categoryId, onNavigateToCRUDOrDetail }: IProps) {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation("dashboard");
   const { darkMode } = useAppSelector((state) => state.gui);
-  const [dialog, setDialog] = useState<{
-    isOpen: boolean;
-    confirm: boolean;
-    cId: number;
-  }>({
-    isOpen: false,
-    confirm: false,
-    cId: 0,
-  });
-  const { isLoading, isSuccess, error, singleCategory } = useAppSelector(
+  const { isLoading, singleCategory, processType, isSuccess } = useAppSelector(
     (state) => state.category
   );
-
-  const handleResponse = (isConfirm: boolean) => {
-    if (isConfirm) {
-      setDialog({ ...dialog, isOpen: false, confirm: true });
-    } else {
-      setDialog({ ...dialog, isOpen: false, confirm: false });
-    }
-
-    dispatch(clearCategoryState());
-  };
 
   const onCreateOrUpdateCategory = (body: IInputCategory) => {
     const fData: IInputCategory = {
@@ -63,39 +49,33 @@ export default function Edit({ categoryId, onSelectTabIndex }: IProps) {
     dispatch(cuCategory(fData));
   };
 
-  // console.log("Edit tab", categoryId);
-
   //############################################################
-  //                   Life cycle method
+  //                   LIFE CYCLE CONTROL
   //############################################################
   useEffect(() => {
-    // if (categoryId !== 0) dispatch(getCategoryById(categoryId));
-    // else onSelectTabIndex(0, 0);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    // if (isSuccess) onSelectTabIndex(0, 0);
-
-    return () => {
+    if (isSuccess && processType === ECategory.CREATE_UPDATE) {
+      onNavigateToCRUDOrDetail(ECategory.READ, 0);
+    } else if (singleCategory) {
+      if (singleCategory.id !== categoryId)
+        dispatch(getCategoryById(categoryId));
+    } else if (!singleCategory) {
+      dispatch(getCategoryById(categoryId));
+    } else if (isSuccess) {
       dispatch(clearCategoryState());
-    };
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSuccess]);
+  }, [singleCategory, isSuccess, processType]);
 
   return (
     <>
-      {error && (
-        <MyDialog
-          type="ERROR"
-          isShow={error ? true : false}
-          title={error.error}
-          description={error.message as string}
-          handleResponse={handleResponse}
-        />
-      )}
-      {isLoading && <LinearProgress sx={{ mt: "2rem" }} color="warning" />}
+      <Button
+        startIcon={<ArrowBackIcon />}
+        onClick={() => onNavigateToCRUDOrDetail(ECategory.READ, 0)}
+        sx={{ fontWeight: 900, mt: "1rem" }}
+      >
+        {t(`${SUFIX_LOCALE}.viewCategory`)}
+      </Button>
 
       <Box
         sx={{
@@ -109,7 +89,7 @@ export default function Edit({ categoryId, onSelectTabIndex }: IProps) {
         {categoryId !== 0 && singleCategory ? (
           <CategoryForm
             formType="UPDATE"
-            categoryId={categoryId}
+            singleCategory={singleCategory}
             onCreateOrUpdateCategory={onCreateOrUpdateCategory}
           />
         ) : null}

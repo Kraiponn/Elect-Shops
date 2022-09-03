@@ -81,11 +81,11 @@ export default function Content({ open }: IProps) {
   const dispatch = useAppDispatch();
   const { locale } = useRouter();
   const { t } = useTranslation("dashboard");
-  const { darkMode } = useAppSelector((state) => state.gui);
+  const { darkMode, OpenAccountMenu } = useAppSelector((state) => state.gui);
   const { sidebarListItemMenu } = useAppSelector((state) => state.dashboard);
 
   const handleCloseAccountMenu = () => {
-    dispatch(closeAccountMenu());
+    if (OpenAccountMenu) dispatch(closeAccountMenu());
   };
 
   const handleShowDashboardContent = () => {
@@ -118,8 +118,7 @@ export default function Content({ open }: IProps) {
     else if (sidebarListItemMenu.products)
       return <Product darkMode={darkMode} />;
     else if (sidebarListItemMenu.orders) return <Order darkMode={darkMode} />;
-    else if (sidebarListItemMenu.categories)
-      return <Category darkMode={darkMode} />;
+    else if (sidebarListItemMenu.categories) return <Category />;
   };
 
   return (
