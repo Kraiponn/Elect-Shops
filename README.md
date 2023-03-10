@@ -42,6 +42,7 @@
 
 ## Project Preview
 
+<br/>
 <div style="width:100%; margin-top:3rem;display:flex;justify-content:center;">
   <image 
     src="./documents/images/2022-12-12_123830.png"
@@ -50,6 +51,8 @@
     height="350px"
   />
 </div>
+
+<br/><br/>
 
 <div style="width:100%; margin-top:3rem;display:flex;justify-content:center;">
   <image 
@@ -60,6 +63,8 @@
   />
 </div>
 
+<br/><br/>
+
 <div style="width:100%; margin-top:3rem;display:flex;justify-content:center;">
   <image 
     src="./documents/images/2022-12-12_125358.png"
@@ -68,6 +73,8 @@
     height="1000px"
   />
 </div>
+
+<br/><br/>
 
 <div style="width:100%; margin-top:3rem;display:flex;justify-content:center;">
   <image 
@@ -78,17 +85,79 @@
   />
 </div>
 
-<div style="width:100%; margin-top:3rem;display:flex;align-items:center;justify-content:space-around;">
+<br/><br/>
+
+<div style="width:100%; margin-top:3rem;display:flex;align-items:center;justify-content:center;">
   <image 
     src="./documents/images/2022-12-12_125947.png"
     alt="logo"
-    width="450px"
-    height="400px"
-  />
-  <image 
-    src="./documents/images/2022-12-12_130156.png"
-    alt="logo"
-    width="450px"
+    width="700px"
     height="400px"
   />
 </div>
+
+<br/><br/>
+
+<div style="width:100%; margin-top:3rem;display:flex;align-items:center;justify-content:center;">
+  <image 
+    src="./documents/images/2022-12-12_130156.png"
+    alt="logo"
+    width="700px"
+    height="400px"
+  />
+</div>
+
+<br/><br/>
+
+<div style="width:100%; margin-top:3rem;display:flex;align-items:center;justify-content:center;">
+  <image 
+    src="./documents/images/Screenshot 2022-12-12 130449.png"
+    alt="logo"
+    width="700px"
+    height="400px"
+  />
+</div>
+
+<br/><br/>
+
+<div style="width:100%; margin-top:3rem;display:flex;align-items:center;justify-content:center;">
+  <image 
+    src="./documents/images/Screenshot 2022-12-12 131711.png"
+    alt="logo"
+    width="700px"
+    height="400px"
+  />
+</div>
+
+<br/><br/>
+
+<div style="width:100%; margin-top:3rem;display:flex;align-items:center;justify-content:center;">
+  <image 
+    src="./documents/images/2022-12-12_131856.png"
+    alt="logo"
+    width="700px"
+    height="400px"
+  />
+</div>
+
+<br/><br/>
+
+<div style="width:100%; margin-top:3rem;display:flex;align-items:center;justify-content:center;">
+  <image 
+    src="./documents/images/2022-12-12_132007.png"
+    alt="logo"
+    width="700px"
+    height="400px"
+  />
+</div>
+
+<br/><br/>
+
+## About Me
+
+```bash
+    Author: Kraipon Najaroon
+    Jobs  : Full stack developer in web and mobile technology.
+    Email : kraipon.na10@gmail.com, kraipon_na10@hotmail.com
+    Tel   : 095-7396209
+```
