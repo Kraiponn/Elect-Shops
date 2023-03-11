@@ -1,4 +1,4 @@
-# Electrical Appliance - Shopping Online
+# Ecommerce - Shopping Online(Electrical Appliance)
 
 > Ecommerce web applicaton for the demo full stack project.
 
